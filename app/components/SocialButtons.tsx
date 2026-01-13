@@ -37,7 +37,7 @@ export default function SocialButtons({ githubUrl, cvUrl, linkedInUrl }: SocialB
         href={linkedInUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200 font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200 font-medium"
         aria-label="Visit LinkedIn profile"
       >
         <svg

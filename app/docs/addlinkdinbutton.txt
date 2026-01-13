@@ -1,0 +1,31 @@
+Add Link
+edIn Button to SocialButtons Component
+
+Overview
+Extend the SocialButtons component to include a LinkedIn button with LinkedIn branding, matching the existing GitHub and CV button patterns.
+
+Implementation Steps
+1. Update SocialButtons Component Interface
+File: app/components/SocialButtons.tsx
+Add linkedInUrl: string to the SocialButtonsProps interface
+Add linkedInUrl to the destructured props in the component function
+2. Add LinkedIn Button to Component
+File: app/components/SocialButtons.tsx
+Insert LinkedIn button between GitHub and CV buttons
+Include LinkedIn SVG icon (official LinkedIn icon path)
+Apply LinkedIn blue styling:
+Light mode: bg-blue-600 with hover:bg-blue-700
+Dark mode: bg-blue-500 with hover:bg-blue-600
+Match existing button structure:
+Flex layout with icon and "LinkedIn" label
+Same padding, rounded corners, and transition effects
+Accessibility attributes (aria-label, target="_blank", rel="noopener noreferrer")
+3. Update Page Component
+File: app/page.tsx
+Add linkedInUrl prop to the SocialButtons component
+Use user-provided LinkedIn profile URL (placeholder: "https://www.linkedin.com/in/yourprofile")
+4. Verify Implementation
+Check that all three buttons (GitHub, LinkedIn, CV) display correctly
+Verify LinkedIn button styling matches LinkedIn branding
+Test dark mode support for LinkedIn button
+Verify hover effects work on LinkedIn button
