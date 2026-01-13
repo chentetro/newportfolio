@@ -7,6 +7,7 @@ export default function Home() {
       <SocialButtons 
         githubUrl="https://github.com/chentetro"
         cvUrl="/resume.pdf"
+        linkedInUrl="https://www.linkedin.com/in/yourprofile"
       />
     </>
   );
