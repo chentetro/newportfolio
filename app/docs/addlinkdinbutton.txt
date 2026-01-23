@@ -13,9 +13,7 @@ Add linkedInUrl to the destructured props in the component function
 File: app/components/SocialButtons.tsx
 Insert LinkedIn button between GitHub and CV buttons
 Include LinkedIn SVG icon (official LinkedIn icon path)
-Apply LinkedIn blue styling:
-Light mode: bg-blue-600 with hover:bg-blue-700
-Dark mode: bg-blue-500 with hover:bg-blue-600
+Apply github style 
 Match existing button structure:
 Flex layout with icon and "LinkedIn" label
 Same padding, rounded corners, and transition effects
