@@ -14,7 +14,7 @@ export default function SocialButtons({
   email,
 }: SocialButtonsProps) {
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex gap-4 items-center flex-wrap max-w-full">
       {/* GitHub Button */}
       <Link
         href={githubUrl}
