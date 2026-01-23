@@ -32,14 +32,17 @@ alwaysApply: false
 - **Gray Scale**: Use Tailwind's gray scale (gray-50 through gray-900)
 
 ### Color Restrictions
-- **ABSOLUTELY NO COLOR VARIANTS**: No blue, green, red, orange, purple, or any other colors
-- **Only Allowed**: White, Gray (gray-50 to gray-900), and Black
-- This is a strict monochrome design system
+- **Foreground Elements**: Text, icons, and buttons MUST remain strictly monochrome (white, gray, black only)
+- **ABSOLUTELY NO COLOR VARIANTS**: No blue, green, red, orange, purple, or any other colors for foreground elements
+- **Background Colors**: Background colors are separate from foreground restrictions and prioritize brightness and low saturation over specific color names
+- **Foreground Only Allowed**: White, Gray (gray-50 to gray-900), and Black for all text, icons, and interactive elements
 
 ### Light Mode
-- Base background: `#ffffff` (white) - uses `--background` CSS variable
+- Base background: High-key (bright and low-saturation) - uses `--background` CSS variable
+- **Background Philosophy**: Primary backgrounds should prioritize brightness and low saturation over specific hex codes or color names
+- **Background Flexibility**: Backgrounds don't have to be gray - any light tint that feels clean and professional is allowed
 - Base text: `#171717` (gray-900) - uses `--foreground` CSS variable
-- Tailwind classes: `bg-white text-gray-900`
+- Tailwind classes: Use bright, low-saturation backgrounds (e.g., `bg-white`, light tints) with `text-gray-900` for text
 
 ### Dark Mode
 - Base background: `#0a0a0a` (gray-950/near black) - uses `--background` CSS variable
@@ -47,10 +50,12 @@ alwaysApply: false
 - Tailwind classes: `dark:bg-gray-950 dark:text-gray-100`
 
 ### Section Backgrounds
-- Use subtle gray variants for visual separation between sections
-- Light mode: `bg-gray-50` for sections needing separation
+- **Primary Backgrounds**: Should be high-key (bright, low-saturation) - prioritize brightness over specific color names
+- Light mode: Use bright, low-saturation backgrounds (e.g., `bg-gray-50` or light tints) for sections needing separation
+- **Dark Backgrounds**: Dark backgrounds (`bg-gray-900`, `bg-gray-950`) are intentional design choices for specific sections only
+- **When to Use Dark Backgrounds**: Use dark backgrounds for Hero sections, Footer, or high-contrast call-outs
 - Dark mode: `dark:bg-gray-900` for sections needing separation
-- Avoid pure black/white for section backgrounds - prefer gray-50/gray-900 for softer contrast
+- Avoid pure black/white for section backgrounds - prefer bright, low-saturation variants or gray-900 for dark sections
 
 ### Example Color Usage
 ```tsx
@@ -66,10 +71,21 @@ className="bg-gray-50 dark:bg-gray-900"
 
 ## Flexible Background System
 
-- **Base Background**: Use CSS variables `var(--background)` and `var(--foreground)` defined in `globals.css`
-- **Section Backgrounds**: Use `bg-gray-50 dark:bg-gray-900` for subtle visual separation
-- **Consistency**: Maintain consistent base background, but allow subtle gray variants for sections when needed
-- **Avoid**: Pure black (`#000000`) or pure white (`#ffffff`) for section backgrounds - use gray variants instead
+- **Background Philosophy**: Prioritize brightness and low saturation over specific hex codes or color names
+- **Foreground vs Background Rules**: 
+  - Foreground elements (text, icons, buttons) must remain strictly monochrome (white, gray, black)
+  - Background colors prioritize high-key (bright, low-saturation) aesthetics
+- **Primary Backgrounds**: Should be high-key (bright and low-saturation) - any light tint that feels clean and professional is allowed
+- **Dark Backgrounds**: Dark backgrounds (`bg-gray-900`, `bg-gray-950`) are intentional design choices for specific sections:
+  - Hero sections
+  - Footer sections
+  - High-contrast call-outs
+- **Base Background**: Use CSS variables `var(--background)` and `var(--foreground)` defined in `globals.css` for theme-aware styling
+- **Selection Criteria**: When choosing backgrounds, prioritize brightness and low saturation rather than specific hex codes or color names
+- **Examples**:
+  - Primary background: `bg-white` or bright, low-saturation tints
+  - Section separation: `bg-gray-50` or light tints with high brightness
+  - Dark sections: `bg-gray-900` or `bg-gray-950` for Hero, Footer, or call-outs
 
 ## Accessibility Standards
 
@@ -221,6 +237,6 @@ className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-w
 2. **Performance**: Use Tailwind's utility classes - avoid custom CSS when possible
 3. **Accessibility First**: Always consider accessibility when implementing components
 4. **Mobile First**: Design for mobile, then enhance for larger screens
-5. **Monochrome**: Strictly adhere to white, gray, and black only
+5. **Monochrome Foregrounds**: Strictly adhere to white, gray, and black only for foreground elements (text, icons, buttons); backgrounds prioritize brightness and low saturation
 6. **Dark Mode**: Always implement both light and dark variants
 7. **Testing**: Test components at mobile size (375px) and in both light/dark modes before completion

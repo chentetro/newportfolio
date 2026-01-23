@@ -20,7 +20,7 @@ export default function SocialButtons({
         href={githubUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none"
         aria-label="Visit GitHub profile"
       >
         <svg
@@ -43,7 +43,7 @@ export default function SocialButtons({
         href={linkedInUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200 font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none"
         aria-label="Visit LinkedIn profile"
       >
         <svg
@@ -62,7 +62,7 @@ export default function SocialButtons({
         href={cvUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="px-4 py-2 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200 font-medium"
+        className="px-4 py-2 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors duration-200 font-medium min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none"
         aria-label="Download CV"
       >
         CV
@@ -71,7 +71,7 @@ export default function SocialButtons({
       {/* Contact Button */}
       <Link
         href={`mailto:${email}`}
-        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none"
         aria-label="Contact via email"
       >
         <svg
