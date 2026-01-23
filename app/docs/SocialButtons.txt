@@ -1,0 +1,50 @@
+SocialButtons Component Implementation Plan
+Overview
+Implement a reusable SocialButtons component with GitHub and CV buttons, integrate it into the main page, and verify functionality including dark mode and hover effects.
+
+Implementation Steps
+1. Create SocialButtons Component
+File: app/components/SocialButtons.tsx
+Create the component file with:
+TypeScript interface for props (githubUrl and cvUrl)
+GitHub button with inline SVG icon
+CV button with "CV" label
+Tailwind CSS classes for styling, hover effects, and dark mode
+Next.js Link component for navigation
+Accessibility attributes (aria-label, rel="noopener noreferrer")
+2. Verify Tailwind CSS Setup
+Status: Already configured
+Tailwind CSS v4 is installed in package.json
+Tailwind is imported in app/globals.css with @import "tailwindcss";
+Dark mode is configured via CSS variables in app/globals.css
+No additional installation or configuration needed
+3. Integrate Component in Main Page
+File: app/page.tsx
+Import the SocialButtons component
+Add the component to the JSX with props:
+githubUrl: User-provided GitHub profile URL
+cvUrl: Path to resume PDF in public folder (e.g., "/resume.pdf")
+4. Prepare CV File Location
+Place the resume PDF file in the public folder
+Name it appropriately (e.g., resume.pdf or cv.pdf)
+Reference it in the component as "/filename.pdf"
+5. Test Component Functionality
+Start the development server (npm run dev)
+Verify GitHub button:
+Opens GitHub profile in new tab
+Icon displays correctly
+Hover effect works
+Verify CV button:
+Opens/downloads PDF correctly
+"CV" label displays
+Hover effect works
+Test dark mode:
+Toggle system dark mode preference
+Verify button colors adapt correctly
+Check hover states in both light and dark modes
+6. Verify Styling and Interactions
+Confirm Tailwind classes are applied:
+Button padding, rounded corners, font weight
+Color transitions on hover
+Dark mode color variants (dark: prefixes)
+Test responsive behavior (if needed)

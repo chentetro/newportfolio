@@ -1,0 +1,242 @@
+---
+description: "Styling standards and design system guidelines for the portfolio project including Tailwind CSS, mobile-first design, monochrome color palette, and accessibility requirements"
+alwaysApply: false
+---
+
+# Styling Standards for Portfolio Project
+
+## Framework Requirements
+
+- **Framework Stack**: Next.js 16, TypeScript, Tailwind CSS v4, PostCSS
+- **Styling Approach**: Tailwind utility-first approach - ALWAYS use Tailwind utility classes
+- **No Alternatives**: NEVER use inline styles or styled-components
+- **Theming**: Use CSS variables defined in `app/globals.css` for theme-aware styling
+- **Import Pattern**: Tailwind is imported in `globals.css` with `@import "tailwindcss";`
+
+## Mobile-First Design
+
+- **Primary Approach**: All components MUST be designed for mobile screens first, then scale up
+- **Breakpoints**: Use Tailwind's mobile-first responsive breakpoints: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
+- **No Horizontal Overflow**: Prevent horizontal overflows with proper container constraints
+  - Use `max-w-full` or `w-full` on containers
+  - Use `overflow-x-hidden` on body/root elements when necessary
+  - Test all layouts at minimum 375px width
+  - Ensure no content extends beyond viewport width
+- **Testing**: Always test components at mobile size (375px) before adding responsive breakpoints
+
+## Monochrome Color Palette
+
+### Primary Colors
+- **White**: `#ffffff` (pure white)
+- **Black**: `#000000` (pure black)
+- **Gray Scale**: Use Tailwind's gray scale (gray-50 through gray-900)
+
+### Color Restrictions
+- **Foreground Elements**: Text, icons, and buttons MUST remain strictly monochrome (white, gray, black only)
+- **ABSOLUTELY NO COLOR VARIANTS**: No blue, green, red, orange, purple, or any other colors for foreground elements
+- **Background Colors**: Background colors are separate from foreground restrictions and prioritize brightness and low saturation over specific color names
+- **Foreground Only Allowed**: White, Gray (gray-50 to gray-900), and Black for all text, icons, and interactive elements
+
+### Light Mode
+- Base background: High-key (bright and low-saturation) - uses `--background` CSS variable
+- **Background Philosophy**: Primary backgrounds should prioritize brightness and low saturation over specific hex codes or color names
+- **Background Flexibility**: Backgrounds don't have to be gray - any light tint that feels clean and professional is allowed
+- Base text: `#171717` (gray-900) - uses `--foreground` CSS variable
+- Tailwind classes: Use bright, low-saturation backgrounds (e.g., `bg-white`, light tints) with `text-gray-900` for text
+
+### Dark Mode
+- Base background: `#0a0a0a` (gray-950/near black) - uses `--background` CSS variable
+- Base text: `#ededed` (gray-100) - uses `--foreground` CSS variable
+- Tailwind classes: `dark:bg-gray-950 dark:text-gray-100`
+
+### Section Backgrounds
+- **Primary Backgrounds**: Should be high-key (bright, low-saturation) - prioritize brightness over specific color names
+- Light mode: Use bright, low-saturation backgrounds (e.g., `bg-gray-50` or light tints) for sections needing separation
+- **Dark Backgrounds**: Dark backgrounds (`bg-gray-900`, `bg-gray-950`) are intentional design choices for specific sections only
+- **When to Use Dark Backgrounds**: Use dark backgrounds for Hero sections, Footer, or high-contrast call-outs
+- Dark mode: `dark:bg-gray-900` for sections needing separation
+- Avoid pure black/white for section backgrounds - prefer bright, low-saturation variants or gray-900 for dark sections
+
+### Example Color Usage
+```tsx
+// Primary button
+className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
+
+// Secondary button
+className="bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+
+// Section background
+className="bg-gray-50 dark:bg-gray-900"
+```
+
+## Flexible Background System
+
+- **Background Philosophy**: Prioritize brightness and low saturation over specific hex codes or color names
+- **Foreground vs Background Rules**: 
+  - Foreground elements (text, icons, buttons) must remain strictly monochrome (white, gray, black)
+  - Background colors prioritize high-key (bright, low-saturation) aesthetics
+- **Primary Backgrounds**: Should be high-key (bright and low-saturation) - any light tint that feels clean and professional is allowed
+- **Dark Backgrounds**: Dark backgrounds (`bg-gray-900`, `bg-gray-950`) are intentional design choices for specific sections:
+  - Hero sections
+  - Footer sections
+  - High-contrast call-outs
+- **Base Background**: Use CSS variables `var(--background)` and `var(--foreground)` defined in `globals.css` for theme-aware styling
+- **Selection Criteria**: When choosing backgrounds, prioritize brightness and low saturation rather than specific hex codes or color names
+- **Examples**:
+  - Primary background: `bg-white` or bright, low-saturation tints
+  - Section separation: `bg-gray-50` or light tints with high brightness
+  - Dark sections: `bg-gray-900` or `bg-gray-950` for Hero, Footer, or call-outs
+
+## Accessibility Standards
+
+### High Contrast
+- **WCAG AA Minimum**: 4.5:1 contrast ratio for normal text (16px+)
+- **WCAG AA Large Text**: 3:1 contrast ratio for large text (18pt+ or 14pt+ bold)
+- Test contrast in both light and dark modes
+- Use gray-900 on white (light) and gray-100 on gray-950 (dark) for high contrast
+
+### ARIA Labels
+- **All Interactive Elements**: Must have descriptive `aria-label` attributes
+- Examples:
+  - Buttons: `aria-label="Visit GitHub profile"`
+  - Links: `aria-label="Download CV"`
+  - Icons: `aria-label` on parent element, `aria-hidden="true"` on icon SVG
+
+### Touch Targets
+- **Minimum Size**: 44x44px (11rem) for all interactive elements
+- Use `min-h-[44px] min-w-[44px]` or ensure padding creates adequate touch area
+- All buttons and links must be easily tappable on mobile devices
+
+### Focus States
+- **Visible Indicators**: All focusable elements must have visible focus indicators
+- Use: `focus:ring-2 focus:ring-gray-500 focus:outline-none`
+- Ensure focus states work in both light and dark modes
+
+### Semantic HTML
+- Use proper HTML elements: `<button>`, `<nav>`, `<section>`, `<article>`, `<header>`, `<footer>`, etc.
+- Avoid using `<div>` for interactive elements - use `<button>` or `<a>` instead
+- Use heading hierarchy properly: h1 → h2 → h3 (no skipping levels)
+
+### Keyboard Navigation
+- All interactive elements must be keyboard accessible
+- Ensure tab order is logical and intuitive
+- Provide visible focus indicators for keyboard navigation
+
+## Typography
+
+### Fonts
+- **Primary Font**: Geist Sans (via CSS variable `--font-geist-sans`)
+- **Monospace Font**: Geist Mono (via CSS variable `--font-geist-mono`)
+- Fonts are loaded in `app/layout.tsx` using Next.js Google Fonts
+
+### Font Rendering
+- **Always apply**: `antialiased` class to body/root elements
+- Applied via: `className={`${geistSans.variable} ${geistMono.variable} antialiased`}` in layout
+
+### Heading Hierarchy
+- Use semantic heading hierarchy: h1 → h2 → h3 → h4
+- Do not skip heading levels
+- Use Tailwind typography utilities: `text-4xl`, `text-3xl`, `text-2xl`, etc.
+
+## Component Patterns
+
+### Buttons and Links
+
+**Standard Button Pattern:**
+```tsx
+<Link
+  href={url}
+  className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px]"
+  aria-label="Descriptive label"
+>
+```
+
+**Padding**: Standard `px-4 py-2` for buttons, adjust for other elements as needed
+**Border Radius**: `rounded-lg` for standard rounded corners
+**Transitions**: Always include `transition-colors duration-200` for smooth color transitions
+**Touch-Friendly**: Include `min-h-[44px]` or `min-w-[44px]` to ensure adequate touch targets
+**External Links**: Always include `target="_blank" rel="noopener noreferrer"` for external links
+
+### Spacing
+
+- **Spacing Scale**: Use Tailwind's spacing scale (4px increments: 0, 1, 2, 4, 8, 12, 16, etc.)
+- **Common Gaps**: 
+  - `gap-4` for button groups
+  - `gap-2` for icon-text pairs
+- **Consistency**: Use consistent spacing throughout components
+
+### Icons
+
+- **Standard Size**: `w-5 h-5` (20px) for icons in buttons
+- **Color Inheritance**: Use `fill="currentColor"` or `stroke="currentColor"` to inherit text color
+- **Accessibility**: Include `aria-hidden="true"` on decorative SVG icons
+- **Layout**: Place icons alongside text in flex containers with `gap-2`
+
+**Icon Pattern:**
+```tsx
+<svg
+  className="w-5 h-5"
+  fill="currentColor"
+  viewBox="0 0 24 24"
+  aria-hidden="true"
+>
+  {/* icon path */}
+</svg>
+```
+
+## Code Standards
+
+### TypeScript
+- Use TypeScript interfaces for all component props
+- Example: `interface ComponentProps { prop: string; }`
+- Use explicit types - avoid `any`
+
+### Component Structure
+- **Default Exports**: Use default exports for components
+- **Functional Components**: Use only functional components (no class components)
+- **Type Safety**: All props must be typed with TypeScript interfaces
+
+### ClassName Organization
+Group className utilities in this order:
+1. **Layout**: `flex`, `grid`, `items-center`, `justify-between`
+2. **Spacing**: `gap-4`, `px-4`, `py-2`, `m-4`
+3. **Colors**: `bg-gray-900`, `text-white`, `dark:bg-gray-100`
+4. **Effects**: `rounded-lg`, `hover:bg-gray-800`, `transition-colors`
+
+**Example:**
+```tsx
+className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+```
+
+## Dark Mode
+
+### Implementation
+- Support via `dark:` prefix in Tailwind classes
+- Dark mode is automatically detected via `@media (prefers-color-scheme: dark)` in `globals.css`
+- CSS variables switch automatically: `--background` and `--foreground`
+
+### Testing
+- Test all components in both light and dark modes
+- Ensure contrast ratios meet WCAG AA in both modes
+- Verify hover states work correctly in both modes
+
+### Theme-Aware Styles
+- Use CSS variables for theme-aware custom styles when Tailwind utilities aren't sufficient
+- Access via: `var(--background)` and `var(--foreground)`
+
+## File Organization
+
+- **Component Files**: `app/components/ComponentName.tsx`
+- **Global Styles**: `app/globals.css`
+- **Layout**: `app/layout.tsx`
+- Use TypeScript (`.tsx`) for all component files
+
+## Best Practices
+
+1. **Consistency**: Maintain consistent spacing, colors, and patterns across all components
+2. **Performance**: Use Tailwind's utility classes - avoid custom CSS when possible
+3. **Accessibility First**: Always consider accessibility when implementing components
+4. **Mobile First**: Design for mobile, then enhance for larger screens
+5. **Monochrome Foregrounds**: Strictly adhere to white, gray, and black only for foreground elements (text, icons, buttons); backgrounds prioritize brightness and low saturation
+6. **Dark Mode**: Always implement both light and dark variants
+7. **Testing**: Test components at mobile size (375px) and in both light/dark modes before completion
