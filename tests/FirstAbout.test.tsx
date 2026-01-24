@@ -37,10 +37,10 @@ describe('FirstAbout', () => {
     expect(section).toHaveAttribute('aria-label', 'First about section');
 
     // Check for proper heading hierarchy
-    const mainHeading = screen.getByRole('heading', { level: 2 });
+    const mainHeading = screen.getByRole('heading', { level: 1 });
     expect(mainHeading).toHaveTextContent(mockProps.mainHeading);
 
-    const subHeading = screen.getByRole('heading', { level: 3 });
+    const subHeading = screen.getByRole('heading', { level: 2 });
     expect(subHeading).toHaveTextContent(mockProps.subHeading);
   });
 
@@ -86,14 +86,14 @@ describe('FirstAbout', () => {
   it('applies correct text styling and hierarchy', () => {
     const { container } = render(<FirstAbout {...mockProps} />);
 
-    const mainHeading = container.querySelector('h2');
+    const mainHeading = container.querySelector('h1');
     expect(mainHeading).toHaveClass('text-3xl');
     expect(mainHeading).toHaveClass('lg:text-4xl');
     expect(mainHeading).toHaveClass('font-bold');
     expect(mainHeading).toHaveClass('text-gray-900');
     expect(mainHeading).toHaveClass('dark:text-gray-100');
 
-    const subHeading = container.querySelector('h3');
+    const subHeading = container.querySelector('h2');
     expect(subHeading).toHaveClass('text-xl');
     expect(subHeading).toHaveClass('lg:text-2xl');
     expect(subHeading).toHaveClass('font-semibold');
@@ -119,11 +119,11 @@ describe('FirstAbout', () => {
     const image = screen.getByAltText(mockProps.imageAlt);
     expect(image).toBeInTheDocument();
 
-    // Test heading hierarchy (h2 followed by h3)
+    // Test heading hierarchy (h1 followed by h2)
     const headings = screen.getAllByRole('heading');
     expect(headings).toHaveLength(2);
-    expect(headings[0]).toHaveProperty('tagName', 'H2');
-    expect(headings[1]).toHaveProperty('tagName', 'H3');
+    expect(headings[0]).toHaveProperty('tagName', 'H1');
+    expect(headings[1]).toHaveProperty('tagName', 'H2');
   });
 
   it('renders with proper container constraints', () => {
@@ -147,13 +147,8 @@ describe('FirstAbout', () => {
   });
 
   it('renders header element with proper semantic structure', () => {
-    render(<FirstAbout {...mockProps} />);
-
-    const header = screen.getByRole('banner', { hidden: true });
-    expect(header).toBeInTheDocument();
-
-    // Alternative check using container since header might not have banner role in this context
     const { container } = render(<FirstAbout {...mockProps} />);
+
     const headerElement = container.querySelector('header');
     expect(headerElement).toBeInTheDocument();
   });

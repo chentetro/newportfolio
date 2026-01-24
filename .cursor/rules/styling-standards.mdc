@@ -179,6 +179,22 @@ className="border-red-200" // Only gray scale for borders
 - Avoid using `<div>` for interactive elements - use `<button>` or `<a>` instead
 - Use heading hierarchy properly: h1 → h2 → h3 (no skipping levels)
 
+### Testing Semantic Elements
+- **Header Elements**: Test `<header>` elements using `container.querySelector('header')` rather than `getByRole('banner')`
+- **Nesting Issue**: `<header>` elements nested inside `<section>` or `<article>` don't automatically have "banner" role
+- **Recommended Pattern**: Use tag-based selectors for component-level semantic elements to avoid ARIA role conflicts
+
+**Example:**
+```tsx
+// ✅ Correct way to test header elements
+const { container } = render(<Component {...props} />);
+const headerElement = container.querySelector('header');
+expect(headerElement).toBeInTheDocument();
+
+// ❌ Avoid - can fail due to nesting
+const header = screen.getByRole('banner'); // May fail if header is inside section
+```
+
 ### Keyboard Navigation
 - All interactive elements must be keyboard accessible
 - Ensure tab order is logical and intuitive
@@ -199,6 +215,36 @@ className="border-red-200" // Only gray scale for borders
 - Use semantic heading hierarchy: h1 → h2 → h3 → h4
 - Do not skip heading levels
 - Use Tailwind typography utilities: `text-4xl`, `text-3xl`, `text-2xl`, etc.
+
+## Structural Hierarchy
+
+### Heading Order Requirements
+- **h1 (Main Title)**: Every component MUST use h1 for the primary/main title or heading
+- **h2 (Subheadings)**: Use h2 for secondary headings and section subheadings
+- **h3+ (Supporting)**: Use h3, h4, etc. for further subdivision within sections
+- **Strict Order**: Always follow h1 → h2 → h3 → h4 progression (no skipping levels)
+
+### Implementation Guidelines
+- **Component Level**: Each major component should have one primary h1 element
+- **Page Level**: Main page title uses h1, component titles use h1 within their scope
+- **Semantic Meaning**: Heading levels should reflect content hierarchy, not just visual styling
+- **Screen Readers**: Proper heading structure enables effective navigation for assistive technologies
+
+### Examples
+```tsx
+// ✅ Correct heading hierarchy
+<section>
+  <h1>Main Component Title</h1>
+  <h2>Section Subheading</h2>
+  <h3>Subsection Title</h3>
+</section>
+
+// ❌ Incorrect - skipping h1
+<section>
+  <h2>Main Title</h2>  <!-- Should be h1 -->
+  <h3>Subheading</h3>   <!-- Should be h2 -->
+</section>
+```
 
 ## Component Patterns
 
