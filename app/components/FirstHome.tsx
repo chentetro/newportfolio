@@ -40,12 +40,12 @@ export default function FirstHome({
           {/* Right Column - Content */}
           <div className="w-full lg:w-1/2 space-y-6">
             <header>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                 {mainHeading}
-              </h2>
-              <h3 className="text-xl lg:text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+              </h1>
+              <h2 className="text-xl lg:text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
                 {subHeading}
-              </h3>
+              </h2>
             </header>
 
             <p className="text-base lg:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">

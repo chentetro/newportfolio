@@ -27,9 +27,9 @@ export default function Home() {
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <header className="text-center mb-12">
-            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Skills & Expertise
-            </h1>
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Areas of technical expertise and professional experience
             </p>
@@ -61,6 +61,21 @@ export default function Home() {
               description="Complex technical challenges and efficient solution design"
             />
           </div>
+        </div>
+      </section>
+
+      <section className="py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <header className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              Now
+            </h2>
+          </header>
+
+          <SkillCard
+            title="Student in HIT"
+            description="Currently in my third year pursuing Computer Science at Holon Institute of Technology, combining academic learning with practical development experience."
+          />
         </div>
       </section>
     </main>
