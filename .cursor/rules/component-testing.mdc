@@ -347,6 +347,39 @@ it('renders efficiently without layout shifts', () => {
 - **User Events**: Use @testing-library/user-event for interaction testing
 - **Custom Matchers**: Use jest-dom matchers for DOM assertions
 
+### Code Quality in Tests
+
+- **No Unused Variables**: Avoid declaring variables that are not used (prevents TypeScript ESLint warnings)
+- **Destructuring Best Practice**: Only destructure what you actually need from render results
+- **Clean Variable Names**: Use descriptive names for test variables
+
+```tsx
+// ✅ Correct - only destructure what you use
+it('tests accessibility without unused variables', () => {
+  render(<Component {...mockProps} />);
+  
+  const article = screen.getByLabelText('Component label');
+  expect(article).toBeInTheDocument();
+});
+
+// ✅ Correct - use container when needed
+it('tests DOM structure with container', () => {
+  const { container } = render(<Component {...mockProps} />);
+  
+  const article = container.querySelector('article');
+  expect(article).toHaveClass('expected-class');
+});
+
+// ❌ Incorrect - unused container causes linting warnings
+it('tests accessibility with unused container', () => {
+  const { container } = render(<Component {...mockProps} />);
+  
+  // container is declared but never used - causes TypeScript ESLint warning
+  const article = screen.getByLabelText('Component label');
+  expect(article).toBeInTheDocument();
+});
+```
+
 ### File Naming Convention
 
 - **Test Files**: `ComponentName.test.tsx`
