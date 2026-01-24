@@ -96,7 +96,6 @@ When this command is run:
    ````
 
 4. **Focus on:**
-
    - **Next.js & TypeScript:**
      - Missing type definitions or using `any`
      - Incorrect App Router patterns (server vs client components)
@@ -215,10 +214,10 @@ When this command is run:
 
 ```tsx
 // Current (problematic)
-className="bg-blue-500 text-white"
+className = 'bg-blue-500 text-white';
 
 // Suggested
-className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
+className = 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900';
 ```
 
 ### app/components/SocialButtons.tsx (Line 45)
@@ -231,10 +230,10 @@ className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
 
 ```tsx
 // Current (problematic)
-className="bg-gray-900 text-white"
+className = 'bg-gray-900 text-white';
 
 // Suggested
-className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
+className = 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900';
 ```
 
 ---
@@ -294,4 +293,3 @@ className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
 - Focus on Next.js App Router, React, TypeScript, monochrome design system, mobile-first design, and accessibility
 - Consider both developer experience and end-user impact
 - Pay special attention to monochrome palette violations (this is a strict requirement)
-
