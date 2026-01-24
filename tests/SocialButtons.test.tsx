@@ -10,6 +10,14 @@ describe('SocialButtons', () => {
     email: 'test@example.com',
   };
 
+  const emptyMockProps = {
+    githubUrl: '',
+    cvUrl: '',
+    linkedInUrl: '',
+    email: '',
+  };
+
+  // 1. Core Functionality Tests
   it('renders all four buttons with correct labels', () => {
     render(<SocialButtons {...mockProps} />);
 
@@ -19,6 +27,147 @@ describe('SocialButtons', () => {
     expect(screen.getByLabelText('Contact via email')).toBeInTheDocument();
   });
 
+  it('displays correct text content for each button', () => {
+    render(<SocialButtons {...mockProps} />);
+
+    expect(screen.getByText('GitHub')).toBeInTheDocument();
+    expect(screen.getByText('LinkedIn')).toBeInTheDocument();
+    expect(screen.getByText('CV')).toBeInTheDocument();
+    expect(screen.getByText('Contact')).toBeInTheDocument();
+  });
+
+  // 2. Structural Hierarchy Tests
+  it('uses proper semantic structure with container element', () => {
+    const { container } = render(<SocialButtons {...mockProps} />);
+
+    // Verify main container structure
+    const mainContainer = container.querySelector('.flex.flex-wrap');
+    expect(mainContainer).toBeInTheDocument();
+    expect(mainContainer).toHaveClass(
+      'gap-4',
+      'items-center',
+      'justify-center'
+    );
+
+    // All buttons should be Link elements (rendered as anchor tags)
+    const linkElements = container.querySelectorAll('a');
+    expect(linkElements).toHaveLength(4);
+  });
+
+  it('maintains proper link element hierarchy', () => {
+    render(<SocialButtons {...mockProps} />);
+
+    // All interactive elements should be links (no buttons in this component)
+    const links = screen.getAllByRole('link');
+    expect(links).toHaveLength(4);
+
+    // Verify each link has the expected aria-label structure
+    const expectedLabels = [
+      'Visit GitHub profile',
+      'Visit LinkedIn profile',
+      'Download CV',
+      'Contact via email',
+    ];
+
+    expectedLabels.forEach((label) => {
+      const link = screen.getByLabelText(label);
+      expect(link).toBeInTheDocument();
+      expect(link.tagName).toBe('A');
+    });
+  });
+
+  // 3. Accessibility Tests
+  it('meets comprehensive accessibility requirements', () => {
+    const { container } = render(<SocialButtons {...mockProps} />);
+
+    // Test that ALL links have aria-label attributes
+    const links = screen.getAllByRole('link');
+    expect(links).toHaveLength(4);
+
+    links.forEach((link) => {
+      expect(link).toHaveAttribute('aria-label');
+      expect(link.getAttribute('aria-label')).toBeTruthy();
+      expect(link.getAttribute('aria-label')).not.toBe('');
+    });
+
+    // Test decorative SVG icons have aria-hidden="true"
+    const svgIcons = container.querySelectorAll('svg');
+    expect(svgIcons.length).toBe(3); // GitHub, LinkedIn, and Contact icons
+
+    svgIcons.forEach((icon) => {
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
+    });
+  });
+
+  it('provides adequate touch targets for all interactive elements', () => {
+    const { container } = render(<SocialButtons {...mockProps} />);
+
+    // All links should meet 44x44px minimum touch target requirement
+    const links = container.querySelectorAll('a');
+    expect(links).toHaveLength(4);
+
+    links.forEach((link) => {
+      // Check for proper padding classes that create adequate touch targets
+      expect(link).toHaveClass('px-4', 'py-2');
+
+      // Verify the link has flex and gap classes for proper layout
+      expect(link).toHaveClass('flex', 'items-center', 'gap-2');
+    });
+  });
+
+  it('ensures proper focus and keyboard accessibility', () => {
+    const { container } = render(<SocialButtons {...mockProps} />);
+
+    // All links should be keyboard accessible and focusable
+    const links = container.querySelectorAll('a');
+    links.forEach((link) => {
+      expect(link).not.toHaveAttribute('tabindex', '-1');
+      expect(link.getAttribute('href')).toBeTruthy();
+    });
+  });
+
+  // 4. Styling and Layout Tests
+  it('applies correct styling classes to all buttons', () => {
+    const { container } = render(<SocialButtons {...mockProps} />);
+
+    const links = container.querySelectorAll('a');
+
+    links.forEach((link) => {
+      // Verify monochrome styling per design system
+      expect(link).toHaveClass('bg-gray-900', 'dark:bg-gray-100');
+      expect(link).toHaveClass('text-white', 'dark:text-gray-900');
+      expect(link).toHaveClass('hover:bg-gray-800', 'dark:hover:bg-gray-200');
+
+      // Verify layout and spacing
+      expect(link).toHaveClass('flex', 'items-center', 'gap-2');
+      expect(link).toHaveClass('px-4', 'py-2');
+      expect(link).toHaveClass('rounded-lg');
+
+      // Verify transitions
+      expect(link).toHaveClass('transition-colors', 'duration-200');
+      expect(link).toHaveClass('font-medium');
+    });
+  });
+
+  it('renders SVG icons with correct styling', () => {
+    const { container } = render(<SocialButtons {...mockProps} />);
+
+    const svgIcons = container.querySelectorAll('svg');
+    svgIcons.forEach((icon) => {
+      expect(icon).toHaveClass('w-5', 'h-5');
+      expect(icon).toHaveAttribute('aria-hidden', 'true');
+    });
+  });
+
+  it('applies correct container layout classes', () => {
+    const { container } = render(<SocialButtons {...mockProps} />);
+
+    const mainContainer = container.querySelector('div');
+    expect(mainContainer).toHaveClass('flex', 'flex-wrap', 'gap-4');
+    expect(mainContainer).toHaveClass('items-center', 'justify-center');
+  });
+
+  // 5. Interactive Behavior Tests
   it('renders GitHub button with correct href and attributes', () => {
     render(<SocialButtons {...mockProps} />);
 
@@ -51,26 +200,107 @@ describe('SocialButtons', () => {
 
     const contactLink = screen.getByLabelText('Contact via email');
     expect(contactLink).toHaveAttribute('href', `mailto:${mockProps.email}`);
+    // Contact link should NOT have target="_blank" since it opens mail client
+    expect(contactLink).not.toHaveAttribute('target');
   });
 
-  it('displays correct text content for each button', () => {
+  it('handles external link security properly', () => {
     render(<SocialButtons {...mockProps} />);
 
-    expect(screen.getByText('GitHub')).toBeInTheDocument();
-    expect(screen.getByText('LinkedIn')).toBeInTheDocument();
-    expect(screen.getByText('CV')).toBeInTheDocument();
-    expect(screen.getByText('Contact')).toBeInTheDocument();
+    // External links should have proper security attributes
+    const externalLinks = [
+      screen.getByLabelText('Visit GitHub profile'),
+      screen.getByLabelText('Visit LinkedIn profile'),
+      screen.getByLabelText('Download CV'),
+    ];
+
+    externalLinks.forEach((link) => {
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    });
   });
 
-  it('renders SVG icons with proper accessibility attributes', () => {
-    const { container } = render(<SocialButtons {...mockProps} />);
+  // 6. Edge Cases and Error Handling
+  it('handles empty or missing URLs gracefully', () => {
+    expect(() => render(<SocialButtons {...emptyMockProps} />)).not.toThrow();
 
+    // Component should still render with empty URLs
+    const { container } = render(<SocialButtons {...emptyMockProps} />);
+    const links = container.querySelectorAll('a');
+    expect(links).toHaveLength(4);
+
+    // Links should still have aria-labels even with empty hrefs
+    links.forEach((link) => {
+      expect(link).toHaveAttribute('aria-label');
+    });
+  });
+
+  it('handles invalid URL formats without breaking', () => {
+    const invalidProps = {
+      githubUrl: 'not-a-valid-url',
+      cvUrl: 'invalid-file-path',
+      linkedInUrl: '://malformed-url',
+      email: 'invalid-email-format',
+    };
+
+    expect(() => render(<SocialButtons {...invalidProps} />)).not.toThrow();
+
+    // Component should render and maintain structure
+    const { container } = render(<SocialButtons {...invalidProps} />);
+    const links = container.querySelectorAll('a');
+    expect(links).toHaveLength(4);
+  });
+
+  it('maintains accessibility with missing optional data', () => {
+    const minimalProps = {
+      githubUrl: 'https://github.com/test',
+      cvUrl: '',
+      linkedInUrl: '',
+      email: 'test@test.com',
+    };
+
+    const { container } = render(<SocialButtons {...minimalProps} />);
+
+    // Should maintain accessibility even with some missing URLs
+    const links = screen.getAllByRole('link');
+    links.forEach((link) => {
+      expect(link).toHaveAttribute('aria-label');
+      expect(link.getAttribute('aria-label')).toBeTruthy();
+    });
+
+    // SVG icons should still have proper accessibility
     const svgIcons = container.querySelectorAll('svg');
-    expect(svgIcons.length).toBe(3); // GitHub, LinkedIn, and Contact icons
-
     svgIcons.forEach((icon) => {
       expect(icon).toHaveAttribute('aria-hidden', 'true');
-      expect(icon).toHaveClass('w-5', 'h-5');
     });
+  });
+
+  it('renders without component-breaking prop combinations', () => {
+    // Test with fallback values that won't break Next.js Link component
+    const fallbackProps = {
+      githubUrl: '#', // Fallback hash link
+      cvUrl: '#',
+      linkedInUrl: '#',
+      email: 'fallback@example.com',
+    };
+
+    expect(() => render(<SocialButtons {...fallbackProps} />)).not.toThrow();
+  });
+
+  it('maintains proper structure with mixed valid and invalid URLs', () => {
+    const mixedProps = {
+      githubUrl: 'https://github.com/valid',
+      cvUrl: '',
+      linkedInUrl: 'not-a-url',
+      email: 'valid@email.com',
+    };
+
+    render(<SocialButtons {...mixedProps} />);
+
+    // All buttons should still render and be accessible
+    expect(screen.getByLabelText('Visit GitHub profile')).toBeInTheDocument();
+    expect(screen.getByLabelText('Visit LinkedIn profile')).toBeInTheDocument();
+    expect(screen.getByLabelText('Download CV')).toBeInTheDocument();
+    expect(screen.getByLabelText('Contact via email')).toBeInTheDocument();
   });
 });

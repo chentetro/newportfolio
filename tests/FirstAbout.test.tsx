@@ -12,6 +12,15 @@ describe('FirstAbout', () => {
       'This is a test paragraph content for the FirstAbout component.',
   };
 
+  const emptyMockProps = {
+    imageUrl: '',
+    imageAlt: '',
+    mainHeading: '',
+    subHeading: '',
+    paragraphContent: '',
+  };
+
+  // 1. Core Functionality Tests
   it('renders all content elements correctly', () => {
     render(<FirstAbout {...mockProps} />);
 
@@ -26,17 +35,22 @@ describe('FirstAbout', () => {
     const image = screen.getByAltText(mockProps.imageAlt);
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute('alt', mockProps.imageAlt);
+    // Direct verification of Next.js Image component attributes
+    expect(image).toHaveAttribute('sizes');
+    expect(image).toHaveClass('object-cover', 'rounded-full');
   });
 
-  it('has proper semantic HTML structure', () => {
+  // 2. Structural Hierarchy Tests
+  it('maintains proper heading hierarchy', () => {
     render(<FirstAbout {...mockProps} />);
 
-    // Check for section element with proper role
-    const section = screen.getByRole('region');
-    expect(section).toBeInTheDocument();
-    expect(section).toHaveAttribute('aria-label', 'First about section');
+    // Test semantic structure with proper H1 → H2 order
+    const headings = screen.getAllByRole('heading');
+    expect(headings).toHaveLength(2);
+    expect(headings[0]).toHaveProperty('tagName', 'H1');
+    expect(headings[1]).toHaveProperty('tagName', 'H2');
 
-    // Check for proper heading hierarchy
+    // Test specific content matches hierarchy
     const mainHeading = screen.getByRole('heading', { level: 1 });
     expect(mainHeading).toHaveTextContent(mockProps.mainHeading);
 
@@ -44,6 +58,63 @@ describe('FirstAbout', () => {
     expect(subHeading).toHaveTextContent(mockProps.subHeading);
   });
 
+  it('uses semantic HTML structure with stable selectors', () => {
+    const { container } = render(<FirstAbout {...mockProps} />);
+
+    // Use stable selectors instead of fragile ARIA roles
+    const sectionElement = container.querySelector('section');
+    expect(sectionElement).toBeInTheDocument();
+    expect(sectionElement).toHaveAttribute('aria-label', 'First about section');
+
+    const headerElement = container.querySelector('header');
+    expect(headerElement).toBeInTheDocument();
+
+    // Verify section has proper role attribute
+    expect(sectionElement).toHaveAttribute('role', 'region');
+  });
+
+  // 3. Accessibility Tests
+  it('meets comprehensive accessibility requirements', () => {
+    const { container } = render(<FirstAbout {...mockProps} />);
+
+    // Test section accessibility
+    const section = screen.getByLabelText('First about section');
+    expect(section).toBeInTheDocument();
+    expect(section).toHaveAttribute('role', 'region');
+
+    // Test image accessibility
+    const image = screen.getByAltText(mockProps.imageAlt);
+    expect(image).toBeInTheDocument();
+    expect(image.getAttribute('alt')).toBeTruthy();
+    expect(image.getAttribute('alt')).not.toBe('');
+
+    // Test heading accessibility and hierarchy
+    const headings = screen.getAllByRole('heading');
+    expect(headings).toHaveLength(2);
+    headings.forEach((heading) => {
+      expect(heading.textContent).toBeTruthy();
+      expect(heading.textContent).not.toBe('');
+    });
+  });
+
+  it('provides adequate semantic structure for screen readers', () => {
+    const { container } = render(<FirstAbout {...mockProps} />);
+
+    // Verify semantic landmarks
+    const section = container.querySelector('section[role="region"]');
+    expect(section).toBeInTheDocument();
+
+    const header = container.querySelector('header');
+    expect(header).toBeInTheDocument();
+
+    // Verify content is properly nested within semantic elements
+    const h1 = header?.querySelector('h1');
+    const h2 = header?.querySelector('h2');
+    expect(h1).toBeInTheDocument();
+    expect(h2).toBeInTheDocument();
+  });
+
+  // 4. Styling and Layout Tests
   it('applies correct styling classes for gradient background', () => {
     const { container } = render(<FirstAbout {...mockProps} />);
 
@@ -108,24 +179,6 @@ describe('FirstAbout', () => {
     expect(paragraph).toHaveClass('leading-relaxed');
   });
 
-  it('has proper accessibility features', () => {
-    render(<FirstAbout {...mockProps} />);
-
-    // Test ARIA label on section
-    const section = screen.getByLabelText('First about section');
-    expect(section).toBeInTheDocument();
-
-    // Test image alt text
-    const image = screen.getByAltText(mockProps.imageAlt);
-    expect(image).toBeInTheDocument();
-
-    // Test heading hierarchy (h1 followed by h2)
-    const headings = screen.getAllByRole('heading');
-    expect(headings).toHaveLength(2);
-    expect(headings[0]).toHaveProperty('tagName', 'H1');
-    expect(headings[1]).toHaveProperty('tagName', 'H2');
-  });
-
   it('renders with proper container constraints', () => {
     const { container } = render(<FirstAbout {...mockProps} />);
 
@@ -133,10 +186,6 @@ describe('FirstAbout', () => {
     expect(mainContainer).toBeInTheDocument();
     expect(mainContainer).toHaveClass('max-w-6xl');
     expect(mainContainer).toHaveClass('mx-auto');
-  });
-
-  it('has proper spacing classes applied', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
 
     const section = container.querySelector('section');
     expect(section).toHaveClass('py-12');
@@ -146,22 +195,79 @@ describe('FirstAbout', () => {
     expect(contentContainer).toBeInTheDocument();
   });
 
-  it('renders header element with proper semantic structure', () => {
+  // 5. Interactive Behavior Tests
+  it('handles image loading states properly', () => {
     const { container } = render(<FirstAbout {...mockProps} />);
 
-    const headerElement = container.querySelector('header');
-    expect(headerElement).toBeInTheDocument();
+    const image = container.querySelector('img');
+    expect(image).toBeInTheDocument();
+
+    // Next.js Image component should have proper loading attributes
+    expect(image).toHaveAttribute('sizes');
+    expect(image).toHaveAttribute('alt', mockProps.imageAlt);
   });
 
+  it('maintains responsive behavior across breakpoints', () => {
+    const { container } = render(<FirstAbout {...mockProps} />);
+
+    // Test mobile-first responsive classes
+    const imageContainer = container.querySelector('.w-36.h-36');
+    expect(imageContainer).toHaveClass('sm:w-40', 'sm:h-40');
+    expect(imageContainer).toHaveClass('lg:w-44', 'lg:h-44');
+
+    const layoutContainer = container.querySelector('.flex-col');
+    expect(layoutContainer).toHaveClass('lg:flex-row');
+  });
+
+  // 6. Edge Cases and Error Handling
   it('handles empty or missing content gracefully', () => {
-    const emptyProps = {
-      imageUrl: '',
-      imageAlt: '',
-      mainHeading: '',
+    expect(() => render(<FirstAbout {...emptyMockProps} />)).not.toThrow();
+
+    // Component should still render basic structure even with empty content
+    const { container } = render(<FirstAbout {...emptyMockProps} />);
+    const section = container.querySelector('section');
+    expect(section).toBeInTheDocument();
+  });
+
+  it('handles invalid data without breaking', () => {
+    const invalidProps = {
+      ...mockProps,
+      imageUrl: '/nonexistent-image.jpg', // Valid path format but nonexistent file
+      imageAlt: '', // Empty alt text
+    };
+
+    expect(() => render(<FirstAbout {...invalidProps} />)).not.toThrow();
+  });
+
+  it('maintains accessibility with missing optional content', () => {
+    const minimalProps = {
+      imageUrl: '/test.jpg',
+      imageAlt: 'Test',
+      mainHeading: 'Title',
       subHeading: '',
       paragraphContent: '',
     };
 
-    expect(() => render(<FirstAbout {...emptyProps} />)).not.toThrow();
+    const { container } = render(<FirstAbout {...minimalProps} />);
+
+    // Should still maintain proper structure
+    const section = container.querySelector('section');
+    expect(section).toHaveAttribute('aria-label');
+
+    const headings = screen.getAllByRole('heading');
+    expect(headings.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('renders without component-breaking prop combinations', () => {
+    // Test with fallback values for required props
+    const fallbackProps = {
+      imageUrl: '/fallback.jpg', // Provide valid path format
+      imageAlt: 'Fallback', // Provide fallback alt text
+      mainHeading: 'Fallback Title',
+      subHeading: 'Fallback Subtitle',
+      paragraphContent: 'Fallback content',
+    };
+
+    expect(() => render(<FirstAbout {...fallbackProps} />)).not.toThrow();
   });
 });
