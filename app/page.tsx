@@ -1,10 +1,10 @@
 import SocialButtons from './components/SocialButtons';
-import FirstAbout from './components/FirstAbout';
+import FirstHome from './components/FirstHome';
 
 export default function Home() {
   return (
     <main>
-      <FirstAbout
+      <FirstHome
         imageUrl="/images/1756311070767.jpg"
         imageAlt="Profile photo"
         mainHeading="Chen Tetroashvili"

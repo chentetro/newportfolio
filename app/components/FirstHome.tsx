@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-interface FirstAboutProps {
+interface FirstHomeProps {
   imageUrl: string;
   imageAlt: string;
   mainHeading: string;
@@ -8,13 +8,13 @@ interface FirstAboutProps {
   paragraphContent: string;
 }
 
-export default function FirstAbout({
+export default function FirstHome({
   imageUrl,
   imageAlt,
   mainHeading,
   subHeading,
   paragraphContent,
-}: FirstAboutProps) {
+}: FirstHomeProps) {
   return (
     <section
       className="relative bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 py-12 px-4"

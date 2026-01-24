@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import FirstAbout from '@/app/components/FirstAbout';
+import FirstAbout from '@/app/components/FirstHome';
 
 describe('FirstAbout', () => {
   const mockProps = {
