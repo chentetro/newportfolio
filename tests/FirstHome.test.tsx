@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import FirstAbout from '@/app/components/FirstHome';
+import FirstHome from '@/app/components/FirstHome';
 
-describe('FirstAbout', () => {
+describe('FirstHome', () => {
   const mockProps = {
     imageUrl: '/test-image.jpg',
     imageAlt: 'Test profile image',
@@ -22,7 +22,7 @@ describe('FirstAbout', () => {
 
   // 1. Core Functionality Tests
   it('renders all content elements correctly', () => {
-    render(<FirstAbout {...mockProps} />);
+    render(<FirstHome {...mockProps} />);
 
     expect(screen.getByText(mockProps.mainHeading)).toBeInTheDocument();
     expect(screen.getByText(mockProps.subHeading)).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe('FirstAbout', () => {
   });
 
   it('renders image with correct attributes', () => {
-    render(<FirstAbout {...mockProps} />);
+    render(<FirstHome {...mockProps} />);
 
     const image = screen.getByAltText(mockProps.imageAlt);
     expect(image).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('FirstAbout', () => {
 
   // 2. Structural Hierarchy Tests
   it('maintains proper heading hierarchy', () => {
-    render(<FirstAbout {...mockProps} />);
+    render(<FirstHome {...mockProps} />);
 
     // Test semantic structure with proper H1 → H2 order
     const headings = screen.getAllByRole('heading');
@@ -59,7 +59,7 @@ describe('FirstAbout', () => {
   });
 
   it('uses semantic HTML structure with stable selectors', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     // Use stable selectors instead of fragile ARIA roles
     const sectionElement = container.querySelector('section');
@@ -75,7 +75,7 @@ describe('FirstAbout', () => {
 
   // 3. Accessibility Tests
   it('meets comprehensive accessibility requirements', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    render(<FirstHome {...mockProps} />);
 
     // Test section accessibility
     const section = screen.getByLabelText('First about section');
@@ -98,7 +98,7 @@ describe('FirstAbout', () => {
   });
 
   it('provides adequate semantic structure for screen readers', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     // Verify semantic landmarks
     const section = container.querySelector('section[role="region"]');
@@ -116,7 +116,7 @@ describe('FirstAbout', () => {
 
   // 4. Styling and Layout Tests
   it('applies correct styling classes for gradient background', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     const section = container.querySelector('section');
     expect(section).toHaveClass('bg-gradient-to-br');
@@ -127,7 +127,7 @@ describe('FirstAbout', () => {
   });
 
   it('applies correct responsive layout classes', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     const layoutContainer = container.querySelector(
       '.flex.flex-col.lg\\:flex-row'
@@ -141,7 +141,7 @@ describe('FirstAbout', () => {
   });
 
   it('applies correct image container styling for circular shape', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     const imageContainer = container.querySelector('.relative.w-36.h-36');
     expect(imageContainer).toBeInTheDocument();
@@ -155,7 +155,7 @@ describe('FirstAbout', () => {
   });
 
   it('applies correct text styling and hierarchy', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     const mainHeading = container.querySelector('h1');
     expect(mainHeading).toHaveClass('text-3xl');
@@ -180,7 +180,7 @@ describe('FirstAbout', () => {
   });
 
   it('renders with proper container constraints', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     const mainContainer = container.querySelector('.max-w-6xl.mx-auto');
     expect(mainContainer).toBeInTheDocument();
@@ -197,7 +197,7 @@ describe('FirstAbout', () => {
 
   // 5. Interactive Behavior Tests
   it('handles image loading states properly', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     const image = container.querySelector('img');
     expect(image).toBeInTheDocument();
@@ -208,7 +208,7 @@ describe('FirstAbout', () => {
   });
 
   it('maintains responsive behavior across breakpoints', () => {
-    const { container } = render(<FirstAbout {...mockProps} />);
+    const { container } = render(<FirstHome {...mockProps} />);
 
     // Test mobile-first responsive classes
     const imageContainer = container.querySelector('.w-36.h-36');
@@ -221,10 +221,10 @@ describe('FirstAbout', () => {
 
   // 6. Edge Cases and Error Handling
   it('handles empty or missing content gracefully', () => {
-    expect(() => render(<FirstAbout {...emptyMockProps} />)).not.toThrow();
+    expect(() => render(<FirstHome {...emptyMockProps} />)).not.toThrow();
 
     // Component should still render basic structure even with empty content
-    const { container } = render(<FirstAbout {...emptyMockProps} />);
+    const { container } = render(<FirstHome {...emptyMockProps} />);
     const section = container.querySelector('section');
     expect(section).toBeInTheDocument();
   });
@@ -236,7 +236,7 @@ describe('FirstAbout', () => {
       imageAlt: '', // Empty alt text
     };
 
-    expect(() => render(<FirstAbout {...invalidProps} />)).not.toThrow();
+    expect(() => render(<FirstHome {...invalidProps} />)).not.toThrow();
   });
 
   it('maintains accessibility with missing optional content', () => {
@@ -248,7 +248,7 @@ describe('FirstAbout', () => {
       paragraphContent: '',
     };
 
-    const { container } = render(<FirstAbout {...minimalProps} />);
+    const { container } = render(<FirstHome {...minimalProps} />);
 
     // Should still maintain proper structure
     const section = container.querySelector('section');
@@ -268,6 +268,6 @@ describe('FirstAbout', () => {
       paragraphContent: 'Fallback content',
     };
 
-    expect(() => render(<FirstAbout {...fallbackProps} />)).not.toThrow();
+    expect(() => render(<FirstHome {...fallbackProps} />)).not.toThrow();
   });
 });
