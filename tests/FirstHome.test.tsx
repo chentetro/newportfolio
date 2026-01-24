@@ -44,17 +44,17 @@ describe('FirstHome', () => {
   it('maintains proper heading hierarchy', () => {
     render(<FirstHome {...mockProps} />);
 
-    // Test semantic structure with proper H1 → H2 order
+    // Test semantic structure with proper H2 → H3 order
     const headings = screen.getAllByRole('heading');
     expect(headings).toHaveLength(2);
-    expect(headings[0]).toHaveProperty('tagName', 'H1');
-    expect(headings[1]).toHaveProperty('tagName', 'H2');
+    expect(headings[0]).toHaveProperty('tagName', 'H2');
+    expect(headings[1]).toHaveProperty('tagName', 'H3');
 
     // Test specific content matches hierarchy
-    const mainHeading = screen.getByRole('heading', { level: 1 });
+    const mainHeading = screen.getByRole('heading', { level: 2 });
     expect(mainHeading).toHaveTextContent(mockProps.mainHeading);
 
-    const subHeading = screen.getByRole('heading', { level: 2 });
+    const subHeading = screen.getByRole('heading', { level: 3 });
     expect(subHeading).toHaveTextContent(mockProps.subHeading);
   });
 
@@ -108,10 +108,10 @@ describe('FirstHome', () => {
     expect(header).toBeInTheDocument();
 
     // Verify content is properly nested within semantic elements
-    const h1 = header?.querySelector('h1');
     const h2 = header?.querySelector('h2');
-    expect(h1).toBeInTheDocument();
+    const h3 = header?.querySelector('h3');
     expect(h2).toBeInTheDocument();
+    expect(h3).toBeInTheDocument();
   });
 
   // 4. Styling and Layout Tests
@@ -157,14 +157,14 @@ describe('FirstHome', () => {
   it('applies correct text styling and hierarchy', () => {
     const { container } = render(<FirstHome {...mockProps} />);
 
-    const mainHeading = container.querySelector('h1');
+    const mainHeading = container.querySelector('h2');
     expect(mainHeading).toHaveClass('text-3xl');
     expect(mainHeading).toHaveClass('lg:text-4xl');
     expect(mainHeading).toHaveClass('font-bold');
     expect(mainHeading).toHaveClass('text-gray-900');
     expect(mainHeading).toHaveClass('dark:text-gray-100');
 
-    const subHeading = container.querySelector('h2');
+    const subHeading = container.querySelector('h3');
     expect(subHeading).toHaveClass('text-xl');
     expect(subHeading).toHaveClass('lg:text-2xl');
     expect(subHeading).toHaveClass('font-semibold');
