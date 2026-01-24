@@ -32,10 +32,23 @@ alwaysApply: false
 - **Gray Scale**: Use Tailwind's gray scale (gray-50 through gray-900)
 
 ### Color Restrictions
-- **Foreground Elements**: Text, icons, and buttons MUST remain strictly monochrome (white, gray, black only)
+
+#### Foreground Elements (Strict Monochrome Only)
+- **Text, Icons, Borders**: MUST remain strictly monochrome (white, gray, black only)
+- **Interactive Elements**: Buttons, links, and form elements must use only white, gray (gray-50 to gray-900), and black
 - **ABSOLUTELY NO COLOR VARIANTS**: No blue, green, red, orange, purple, or any other colors for foreground elements
-- **Background Colors**: Background colors are separate from foreground restrictions and prioritize brightness and low saturation over specific color names
-- **Foreground Only Allowed**: White, Gray (gray-50 to gray-900), and Black for all text, icons, and interactive elements
+- **Allowed Foreground Colors**: White, Gray (gray-50 to gray-900), and Black only
+
+#### Background Elements (Low Saturation Allowed)
+- **Background Gradients**: Light pastel colors are allowed ONLY for background gradients (blue-50, slate-50, amber-50, etc.)
+- **Saturation Limit**: Background colors must use Tailwind shades 50 or 100 maximum (e.g., blue-50, red-50, green-100)
+- **Gradient Examples**: `from-blue-50 to-white`, `from-slate-50 to-gray-50`, `from-amber-50 to-white`
+- **Solid Backgrounds**: Should prioritize gray scale but may use very light tints (shade 50) when appropriate
+
+#### Quick Reference
+- ✅ **ALLOWED**: `bg-blue-50`, `from-slate-50 to-white`, `bg-amber-100`
+- ❌ **FORBIDDEN**: `text-blue-500`, `border-green-300`, `bg-red-200` (too saturated)
+- 🎯 **RULE**: If it's text, icons, or borders → monochrome only. If it's background → light pastels OK
 
 ### Light Mode
 - Base background: High-key (bright and low-saturation) - uses `--background` CSS variable
@@ -58,34 +71,83 @@ alwaysApply: false
 - Avoid pure black/white for section backgrounds - prefer bright, low-saturation variants or gray-900 for dark sections
 
 ### Example Color Usage
+
+#### Foreground Elements (Monochrome Only)
 ```tsx
-// Primary button
+// Primary button - monochrome only
 className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900"
 
-// Secondary button
+// Secondary button - monochrome only
 className="bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
 
-// Section background
+// Text elements - monochrome only
+className="text-gray-900 dark:text-gray-100"
+
+// Icons and borders - monochrome only
+className="border-gray-300 dark:border-gray-600"
+```
+
+#### Background Elements (Light Pastels Allowed)
+```tsx
+// Section with gradient background
+className="bg-gradient-to-r from-blue-50 to-white dark:from-gray-800 dark:to-gray-900"
+
+// Card with subtle tint
+className="bg-slate-50 dark:bg-gray-900"
+
+// Hero section with gradient
+className="bg-gradient-to-br from-amber-50 via-white to-gray-50 dark:from-gray-900 dark:to-gray-950"
+
+// Traditional gray backgrounds (always allowed)
 className="bg-gray-50 dark:bg-gray-900"
 ```
 
 ## Flexible Background System
 
-- **Background Philosophy**: Prioritize brightness and low saturation over specific hex codes or color names
-- **Foreground vs Background Rules**: 
-  - Foreground elements (text, icons, buttons) must remain strictly monochrome (white, gray, black)
-  - Background colors prioritize high-key (bright, low-saturation) aesthetics
-- **Primary Backgrounds**: Should be high-key (bright and low-saturation) - any light tint that feels clean and professional is allowed
-- **Dark Backgrounds**: Dark backgrounds (`bg-gray-900`, `bg-gray-950`) are intentional design choices for specific sections:
-  - Hero sections
-  - Footer sections
-  - High-contrast call-outs
-- **Base Background**: Use CSS variables `var(--background)` and `var(--foreground)` defined in `globals.css` for theme-aware styling
-- **Selection Criteria**: When choosing backgrounds, prioritize brightness and low saturation rather than specific hex codes or color names
-- **Examples**:
-  - Primary background: `bg-white` or bright, low-saturation tints
-  - Section separation: `bg-gray-50` or light tints with high brightness
-  - Dark sections: `bg-gray-900` or `bg-gray-950` for Hero, Footer, or call-outs
+### Background Philosophy
+- **Prioritize brightness and low saturation** over specific hex codes or color names
+- **Light pastels allowed** for backgrounds using Tailwind shades 50 or 100 maximum
+- **Gradient-first approach** for adding subtle color while maintaining professional aesthetics
+
+### Foreground vs Background Rules
+- **Foreground elements** (text, icons, buttons, borders) must remain strictly monochrome (white, gray, black only)
+- **Background elements** may use light pastel colors at very low saturation (shades 50-100)
+
+### Background Color Guidelines
+
+#### Light Backgrounds (Preferred)
+- **Primary**: `bg-white`, `bg-gray-50`, or very light pastels (`bg-blue-50`, `bg-slate-50`)
+- **Gradients**: `from-blue-50 to-white`, `from-slate-50 to-gray-50`, `from-amber-50 to-white`
+- **Section separation**: Use subtle tints at shade 50 level for visual hierarchy
+
+#### Dark Backgrounds (Intentional Use)
+- **Hero sections**: `bg-gray-900`, `bg-gray-950`
+- **Footer sections**: `bg-gray-900`, `bg-gray-950`
+- **High-contrast call-outs**: `bg-gray-900`, `bg-gray-950`
+
+#### Theme Integration
+- **Base Background**: Use CSS variables `var(--background)` and `var(--foreground)` from `globals.css`
+- **Dark mode**: Ensure all background colors have appropriate dark variants
+
+### Examples
+
+```tsx
+// ✅ Allowed background gradients
+className="bg-gradient-to-r from-blue-50 to-white dark:from-gray-800 dark:to-gray-900"
+className="bg-gradient-to-br from-slate-50 to-gray-50 dark:from-gray-900 dark:to-gray-950"
+
+// ✅ Allowed solid backgrounds
+className="bg-amber-50 dark:bg-gray-900"
+className="bg-blue-50 dark:bg-gray-800"
+
+// ❌ Not allowed - high saturation
+className="bg-blue-200" // Too saturated
+className="bg-green-300" // Too saturated
+
+// ❌ Not allowed - foreground colors
+className="text-blue-500" // Only gray scale for text
+className="border-red-200" // Only gray scale for borders
+```
 
 ## Accessibility Standards
 
@@ -117,6 +179,22 @@ className="bg-gray-50 dark:bg-gray-900"
 - Avoid using `<div>` for interactive elements - use `<button>` or `<a>` instead
 - Use heading hierarchy properly: h1 → h2 → h3 (no skipping levels)
 
+### Testing Semantic Elements
+- **Header Elements**: Test `<header>` elements using `container.querySelector('header')` rather than `getByRole('banner')`
+- **Nesting Issue**: `<header>` elements nested inside `<section>` or `<article>` don't automatically have "banner" role
+- **Recommended Pattern**: Use tag-based selectors for component-level semantic elements to avoid ARIA role conflicts
+
+**Example:**
+```tsx
+// ✅ Correct way to test header elements
+const { container } = render(<Component {...props} />);
+const headerElement = container.querySelector('header');
+expect(headerElement).toBeInTheDocument();
+
+// ❌ Avoid - can fail due to nesting
+const header = screen.getByRole('banner'); // May fail if header is inside section
+```
+
 ### Keyboard Navigation
 - All interactive elements must be keyboard accessible
 - Ensure tab order is logical and intuitive
@@ -137,6 +215,36 @@ className="bg-gray-50 dark:bg-gray-900"
 - Use semantic heading hierarchy: h1 → h2 → h3 → h4
 - Do not skip heading levels
 - Use Tailwind typography utilities: `text-4xl`, `text-3xl`, `text-2xl`, etc.
+
+## Structural Hierarchy
+
+### Heading Order Requirements
+- **h1 (Main Title)**: Every component MUST use h1 for the primary/main title or heading
+- **h2 (Subheadings)**: Use h2 for secondary headings and section subheadings
+- **h3+ (Supporting)**: Use h3, h4, etc. for further subdivision within sections
+- **Strict Order**: Always follow h1 → h2 → h3 → h4 progression (no skipping levels)
+
+### Implementation Guidelines
+- **Component Level**: Each major component should have one primary h1 element
+- **Page Level**: Main page title uses h1, component titles use h1 within their scope
+- **Semantic Meaning**: Heading levels should reflect content hierarchy, not just visual styling
+- **Screen Readers**: Proper heading structure enables effective navigation for assistive technologies
+
+### Examples
+```tsx
+// ✅ Correct heading hierarchy
+<section>
+  <h1>Main Component Title</h1>
+  <h2>Section Subheading</h2>
+  <h3>Subsection Title</h3>
+</section>
+
+// ❌ Incorrect - skipping h1
+<section>
+  <h2>Main Title</h2>  <!-- Should be h1 -->
+  <h3>Subheading</h3>   <!-- Should be h2 -->
+</section>
+```
 
 ## Component Patterns
 
@@ -237,6 +345,6 @@ className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-w
 2. **Performance**: Use Tailwind's utility classes - avoid custom CSS when possible
 3. **Accessibility First**: Always consider accessibility when implementing components
 4. **Mobile First**: Design for mobile, then enhance for larger screens
-5. **Monochrome Foregrounds**: Strictly adhere to white, gray, and black only for foreground elements (text, icons, buttons); backgrounds prioritize brightness and low saturation
+5. **Monochrome Foregrounds**: Strictly adhere to white, gray, and black only for foreground elements (text, icons, buttons, borders); backgrounds may use light pastels (shades 50-100) for subtle color enhancement
 6. **Dark Mode**: Always implement both light and dark variants
 7. **Testing**: Test components at mobile size (375px) and in both light/dark modes before completion
