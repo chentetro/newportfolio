@@ -1,0 +1,407 @@
+---
+description: "Comprehensive testing standards for UI components and future features including structural hierarchy, stable selectors, direct data verification, and accessibility requirements"
+alwaysApply: true//איך לכתוב בדיקה לCOMPONENTOSבהמשך אוסיף בדיקה לCHATBOT וכו קצת שונה מבדיקה של קומפננטה רגילה
+---
+
+# Component Testing Standards
+
+## Core Testing Principles
+
+### 1. Structural Hierarchy Requirements
+
+Every component MUST maintain proper heading order to ensure accessibility and semantic structure:
+
+- **H1 for Main Titles**: Each component must have one primary H1 element for the main title
+- **H2 for Subheadings**: Use H2 for section subheadings and secondary content
+- **H3+ for Supporting**: Use H3, H4, etc. for further subdivision within sections
+- **Strict Order**: Always follow H1 → H2 → H3 → H4 progression (no skipping levels)
+- **Test Both Semantic and Visual**: Verify both the semantic tag and visual hierarchy
+
+```tsx
+// ✅ Correct heading hierarchy testing
+it('maintains proper heading hierarchy', () => {
+  render(<Component {...props} />);
+  
+  // Test semantic structure
+  const headings = screen.getAllByRole('heading');
+  expect(headings[0]).toHaveProperty('tagName', 'H1');
+  expect(headings[1]).toHaveProperty('tagName', 'H2');
+  
+  // Test specific content
+  const mainHeading = screen.getByRole('heading', { level: 1 });
+  expect(mainHeading).toHaveTextContent('Expected Title');
+  
+  const subHeading = screen.getByRole('heading', { level: 2 });
+  expect(subHeading).toHaveTextContent('Expected Subtitle');
+});
+
+// ❌ Incorrect - missing hierarchy validation
+it('has headings', () => {
+  render(<Component {...props} />);
+  expect(screen.getByText('Some Title')).toBeInTheDocument();
+});
+```
+
+### 2. Stable Selectors Strategy
+
+Use direct DOM selectors instead of fragile ARIA roles, especially for nested semantic elements:
+
+- **Header Elements**: Use `querySelector('header')` instead of `getByRole('banner')`
+- **Navigation**: Use `querySelector('nav')` instead of `getByRole('navigation')`
+- **Sections**: Use `querySelector('section')` for semantic sections
+- **ARIA Roles**: Reserve for actual interactive elements and accessibility features
+
+```tsx
+// ✅ Correct stable selector approach
+it('renders semantic structure with stable selectors', () => {
+  const { container } = render(<Component {...props} />);
+  
+  const headerElement = container.querySelector('header');
+  expect(headerElement).toBeInTheDocument();
+  
+  const navElement = container.querySelector('nav');
+  expect(navElement).toBeInTheDocument();
+  
+  const sectionElement = container.querySelector('section');
+  expect(sectionElement).toBeInTheDocument();
+});
+
+// ❌ Fragile approach - can fail due to nesting
+it('finds header element', () => {
+  render(<Component {...props} />);
+  const header = screen.getByRole('banner'); // May fail if nested
+});
+```
+
+### 3. Direct Data Verification
+
+Always verify link attributes, image sources, and other data directly without complex mocks:
+
+- **Link Verification**: Test `href`, `target`, `rel` attributes directly
+- **Image Verification**: Test `src`, `alt` attributes directly
+- **Form Elements**: Test `value`, `placeholder`, `name` attributes directly
+- **No Complex Mocks**: Avoid mocking basic UI element functionality
+
+```tsx
+// ✅ Direct attribute verification
+it('renders links with correct attributes', () => {
+  render(<SocialButtons {...mockProps} />);
+  
+  const githubLink = screen.getByLabelText('Visit GitHub profile');
+  expect(githubLink).toHaveAttribute('href', mockProps.githubUrl);
+  expect(githubLink).toHaveAttribute('target', '_blank');
+  expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer');
+});
+
+it('renders images with correct attributes', () => {
+  render(<Component {...mockProps} />);
+  
+  const image = screen.getByAltText(mockProps.imageAlt);
+  expect(image).toHaveAttribute('src', mockProps.imageUrl);
+  expect(image).toHaveAttribute('alt', mockProps.imageAlt);
+});
+
+// ❌ Avoid unnecessary mocking for basic UI
+const mockLink = jest.fn();
+// Complex setup for simple link verification
+```
+
+### 4. Accessibility Defaults (Mandatory)
+
+Every interactive element MUST have proper accessibility attributes:
+
+- **Interactive Elements**: All buttons, links, and form inputs MUST have `aria-label`
+- **Decorative Icons**: All SVG icons MUST have `aria-hidden="true"`
+- **Touch Targets**: All interactive elements MUST meet 44x44px minimum
+- **Focus States**: All focusable elements MUST have visible focus indicators
+- **Color Contrast**: All text MUST meet WCAG AA contrast ratios (4.5:1 normal, 3:1 large)
+
+```tsx
+// ✅ Mandatory accessibility testing
+it('meets accessibility requirements', () => {
+  const { container } = render(<Component {...props} />);
+  
+  // Test aria-labels on interactive elements
+  const buttons = screen.getAllByRole('button');
+  buttons.forEach(button => {
+    expect(button).toHaveAttribute('aria-label');
+    expect(button.getAttribute('aria-label')).toBeTruthy();
+  });
+  
+  const links = screen.getAllByRole('link');
+  links.forEach(link => {
+    expect(link).toHaveAttribute('aria-label');
+    expect(link.getAttribute('aria-label')).toBeTruthy();
+  });
+  
+  // Test decorative icons
+  const svgIcons = container.querySelectorAll('svg');
+  svgIcons.forEach(icon => {
+    expect(icon).toHaveAttribute('aria-hidden', 'true');
+  });
+});
+
+it('provides adequate touch targets', () => {
+  const { container } = render(<Component {...props} />);
+  
+  const interactiveElements = container.querySelectorAll('button, a, input, select, textarea');
+  interactiveElements.forEach(element => {
+    const styles = window.getComputedStyle(element);
+    const minSize = 44; // 44px minimum
+    
+    const height = parseInt(styles.minHeight) || parseInt(styles.height) || 0;
+    const width = parseInt(styles.minWidth) || parseInt(styles.width) || 0;
+    
+    expect(height).toBeGreaterThanOrEqual(minSize);
+    expect(width).toBeGreaterThanOrEqual(minSize);
+  });
+});
+```
+
+## Component Testing Structure
+
+### Test Organization
+
+Every component test file MUST include these test categories in order:
+
+1. **Core Functionality Tests**
+2. **Structural Hierarchy Tests**
+3. **Accessibility Tests**
+4. **Styling and Layout Tests**
+5. **Interactive Behavior Tests**
+6. **Edge Cases and Error Handling**
+
+```tsx
+describe('ComponentName', () => {
+  const mockProps = {
+    // Define comprehensive mock props
+  };
+
+  // 1. Core Functionality
+  it('renders all content elements correctly', () => {
+    // Test basic rendering and content
+  });
+
+  // 2. Structural Hierarchy
+  it('maintains proper heading hierarchy', () => {
+    // Test H1 → H2 → H3 structure
+  });
+
+  it('uses semantic HTML structure', () => {
+    // Test semantic elements with stable selectors
+  });
+
+  // 3. Accessibility
+  it('meets accessibility requirements', () => {
+    // Test aria-labels, aria-hidden, touch targets
+  });
+
+  // 4. Styling and Layout
+  it('applies correct styling classes', () => {
+    // Test CSS classes and responsive design
+  });
+
+  // 5. Interactive Behavior
+  it('handles user interactions correctly', () => {
+    // Test clicks, hovers, form submissions
+  });
+
+  // 6. Edge Cases
+  it('handles empty or missing content gracefully', () => {
+    // Test error boundaries and fallbacks
+  });
+});
+```
+
+### Mock Data Standards
+
+- **Comprehensive Props**: Include all required and optional props in mock data
+- **Realistic Data**: Use realistic URLs, text content, and values
+- **Edge Cases**: Create separate mock objects for edge cases
+- **Type Safety**: Ensure all mock props match TypeScript interfaces
+
+```tsx
+const mockProps = {
+  // Required props with realistic values
+  title: 'Test Component Title',
+  subtitle: 'Test Component Subtitle',
+  imageUrl: '/test-image.jpg',
+  imageAlt: 'Test image description',
+  links: [
+    {
+      href: 'https://example.com',
+      label: 'Visit Example',
+      target: '_blank',
+    }
+  ]
+};
+
+const emptyMockProps = {
+  // Edge case props
+  title: '',
+  subtitle: '',
+  imageUrl: '',
+  imageAlt: '',
+  links: []
+};
+```
+
+## Chatbot and Interactive Features Testing
+
+For future interactive features like chatbots, apply these additional standards:
+
+### Conversational Interface Testing
+
+- **Message Flow**: Test message sending, receiving, and display
+- **State Management**: Verify conversation state and history
+- **Input Validation**: Test message input validation and sanitization
+- **Error Handling**: Test connection failures and retry mechanisms
+
+```tsx
+// Chatbot-specific testing patterns
+describe('ChatBot', () => {
+  it('maintains conversation accessibility', () => {
+    render(<ChatBot />);
+    
+    // Test input accessibility
+    const messageInput = screen.getByLabelText('Type your message');
+    expect(messageInput).toBeInTheDocument();
+    expect(messageInput).toHaveAttribute('aria-describedby');
+    
+    // Test send button accessibility
+    const sendButton = screen.getByLabelText('Send message');
+    expect(sendButton).toHaveAttribute('aria-label', 'Send message');
+    
+    // Test conversation area accessibility
+    const conversationArea = screen.getByLabelText('Conversation history');
+    expect(conversationArea).toHaveAttribute('role', 'log');
+    expect(conversationArea).toHaveAttribute('aria-live', 'polite');
+  });
+
+  it('maintains proper message hierarchy', () => {
+    render(<ChatBot />);
+    
+    // Each message should have proper semantic structure
+    const messageElements = screen.getAllByRole('article');
+    messageElements.forEach(message => {
+      expect(message).toHaveAttribute('aria-label');
+    });
+  });
+});
+```
+
+### Real-time Features Testing
+
+- **Live Updates**: Test real-time message updates with `aria-live`
+- **Status Indicators**: Test typing indicators and connection status
+- **Keyboard Navigation**: Test tab order and keyboard shortcuts
+- **Focus Management**: Test focus management during conversations
+
+## Performance and Rendering Standards
+
+### Rendering Performance
+
+- **Fast Rendering**: Components should render within 100ms
+- **No Layout Shifts**: Test for cumulative layout shift (CLS)
+- **Efficient Re-renders**: Test that prop changes don't cause unnecessary re-renders
+
+```tsx
+it('renders efficiently without layout shifts', () => {
+  const { rerender } = render(<Component {...mockProps} />);
+  
+  // Measure initial render
+  const startTime = performance.now();
+  rerender(<Component {...mockProps} />);
+  const endTime = performance.now();
+  
+  expect(endTime - startTime).toBeLessThan(100); // 100ms threshold
+});
+```
+
+### Image and Asset Testing
+
+- **Image Loading**: Test image lazy loading and error states
+- **Alt Text**: Verify all images have descriptive alt text
+- **Responsive Images**: Test srcset and responsive image behavior
+
+## Testing Tools and Setup
+
+### Required Testing Dependencies
+
+```json
+{
+  "devDependencies": {
+    "@testing-library/react": "^latest",
+    "@testing-library/jest-dom": "^latest",
+    "@testing-library/user-event": "^latest",
+    "vitest": "^latest",
+    "jsdom": "^latest"
+  }
+}
+```
+
+### Test Environment Configuration
+
+- **jsdom Environment**: Use jsdom for DOM testing
+- **Testing Library**: Use React Testing Library for component testing
+- **User Events**: Use @testing-library/user-event for interaction testing
+- **Custom Matchers**: Use jest-dom matchers for DOM assertions
+
+### File Naming Convention
+
+- **Test Files**: `ComponentName.test.tsx`
+- **Location**: `tests/` directory in project root
+- **Co-location**: Keep tests close to components when appropriate
+
+## Error Handling and Edge Cases
+
+### Mandatory Edge Case Testing
+
+Every component MUST test these scenarios:
+
+1. **Empty Props**: Component handles empty or undefined props
+2. **Missing Data**: Component handles missing required data gracefully
+3. **Invalid Data**: Component validates and handles invalid prop values
+4. **Network Errors**: For components with external dependencies
+5. **Accessibility Failures**: Component remains functional when accessibility features fail
+
+```tsx
+it('handles all edge cases gracefully', () => {
+  // Test empty props
+  expect(() => render(<Component />)).not.toThrow();
+  
+  // Test invalid data
+  const invalidProps = { ...mockProps, imageUrl: 'invalid-url' };
+  expect(() => render(<Component {...invalidProps} />)).not.toThrow();
+  
+  // Test missing required props
+  const { title, ...incompleteProps } = mockProps;
+  expect(() => render(<Component {...incompleteProps} />)).not.toThrow();
+});
+```
+
+## Quality Gates
+
+### Before Component Approval
+
+Every component MUST pass these quality gates:
+
+1. ✅ **Heading Hierarchy**: Proper H1 → H2 → H3 structure verified
+2. ✅ **Stable Selectors**: Uses querySelector for semantic elements
+3. ✅ **Direct Verification**: All attributes verified directly
+4. ✅ **Accessibility**: All interactive elements have aria-labels, icons have aria-hidden
+5. ✅ **Touch Targets**: All interactive elements meet 44x44px minimum
+6. ✅ **Edge Cases**: Handles empty props and error states gracefully
+7. ✅ **Performance**: Renders within 100ms
+8. ✅ **Coverage**: Achieves 100% test coverage for component logic
+
+### Automated Checks
+
+Implement these automated quality checks:
+
+- **Lint Tests**: ESLint rules for accessibility and best practices
+- **Type Checking**: TypeScript strict mode for all test files
+- **Coverage Reports**: Minimum 90% coverage for all components
+- **Performance Budgets**: Automated performance testing in CI
+
+This testing standard ensures consistent, accessible, and maintainable components across the entire project, from simple UI elements to complex interactive features like chatbots.
