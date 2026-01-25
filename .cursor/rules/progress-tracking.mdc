@@ -1,0 +1,224 @@
+---
+description: "Progress tracking standards for maintaining development progress documents in .cursor/progress folder and updating them after each step completion"
+alwaysApply: false
+---
+
+# Progress Tracking Standards
+
+## Progress Document Management
+
+### Creating Progress Documents
+
+When creating a progress document (using `/progress-md` command or manually):
+
+1. **Immediate Storage**: ALWAYS save progress documents in `.cursor/progress/` folder
+2. **File Naming**: Use kebab-case format: `{feature-name}-implementation.md` or `{feature-name}-progress.md`
+   - Examples: `navbar-implementation.md`, `user-authentication-progress.md`
+3. **Complete Structure**: Include all required sections:
+   - Project Overview
+   - Implementation Plan
+   - Progress Tracking (with Completed/In Progress/Pending sections)
+   - Detailed Steps
+   - Testing Checkpoints
+
+### Updating Progress Documents
+
+After implementing any step from a progress document:
+
+1. **Immediate Update**: ALWAYS update the progress file immediately after step completion
+2. **Status Change**: Move the completed step from "Pending Steps" to "Completed Steps"
+3. **Add Details**: Include:
+   - ✅ Checkmark in the step checkbox
+   - Commit hash or commit message reference
+   - Date of completion (optional but recommended)
+   - Any notes about deviations or important findings
+
+### Update Format
+
+When marking a step as completed, use this format:
+
+```markdown
+### ✅ Completed Steps
+
+- [x] **STEP-001**: Create Navbar component structure ✅
+  - Commit: `feat: create Navbar component structure with four navigation links`
+  - Completed: [Date]
+  - Notes: Component created successfully with all four navigation links
+```
+
+### Progress Tracking Workflow
+
+**After Creating Progress Document**:
+1. Save to `.cursor/progress/{feature-name}-implementation.md`
+2. Confirm file was created successfully
+
+**After Completing a Step**:
+1. Open the relevant progress file in `.cursor/progress/`
+2. Move step from "⏳ Pending Steps" to "✅ Completed Steps"
+3. Add completion details (commit, date, notes)
+4. Update progress percentage if applicable
+5. Update "Last Updated" timestamp at bottom of document
+
+**When Starting a Step**:
+1. Move step from "⏳ Pending Steps" to "🔄 In Progress"
+2. Add start date/time if tracking is needed
+
+**When Blocked**:
+1. Move step to "🚫 Blocked Items" section
+2. Add reason for blocking
+3. Note any dependencies or issues
+
+## File Organization
+
+### Progress Folder Structure
+
+```
+.cursor/
+  progress/
+    navbar-implementation.md
+    user-authentication-progress.md
+    feature-name-implementation.md
+```
+
+### Progress Document Template
+
+Every progress document should follow this structure:
+
+```markdown
+# 🎯 [Feature Name] - Progress Tracker
+
+## 📋 Project Overview
+[Objective, Context, Status, Success Metrics, Timeline, Scope]
+
+## 🎯 Implementation Plan
+[Phase Breakdown, Dependencies, Risk Assessment, Testing Strategy]
+
+## ✅ Progress Tracking
+### Completed Steps
+[Steps that are done]
+
+### 🔄 In Progress
+[Steps currently being worked on]
+
+### ⏳ Pending Steps
+[Steps not yet started]
+
+### 🚫 Blocked Items
+[Steps that cannot proceed]
+
+## 📝 Detailed Steps
+[Detailed breakdown of each step]
+
+## 🧪 Testing Checkpoints
+[Testing requirements and validation]
+
+## 📊 Progress Summary
+[Overall progress percentage and phase breakdown]
+```
+
+## Mandatory Actions
+
+### When Creating Progress Documents
+
+- ✅ MUST save to `.cursor/progress/` folder
+- ✅ MUST use kebab-case naming convention
+- ✅ MUST include all required sections
+- ✅ MUST set initial status to "Not Started" with 0% progress
+
+### When Completing Steps
+
+- ✅ MUST update progress file immediately
+- ✅ MUST move step to "Completed Steps" section
+- ✅ MUST add commit reference
+- ✅ MUST update progress percentage
+- ✅ MUST update "Last Updated" timestamp
+
+### When Starting Steps
+
+- ✅ MUST move step to "In Progress" section (if tracking actively)
+- ✅ SHOULD note any blockers immediately
+
+## Benefits
+
+1. **Visibility**: Clear tracking of what's done, in progress, and pending
+2. **Accountability**: Commit references link code changes to progress
+3. **Documentation**: Historical record of implementation decisions
+4. **Planning**: Easy to see dependencies and blockers
+5. **Onboarding**: New team members can understand project status quickly
+
+## Examples
+
+### Example: Step Completion Update
+
+**Before**:
+```markdown
+### ⏳ Pending Steps
+
+- [ ] **STEP-001**: Create Navbar component structure
+```
+
+**After**:
+```markdown
+### ✅ Completed Steps
+
+- [x] **STEP-001**: Create Navbar component structure ✅
+  - Commit: `feat: create Navbar component structure with four navigation links`
+  - Completed: 2024-01-15
+```
+
+### Example: Progress Summary Update
+
+**Before**:
+```markdown
+**Overall Progress**: 0% (0/9 steps completed)
+```
+
+**After**:
+```markdown
+**Overall Progress**: 11% (1/9 steps completed)
+```
+
+### Example: Moving Step to In Progress
+
+**Before**:
+```markdown
+### ⏳ Pending Steps
+
+- [ ] **STEP-002**: Apply monochrome styling and responsive design
+```
+
+**After**:
+```markdown
+### 🔄 In Progress
+
+- [ ] **STEP-002**: Apply monochrome styling and responsive design 🔄
+  - Started: 2024-01-15
+```
+
+### Example: Blocked Step
+
+```markdown
+### 🚫 Blocked Items
+
+- [ ] **STEP-005**: Create Projects page route 🚫
+  - Reason: Waiting for design mockups from design team
+  - Dependency: Design assets must be approved first
+  - Estimated unblock: 2024-01-20
+```
+
+## Integration with Development Workflow
+
+1. **Planning Phase**: Create progress document → Save to `.cursor/progress/`
+2. **Development Phase**: Complete step → Update progress file → Commit changes
+3. **Review Phase**: Reference progress file for context
+4. **Completion Phase**: Mark all steps complete → Archive or update final status
+
+## Reference Files
+
+When working with progress documents, reference the existing structure:
+- `.cursor/progress/navbar-implementation.md` - Example progress document structure
+- `.cursor/commands/progress-md.md` - Command documentation for creating progress documents
+
+---
+
+_This rule ensures consistent progress tracking and documentation throughout the development lifecycle._
