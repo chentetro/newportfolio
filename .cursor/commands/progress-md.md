@@ -199,4 +199,3 @@ For each major step:
 ---
 
 _This command transforms complex development discussions into actionable, trackable progress._
-
