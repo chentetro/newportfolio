@@ -23,15 +23,34 @@ When creating a progress document (using `/progress-md` command or manually):
 
 ### Updating Progress Documents
 
-After implementing any step from a progress document:
+**CRITICAL: Automatic Updates Required**
 
-1. **Immediate Update**: ALWAYS update the progress file immediately after step completion
-2. **Status Change**: Move the completed step from "Pending Steps" to "Completed Steps"
+The AI MUST automatically update progress documents in the following scenarios WITHOUT being explicitly asked:
+
+1. **After Completing Any Step**: When implementing code changes that complete a step from a progress document
+2. **After Code Review Fixes**: When fixing issues identified in code reviews (e.g., design system violations, bugs, accessibility issues)
+3. **After Bug Fixes**: When fixing bugs related to the feature being tracked
+4. **After Refactoring**: When making significant refactoring changes to tracked components
+5. **After Test Updates**: When updating tests to match implementation changes
+
+**Update Process** (must happen automatically):
+
+1. **Immediate Update**: ALWAYS update the progress file immediately after making changes
+2. **Status Change**: Move the completed step from "Pending Steps" to "Completed Steps" (or add new step if fixing issues)
 3. **Add Details**: Include:
    - ✅ Checkmark in the step checkbox
-   - Commit hash or commit message reference
+   - Commit hash or commit message reference (if available)
    - Date of completion (optional but recommended)
-   - Any notes about deviations or important findings
+   - Any notes about deviations, important findings, or fixes applied
+4. **Update Progress Counters**: Update overall progress percentage and phase breakdowns
+5. **Update Timestamp**: Update "Last Updated" timestamp at bottom of document
+
+**When Fixing Issues Found in Code Reviews**:
+
+- Add a new step entry documenting the fix (e.g., "STEP-010: Code review fixes")
+- Note what issues were found and how they were resolved
+- Update progress counters accordingly
+- Example: "STEP-010: Fix monochrome design system violation - replaced teal colors with gray scale"
 
 ### Update Format
 
@@ -127,16 +146,33 @@ Every progress document should follow this structure:
 
 ### When Completing Steps
 
-- ✅ MUST update progress file immediately
+- ✅ **AUTOMATIC**: MUST update progress file immediately WITHOUT being asked
 - ✅ MUST move step to "Completed Steps" section
-- ✅ MUST add commit reference
+- ✅ MUST add commit reference (if available)
 - ✅ MUST update progress percentage
+- ✅ MUST update "Last Updated" timestamp
+- ✅ MUST document any deviations or important findings
+
+### When Fixing Issues (Code Reviews, Bugs, etc.)
+
+- ✅ **AUTOMATIC**: MUST update progress file when fixing issues related to tracked features
+- ✅ MUST add new step entry documenting the fix
+- ✅ MUST note what was fixed and how
+- ✅ MUST update progress counters
 - ✅ MUST update "Last Updated" timestamp
 
 ### When Starting Steps
 
 - ✅ MUST move step to "In Progress" section (if tracking actively)
 - ✅ SHOULD note any blockers immediately
+
+### AI Behavior Requirements
+
+**The AI MUST automatically**:
+- ✅ Check for existing progress documents in `.cursor/progress/` when working on features
+- ✅ Update progress documents as part of the development workflow (not as a separate step)
+- ✅ Document all significant changes, fixes, and completions
+- ✅ Never skip progress updates - they are mandatory, not optional
 
 ## Benefits
 
@@ -209,9 +245,14 @@ Every progress document should follow this structure:
 ## Integration with Development Workflow
 
 1. **Planning Phase**: Create progress document → Save to `.cursor/progress/`
-2. **Development Phase**: Complete step → Update progress file → Commit changes
+2. **Development Phase**: 
+   - Complete step → **Automatically update progress file** → Commit changes
+   - Fix code review issues → **Automatically add fix entry to progress file**
+   - Fix bugs → **Automatically document fix in progress file**
 3. **Review Phase**: Reference progress file for context
 4. **Completion Phase**: Mark all steps complete → Archive or update final status
+
+**Key Principle**: Progress updates are NOT optional or manual - they happen automatically as part of every code change that relates to a tracked feature.
 
 ## Reference Files
 
