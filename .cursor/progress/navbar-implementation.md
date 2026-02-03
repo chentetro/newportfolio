@@ -210,7 +210,7 @@ _No blockers currently._
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: create Navbar component structure with four navigation links
 ```
 
@@ -265,7 +265,7 @@ feat: create Navbar component structure with four navigation links
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: style Navbar with monochrome design and responsive layout
 ```
 
@@ -313,7 +313,7 @@ feat: style Navbar with monochrome design and responsive layout
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: add accessibility attributes and semantic HTML to Navbar
 ```
 
@@ -357,7 +357,7 @@ feat: add accessibility attributes and semantic HTML to Navbar
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: create About page route
 ```
 
@@ -401,7 +401,7 @@ feat: create About page route
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: create Projects page route
 ```
 
@@ -445,7 +445,7 @@ feat: create Projects page route
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: create Life page route
 ```
 
@@ -488,7 +488,7 @@ feat: create Life page route
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: integrate Navbar into root layout for global availability
 ```
 
@@ -547,7 +547,7 @@ feat: integrate Navbar into root layout for global availability
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: add comprehensive test suite for Navbar component
 ```
 

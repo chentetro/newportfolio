@@ -18,6 +18,7 @@ This command runs all standard quality checks using npm scripts to ensure code q
 ### Validation Script
 
 The project includes a `validate` script that runs all checks:
+
 - `npm run validate` - Runs lint, format, type-check, and test sequentially
 
 ## Usage
@@ -48,6 +49,7 @@ npm run validate
 ```
 
 This ensures:
+
 - ✅ Code follows ESLint rules
 - ✅ Code is properly formatted
 - ✅ TypeScript compiles without errors
@@ -152,11 +154,13 @@ docs: update progress tracking documentation
 ### Before Committing
 
 1. **Stage your changes:**
+
    ```bash
    git add .
    ```
 
 2. **Run precommit checks:**
+
    ```bash
    npm run validate
    ```
@@ -210,6 +214,7 @@ Before committing, ensure:
 ### TypeScript Errors
 
 If you see TypeScript errors:
+
 - Check for missing type definitions
 - Ensure all props have proper interfaces
 - Verify Next.js App Router patterns
@@ -217,6 +222,7 @@ If you see TypeScript errors:
 ### ESLint Errors
 
 If you see ESLint errors:
+
 - Review the error message for specific rule violations
 - Check `.cursor/rules/styling-standards.mdc` for design system requirements
 - Ensure proper accessibility attributes
@@ -224,6 +230,7 @@ If you see ESLint errors:
 ### Test Failures
 
 If tests fail:
+
 - Review test output for specific failures
 - Check `.cursor/rules/component-testing.mdc` for testing standards
 - Ensure structural hierarchy and accessibility requirements are met
@@ -231,6 +238,7 @@ If tests fail:
 ### Formatting Issues
 
 If Prettier reports issues:
+
 - Run `npm run format` to auto-fix formatting
 - Review Prettier configuration if needed
 
@@ -245,4 +253,3 @@ If Prettier reports issues:
 ---
 
 _This command ensures code quality, type safety, and test coverage before committing changes, maintaining high standards throughout the development process._
-
