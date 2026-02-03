@@ -13,6 +13,7 @@
     "validate": "npm run lint && npm run format && npm run type-check && npm run test"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3"
