@@ -13,26 +13,26 @@ export default function ExperienceTimeline({
 
   return (
     <section
-      className="py-12 px-4"
+      className="p-6 lg:p-8"
       aria-label="Professional experience timeline"
     >
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">
-            Experience
-          </h1>
-        </header>
+      <div className="w-full max-w-full">
+        <div className="relative space-y-8">
+          {/* Vertical timeline line */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-px bg-gray-300 dark:bg-gray-600"
+            aria-hidden="true"
+          />
 
-        <div className="space-y-8">
           {experiences.map((experience) => (
             <article
               key={experience.slug}
               className="relative pl-8"
               aria-label={`Experience: ${experience.role} at ${experience.company}`}
             >
-              {/* Circular bullet point */}
+              {/* Circular bullet point on timeline */}
               <div
-                className="absolute left-0 top-2 w-3 h-3 rounded-full bg-gray-400 dark:bg-gray-500 border-2 border-white dark:border-gray-900"
+                className="absolute left-0 top-2 w-3 h-3 rounded-full bg-gray-400 dark:bg-gray-500 border-2 border-white dark:border-gray-900 -translate-x-1/2"
                 aria-hidden="true"
               />
 
