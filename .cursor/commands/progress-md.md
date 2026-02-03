@@ -147,6 +147,7 @@ For each major step:
 - Update progress-{feature-name}.md immediately when status changes
 - Include commit hashes for completed steps
 - Document any deviations from the original plan
+- **Code Block Formatting**: All fenced code blocks MUST include language identifiers (e.g., `\`\`\`typescript`, `\`\`\`bash`, `\`\`\`markdown`) to comply with markdownlint MD040 rule
 
 ### **Testing Strategy**
 
@@ -154,11 +155,21 @@ For each major step:
 - Manual testing steps should be documented
 - Automated tests should be added where possible
 
+### **Markdown Formatting Requirements**
+
+- **Language Identifiers Required**: All fenced code blocks MUST specify a language identifier
+  - Commit messages: Use `\`\`\`bash`or`\`\`\`text`
+  - Code examples: Use appropriate language (`\`\`\`typescript`, `\`\`\`javascript`, `\`\`\`css`, etc.)
+  - Configuration files: Use `\`\`\`json`, `\`\`\`yaml`, `\`\`\`toml`, etc.
+  - Markdown examples: Use `\`\`\`markdown`
+  - Plain text: Use `\`\`\`text`
+- This requirement ensures compliance with markdownlint MD040 rule and improves code highlighting and readability
+
 ## Example Usage Scenarios
 
 ### **After Feature Planning**
 
-```
+```text
 🎯 Use Case: Just finished planning any complex development work
 ✅ Action: Generate progress-{feature-name}.md with detailed breakdown
 📋 Output: Structured plan with testable steps
@@ -166,7 +177,7 @@ For each major step:
 
 ### **During Development**
 
-```
+```text
 🎯 Use Case: Need to track progress on ongoing project
 ✅ Action: Update progress-{feature-name}.md with current status
 📋 Output: Clear visibility into what's done/pending
@@ -174,7 +185,7 @@ For each major step:
 
 ### **Before Code Review**
 
-```
+```text
 🎯 Use Case: Preparing for team review of multi-step work
 ✅ Action: Reference progress-{feature-name}.md for context
 📋 Output: Reviewers understand the overall plan and progress
@@ -182,7 +193,7 @@ For each major step:
 
 ### **Refactoring Projects**
 
-```
+```text
 🎯 Use Case: Large refactoring or technical debt cleanup
 ✅ Action: Break down into safe, incremental steps
 📋 Output: Risk-reduced approach with rollback points
@@ -190,7 +201,7 @@ For each major step:
 
 ### **Bug Investigation**
 
-```
+```text
 🎯 Use Case: Complex bug requiring multiple investigation steps
 ✅ Action: Document investigation plan and findings
 📋 Output: Systematic approach with clear progress tracking

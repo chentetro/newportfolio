@@ -192,7 +192,7 @@ _No blockers currently_
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: install gray-matter for markdown frontmatter parsing
 ```
 
@@ -230,7 +230,7 @@ feat: install gray-matter for markdown frontmatter parsing
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: create content folder structure for experience markdown files
 ```
 
@@ -278,7 +278,7 @@ feat: create content folder structure for experience markdown files
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: add example experience markdown files with frontmatter
 ```
 
@@ -323,7 +323,7 @@ feat: add example experience markdown files with frontmatter
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: define TypeScript types for experience entries
 ```
 
@@ -372,7 +372,7 @@ feat: define TypeScript types for experience entries
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: create markdown parsing utility for experience entries
 ```
 
@@ -417,7 +417,7 @@ feat: create markdown parsing utility for experience entries
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: create Experience Timeline component structure
 ```
 
@@ -472,7 +472,7 @@ feat: create Experience Timeline component structure
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: implement timeline design with circular bullets and card layout
 ```
 
@@ -519,7 +519,7 @@ feat: implement timeline design with circular bullets and card layout
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: apply monochrome styling to Experience Timeline component
 ```
 
@@ -574,7 +574,7 @@ feat: apply monochrome styling to Experience Timeline component
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: add accessibility attributes and semantic HTML to Experience Timeline
 ```
 
@@ -619,7 +619,7 @@ feat: add accessibility attributes and semantic HTML to Experience Timeline
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: integrate Experience Timeline into about page
 ```
 
@@ -685,7 +685,7 @@ feat: integrate Experience Timeline into about page
 
 **Commit Strategy**: Can be committed independently
 
-```
+```bash
 feat: add comprehensive test suite for Experience Timeline component
 ```
 
