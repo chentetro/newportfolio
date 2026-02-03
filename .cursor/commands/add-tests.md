@@ -85,16 +85,16 @@ Use this command when you want to:
 describe('ComponentName', () => {
   it('maintains proper heading hierarchy', () => {
     render(<ComponentName {...mockProps} />);
-    
+
     // Test semantic structure
     const headings = screen.getAllByRole('heading');
     expect(headings[0]).toHaveProperty('tagName', 'H1');
     expect(headings[1]).toHaveProperty('tagName', 'H2');
-    
+
     // Test specific content
     const mainHeading = screen.getByRole('heading', { level: 1 });
     expect(mainHeading).toHaveTextContent('Expected Title');
-    
+
     const subHeading = screen.getByRole('heading', { level: 2 });
     expect(subHeading).toHaveTextContent('Expected Subtitle');
   });
@@ -107,14 +107,14 @@ describe('ComponentName', () => {
 describe('ComponentName', () => {
   it('uses semantic HTML structure with stable selectors', () => {
     const { container } = render(<ComponentName {...mockProps} />);
-    
+
     // Use querySelector for semantic elements (stable, doesn't fail on nesting)
     const headerElement = container.querySelector('header');
     expect(headerElement).toBeInTheDocument();
-    
+
     const navElement = container.querySelector('nav');
     expect(navElement).toBeInTheDocument();
-    
+
     const sectionElement = container.querySelector('section');
     expect(sectionElement).toBeInTheDocument();
   });
@@ -127,16 +127,16 @@ describe('ComponentName', () => {
 describe('ComponentName', () => {
   it('renders links with correct attributes', () => {
     render(<ComponentName {...mockProps} />);
-    
+
     const link = screen.getByLabelText('Visit GitHub profile');
     expect(link).toHaveAttribute('href', mockProps.githubUrl);
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
-  
+
   it('renders images with correct attributes', () => {
     render(<ComponentName {...mockProps} />);
-    
+
     const image = screen.getByAltText(mockProps.imageAlt);
     expect(image).toHaveAttribute('src', mockProps.imageUrl);
     expect(image).toHaveAttribute('alt', mockProps.imageAlt);
@@ -151,16 +151,16 @@ describe('ComponentName', () => {
   it('allows user to interact with component', async () => {
     const user = userEvent.setup();
     const mockOnClick = vi.fn();
-    
+
     render(<ComponentName onClick={mockOnClick} />);
-    
+
     // User sees the component
     expect(screen.getByRole('button', { name: /click me/i })).toBeInTheDocument();
-    
+
     // User clicks the button
     const button = screen.getByRole('button', { name: /click me/i });
     await user.click(button);
-    
+
     // System responds correctly
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
@@ -171,19 +171,19 @@ describe('ComponentName', () => {
 
 ```typescript
 // Don't test implementation details
-expect(component.state.isLoading).toBe(false)
+expect(component.state.isLoading).toBe(false);
 
 // Don't test internal methods
-expect(component.handleClick).toHaveBeenCalled()
+expect(component.handleClick).toHaveBeenCalled();
 
 // Don't use fragile ARIA roles for nested semantic elements
-screen.getByRole('banner') // Use querySelector('header') instead
+screen.getByRole('banner'); // Use querySelector('header') instead
 
 // Don't use generic queries when specific ones exist
-screen.getByTestId('submit-button') // Use getByRole('button') instead
+screen.getByTestId('submit-button'); // Use getByRole('button') instead
 
 // Don't over-mock internal components
-vi.mock('./ComponentName') // Test the real component
+vi.mock('./ComponentName'); // Test the real component
 ```
 
 ## Recommended Queries Priority
@@ -192,18 +192,18 @@ vi.mock('./ComponentName') // Test the real component
 
 ```typescript
 // Best for buttons, links, form elements
-screen.getByRole('button', { name: /save/i })
-screen.getByRole('textbox', { name: /search/i })
+screen.getByRole('button', { name: /save/i });
+screen.getByRole('textbox', { name: /search/i });
 
 // Best for form labels
-screen.getByLabelText(/email address/i)
+screen.getByLabelText(/email address/i);
 
 // Best for text content users see
-screen.getByText(/welcome back/i)
+screen.getByText(/welcome back/i);
 
 // Best for headings (with level)
-screen.getByRole('heading', { level: 1 })
-screen.getByRole('heading', { level: 2 })
+screen.getByRole('heading', { level: 1 });
+screen.getByRole('heading', { level: 2 });
 ```
 
 ### **🥈 Second Choice - Semantic HTML**
@@ -224,7 +224,7 @@ container.querySelector('section')
 
 ```typescript
 // Only when accessibility queries don't work
-screen.getByTestId('complex-component')
+screen.getByTestId('complex-component');
 ```
 
 ## Test File Structure
@@ -288,27 +288,27 @@ describe('ComponentName', () => {
 ### **Hook Test Template**
 
 ```typescript
-import { describe, it, expect } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
-import { useCustomHook } from '../app/hooks/useCustomHook'
+import { describe, it, expect } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
+import { useCustomHook } from '../app/hooks/useCustomHook';
 
 describe('useCustomHook', () => {
   it('returns expected initial state', () => {
-    const { result } = renderHook(() => useCustomHook())
+    const { result } = renderHook(() => useCustomHook());
 
-    expect(result.current.value).toBe(expectedValue)
-  })
+    expect(result.current.value).toBe(expectedValue);
+  });
 
   it('updates state when action is called', () => {
-    const { result } = renderHook(() => useCustomHook())
+    const { result } = renderHook(() => useCustomHook());
 
     act(() => {
-      result.current.updateValue('new value')
-    })
+      result.current.updateValue('new value');
+    });
 
-    expect(result.current.value).toBe('new value')
-  })
-})
+    expect(result.current.value).toBe('new value');
+  });
+});
 ```
 
 ## Specific Checks Performed
@@ -344,15 +344,15 @@ describe('useCustomHook', () => {
 
 ```typescript
 // ✅ Good: Describes user behavior
-it('shows error message when email is invalid')
-it('allows user to filter results by status')
-it('saves form data when user clicks submit')
-it('maintains proper heading hierarchy')
+it('shows error message when email is invalid');
+it('allows user to filter results by status');
+it('saves form data when user clicks submit');
+it('maintains proper heading hierarchy');
 
 // ❌ Bad: Describes implementation
-it('calls handleSubmit function')
-it('sets state.loading to true')
-it('renders without errors')
+it('calls handleSubmit function');
+it('sets state.loading to true');
+it('renders without errors');
 ```
 
 ### **🎯 Test Focus**
@@ -391,11 +391,11 @@ expect(screen.getByRole('alert')).toHaveTextContent('Error occurred')
 // ✅ Good: Tests both semantic and visual hierarchy
 it('maintains proper heading hierarchy', () => {
   render(<Component {...props} />);
-  
+
   const headings = screen.getAllByRole('heading');
   expect(headings[0]).toHaveProperty('tagName', 'H1');
   expect(headings[1]).toHaveProperty('tagName', 'H2');
-  
+
   const mainHeading = screen.getByRole('heading', { level: 1 });
   expect(mainHeading).toHaveTextContent('Expected Title');
 });
@@ -444,4 +444,3 @@ it('maintains proper heading hierarchy', () => {
 ---
 
 _This command creates focused, user-centric tests that validate real functionality while ensuring accessibility compliance, structural hierarchy, and proper semantic HTML, using the minimum number of tests needed for confident coverage._
-

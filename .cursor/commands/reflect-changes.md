@@ -158,4 +158,3 @@ The command will automatically:
 ---
 
 _This command helps maintain project visibility, ensures Next.js App Router pattern compliance, validates monochrome design system adherence, and automatically updates progress tracking documents per `progress-tracking.mdc` rules._
-
