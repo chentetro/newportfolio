@@ -86,6 +86,23 @@ The AI MUST automatically update progress documents in the following scenarios W
 - Update progress counters accordingly
 - Example: "STEP-011: Move SocialLink interface to app/types/social.ts following project organization pattern"
 
+**When Fixing Issues Unrelated to the Tracked Feature**:
+
+- **DO NOT** add these fixes as steps in the main progress tracking
+- **DO NOT** count them in progress percentages
+- **DO NOT** include them in the "Related Files" section
+- **DO** document them in a separate "🔧 Incidental Fixes" section at the end of the progress document
+- **DO** clearly note that these fixes are not part of the feature scope
+- **DO** list all affected files for reference
+
+**Key Principles for Incidental Fixes**:
+
+- ✅ **Separate Section**: Always use a separate "Incidental Fixes" section, never mix with main steps
+- ✅ **Clear Scope**: Explicitly state these fixes are NOT part of the feature being tracked
+- ✅ **No Progress Impact**: Do NOT count incidental fixes in progress percentages or step counts
+- ✅ **Documentation Only**: These are documented for reference, not tracked as feature work
+- ✅ **File Listing**: List all affected files for transparency, but don't include in "Related Files" section
+
 ### Update Format
 
 When marking a step as completed, use this format:
@@ -97,6 +114,59 @@ When marking a step as completed, use this format:
   - Commit: `feat: create Navbar component structure with four navigation links`
   - Completed: [Date]
   - Notes: Component created successfully with all four navigation links
+```
+
+### Format for Incidental Fixes Section
+
+When documenting fixes that are not part of the tracked feature, add a separate "Incidental Fixes" section after the "Related Files" section and before the "Last Updated" timestamp.
+
+**Placement**: After "Related Files" section, before "Last Updated" timestamp
+
+**Required Structure**:
+
+```markdown
+---
+
+## 🔧 Incidental Fixes
+
+**Note**: The following fixes were discovered and addressed during [Feature Name] implementation work but are not part of the [Feature Name] component scope.
+
+### [Fix Category Name]
+
+**Issue**: [Brief description of the issue]
+
+**Files Modified**:
+- `path/to/file1.tsx` (what was fixed)
+- `path/to/file2.tsx` (what was fixed)
+
+**Solution**: [How the issue was resolved]
+
+**Result**: [What was achieved - e.g., "All tests now pass without timeout errors"]
+```
+
+**Example Format**:
+
+```markdown
+---
+
+## 🔧 Incidental Fixes
+
+**Note**: The following fixes were discovered and addressed during Footer implementation work but are not part of the Footer component scope.
+
+### Test Timeout Fixes
+
+**Issue**: Test timeout errors in multiple test files causing slow test execution (34+ seconds).
+
+**Files Modified**:
+- `tests/Footer.test.tsx` (timeout issues fixed)
+- `tests/Navbar.test.tsx` (timeout issues fixed)
+- `tests/SocialButtons.test.tsx` (timeout issues fixed)
+- `tests/FirstHome.test.tsx` (timeout issues fixed)
+- `tests/ExperienceTimeline.test.tsx` (timeout issues fixed)
+
+**Solution**: Replaced `forEach` loops with individual queries and replaced `toHaveProperty()` with direct property access (`tagName` direct access).
+
+**Result**: All 129 tests now pass without timeout errors. Test execution time improved from 34+ seconds to ~7 seconds.
 ```
 
 ### Progress Tracking Workflow
@@ -173,6 +243,15 @@ Every progress document should follow this structure:
 
 ## 📊 Progress Summary
 [Overall progress percentage and phase breakdown]
+
+## 🔗 Related Files
+[Files directly related to the feature]
+
+## 🔧 Incidental Fixes
+[Optional: Fixes discovered during implementation but not part of feature scope]
+
+## 📝 Notes
+[Additional notes and observations]
 ```
 
 ## Mandatory Actions
@@ -329,6 +408,60 @@ Every progress document should follow this structure:
   - Completed: Code review refactoring
   - Notes: Moved SocialLink interface from Footer component to app/types/social.ts following project's type organization pattern
 ```
+
+### Example: Incidental Fixes Documentation
+
+When fixing issues that are not part of the tracked feature, document them in a separate "Incidental Fixes" section:
+
+```markdown
+## 🔗 Related Files
+
+**Components**:
+- `app/components/Footer.tsx` ✅ (created, refactored to use types and data-driven approach with .map())
+
+**Types**:
+- `app/types/social.ts` ✅ (created - SocialLink interface)
+
+**Layout**:
+- `app/layout.tsx` ✅ (modified - Footer integrated with sticky footer behavior)
+
+**Tests**:
+- `tests/Footer.test.tsx` ✅ (created - 22 tests, all passing)
+
+---
+
+## 🔧 Incidental Fixes
+
+**Note**: The following fixes were discovered and addressed during Footer implementation work but are not part of the Footer component scope.
+
+### Test Timeout Fixes
+
+**Issue**: Test timeout errors in multiple test files causing slow test execution (34+ seconds).
+
+**Files Modified**:
+- `tests/Footer.test.tsx` (timeout issues fixed)
+- `tests/Navbar.test.tsx` (timeout issues fixed)
+- `tests/SocialButtons.test.tsx` (timeout issues fixed)
+- `tests/FirstHome.test.tsx` (timeout issues fixed)
+- `tests/ExperienceTimeline.test.tsx` (timeout issues fixed)
+
+**Solution**: Replaced `forEach` loops with individual queries and replaced `toHaveProperty()` with direct property access (`tagName` direct access).
+
+**Result**: All 129 tests now pass without timeout errors. Test execution time improved from 34+ seconds to ~7 seconds.
+
+---
+
+_Last Updated: Footer component implementation complete - All Footer-related work documented (seven october 2026)_
+```
+
+**Key Points from This Example**:
+
+- ✅ Incidental fixes are in a separate section, clearly marked as not part of the feature scope
+- ✅ All affected files are listed for transparency
+- ✅ The fix is documented with Issue, Solution, and Result
+- ✅ These files are NOT included in the "Related Files" section above
+- ✅ The progress summary does NOT count these fixes in step counts or percentages
+- ✅ Reference: See `.cursor/progress/footer-implementation.md` for a real-world example
 
 ## Integration with Development Workflow
 
