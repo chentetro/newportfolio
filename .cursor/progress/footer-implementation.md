@@ -216,7 +216,7 @@ feat: create Footer component structure with social media icons
 - Ensure touch targets: `min-w-[44px] min-h-[44px]` for all links
 - Center icons horizontally: `flex items-center justify-center`
 - Use `max-w-7xl mx-auto` for container centering
-- Icon size: `w-6 h-6` (24px) for appropriate visibility
+- Icon size: `w-5 h-5` (20px) following project styling standards
 - Add focus states: `focus:ring-2 focus:ring-gray-500 focus:outline-none rounded`
 
 **Success Criteria**:
