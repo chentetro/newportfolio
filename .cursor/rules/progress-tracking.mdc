@@ -5,6 +5,29 @@ alwaysApply: false
 
 # Progress Tracking Standards
 
+## ⚠️ CRITICAL: MANDATORY PROGRESS UPDATES
+
+**BEFORE making ANY code changes, the AI MUST:**
+1. Check if a progress document exists in `.cursor/progress/` for the feature being worked on
+2. If a progress document exists, it MUST be updated as part of EVERY code change
+3. Progress updates are NOT optional - they are MANDATORY for every tracked feature
+
+**Progress file updates MUST happen automatically in these scenarios:**
+- ✅ **Every code change** that relates to a tracked feature
+- ✅ **Every step completion** from a progress document
+- ✅ **Every code review fix** (add new step entry)
+- ✅ **Every bug fix** related to tracked features
+- ✅ **Every refactoring** of tracked components
+- ✅ **Every test update** for tracked features
+- ✅ **Every suggestion implementation** from code reviews
+- ✅ **Every type definition move** or reorganization
+
+**The AI MUST NEVER:**
+- ❌ Skip progress updates because "it's just a small change"
+- ❌ Wait for the user to ask for progress updates
+- ❌ Consider progress updates as optional
+- ❌ Complete code changes without updating progress files
+
 ## Progress Document Management
 
 ### Creating Progress Documents
@@ -23,7 +46,7 @@ When creating a progress document (using `/progress-md` command or manually):
 
 ### Updating Progress Documents
 
-**CRITICAL: Automatic Updates Required**
+**CRITICAL: Automatic Updates Required - NO EXCEPTIONS**
 
 The AI MUST automatically update progress documents in the following scenarios WITHOUT being explicitly asked:
 
@@ -32,10 +55,13 @@ The AI MUST automatically update progress documents in the following scenarios W
 3. **After Bug Fixes**: When fixing bugs related to the feature being tracked
 4. **After Refactoring**: When making significant refactoring changes to tracked components
 5. **After Test Updates**: When updating tests to match implementation changes
+6. **After Implementing Suggestions**: When implementing suggestions from code reviews or discussions
+7. **After Type/Interface Moves**: When moving types or interfaces to different files/folders
+8. **After Any Code Change**: ANY code change related to a tracked feature requires a progress update
 
-**Update Process** (must happen automatically):
+**Update Process** (must happen automatically - this is NOT optional):
 
-1. **Immediate Update**: ALWAYS update the progress file immediately after making changes
+1. **IMMEDIATE Update**: ALWAYS update the progress file immediately after making changes (before moving to next task)
 2. **Status Change**: Move the completed step from "Pending Steps" to "Completed Steps" (or add new step if fixing issues)
 3. **Add Details**: Include:
    - ✅ Checkmark in the step checkbox
@@ -44,6 +70,7 @@ The AI MUST automatically update progress documents in the following scenarios W
    - Any notes about deviations, important findings, or fixes applied
 4. **Update Progress Counters**: Update overall progress percentage and phase breakdowns
 5. **Update Timestamp**: Update "Last Updated" timestamp at bottom of document
+6. **Update Related Files**: Update the "Related Files" section to reflect new/modified files
 
 **When Fixing Issues Found in Code Reviews**:
 
@@ -51,6 +78,30 @@ The AI MUST automatically update progress documents in the following scenarios W
 - Note what issues were found and how they were resolved
 - Update progress counters accordingly
 - Example: "STEP-010: Fix monochrome design system violation - replaced teal colors with gray scale"
+
+**When Implementing Suggestions**:
+
+- Add a new step entry documenting the implementation (e.g., "STEP-011: Refactor interface to types folder")
+- Note what was refactored and why
+- Update progress counters accordingly
+- Example: "STEP-011: Move SocialLink interface to app/types/social.ts following project organization pattern"
+
+**When Fixing Issues Unrelated to the Tracked Feature**:
+
+- **DO NOT** add these fixes as steps in the main progress tracking
+- **DO NOT** count them in progress percentages
+- **DO NOT** include them in the "Related Files" section
+- **DO** document them in a separate "🔧 Incidental Fixes" section at the end of the progress document
+- **DO** clearly note that these fixes are not part of the feature scope
+- **DO** list all affected files for reference
+
+**Key Principles for Incidental Fixes**:
+
+- ✅ **Separate Section**: Always use a separate "Incidental Fixes" section, never mix with main steps
+- ✅ **Clear Scope**: Explicitly state these fixes are NOT part of the feature being tracked
+- ✅ **No Progress Impact**: Do NOT count incidental fixes in progress percentages or step counts
+- ✅ **Documentation Only**: These are documented for reference, not tracked as feature work
+- ✅ **File Listing**: List all affected files for transparency, but don't include in "Related Files" section
 
 ### Update Format
 
@@ -65,18 +116,77 @@ When marking a step as completed, use this format:
   - Notes: Component created successfully with all four navigation links
 ```
 
+### Format for Incidental Fixes Section
+
+When documenting fixes that are not part of the tracked feature, add a separate "Incidental Fixes" section after the "Related Files" section and before the "Last Updated" timestamp.
+
+**Placement**: After "Related Files" section, before "Last Updated" timestamp
+
+**Required Structure**:
+
+```markdown
+---
+
+## 🔧 Incidental Fixes
+
+**Note**: The following fixes were discovered and addressed during [Feature Name] implementation work but are not part of the [Feature Name] component scope.
+
+### [Fix Category Name]
+
+**Issue**: [Brief description of the issue]
+
+**Files Modified**:
+- `path/to/file1.tsx` (what was fixed)
+- `path/to/file2.tsx` (what was fixed)
+
+**Solution**: [How the issue was resolved]
+
+**Result**: [What was achieved - e.g., "All tests now pass without timeout errors"]
+```
+
+**Example Format**:
+
+```markdown
+---
+
+## 🔧 Incidental Fixes
+
+**Note**: The following fixes were discovered and addressed during Footer implementation work but are not part of the Footer component scope.
+
+### Test Timeout Fixes
+
+**Issue**: Test timeout errors in multiple test files causing slow test execution (34+ seconds).
+
+**Files Modified**:
+- `tests/Footer.test.tsx` (timeout issues fixed)
+- `tests/Navbar.test.tsx` (timeout issues fixed)
+- `tests/SocialButtons.test.tsx` (timeout issues fixed)
+- `tests/FirstHome.test.tsx` (timeout issues fixed)
+- `tests/ExperienceTimeline.test.tsx` (timeout issues fixed)
+
+**Solution**: Replaced `forEach` loops with individual queries and replaced `toHaveProperty()` with direct property access (`tagName` direct access).
+
+**Result**: All 129 tests now pass without timeout errors. Test execution time improved from 34+ seconds to ~7 seconds.
+```
+
 ### Progress Tracking Workflow
+
+**BEFORE Starting Any Code Changes:**
+1. Check `.cursor/progress/` folder for existing progress documents
+2. Identify which progress document relates to the current work
+3. If no progress document exists, create one OR note that this feature is not tracked
 
 **After Creating Progress Document**:
 1. Save to `.cursor/progress/{feature-name}-implementation.md`
 2. Confirm file was created successfully
 
 **After Completing a Step**:
-1. Open the relevant progress file in `.cursor/progress/`
+1. **IMMEDIATELY** open the relevant progress file in `.cursor/progress/`
 2. Move step from "⏳ Pending Steps" to "✅ Completed Steps"
 3. Add completion details (commit, date, notes)
 4. Update progress percentage if applicable
 5. Update "Last Updated" timestamp at bottom of document
+6. Update "Related Files" section
 
 **When Starting a Step**:
 1. Move step from "⏳ Pending Steps" to "🔄 In Progress"
@@ -133,6 +243,15 @@ Every progress document should follow this structure:
 
 ## 📊 Progress Summary
 [Overall progress percentage and phase breakdown]
+
+## 🔗 Related Files
+[Files directly related to the feature]
+
+## 🔧 Incidental Fixes
+[Optional: Fixes discovered during implementation but not part of feature scope]
+
+## 📝 Notes
+[Additional notes and observations]
 ```
 
 ## Mandatory Actions
@@ -160,6 +279,16 @@ Every progress document should follow this structure:
 - ✅ MUST note what was fixed and how
 - ✅ MUST update progress counters
 - ✅ MUST update "Last Updated" timestamp
+- ✅ MUST update "Related Files" section
+
+### When Implementing Suggestions
+
+- ✅ **AUTOMATIC**: MUST update progress file when implementing suggestions
+- ✅ MUST add new step entry documenting the implementation
+- ✅ MUST note what was changed and why
+- ✅ MUST update progress counters
+- ✅ MUST update "Last Updated" timestamp
+- ✅ MUST update "Related Files" section
 
 ### When Starting Steps
 
@@ -169,25 +298,29 @@ Every progress document should follow this structure:
 ### AI Behavior Requirements
 
 **The AI MUST automatically**:
-- ✅ Check for existing progress documents in `.cursor/progress/` when working on features
-- ✅ Update progress documents as part of the development workflow (not as a separate step)
-- ✅ Document all significant changes, fixes, and completions
-- ✅ Never skip progress updates - they are mandatory, not optional
+- ✅ **FIRST**: Check for existing progress documents in `.cursor/progress/` when starting ANY work
+- ✅ **ALWAYS**: Update progress documents as part of the development workflow (not as a separate step)
+- ✅ **EVERY TIME**: Document all significant changes, fixes, and completions
+- ✅ **NEVER**: Skip progress updates - they are mandatory, not optional
+- ✅ **IMMEDIATELY**: Update progress files after code changes, before moving to next task
 
-### Post-Implementation Checklist
+### Mandatory Workflow Checklist
 
-**After completing ANY code changes related to a tracked feature, the AI MUST verify:**
+**BEFORE completing ANY code changes related to a tracked feature, the AI MUST:**
 
-- [ ] Check if a progress document exists in `.cursor/progress/` for the current feature
-- [ ] Move completed steps from "Pending Steps" to "Completed Steps" section
-- [ ] Update progress percentages (overall and phase breakdowns)
-- [ ] Update status line (if phase completed)
-- [ ] Update "Last Updated" timestamp at bottom of document
-- [ ] Update related files section (mark files as created/modified)
-- [ ] Add completion notes with any deviations or important findings
-- [ ] Verify all changes are saved before proceeding
+1. ✅ Check if a progress document exists in `.cursor/progress/` for the current feature
+2. ✅ If progress document exists, update it as part of the same workflow
+3. ✅ Move completed steps from "Pending Steps" to "Completed Steps" section
+4. ✅ Update progress percentages (overall and phase breakdowns)
+5. ✅ Update status line (if phase completed)
+6. ✅ Update "Last Updated" timestamp at bottom of document
+7. ✅ Update "Related Files" section (mark files as created/modified)
+8. ✅ Add completion notes with any deviations or important findings
+9. ✅ Verify all changes are saved before proceeding
 
 **This checklist MUST be completed as part of the implementation workflow, not as a separate step.**
+
+**If a progress document exists, progress updates are MANDATORY - there are NO exceptions.**
 
 ## Benefits
 
@@ -257,17 +390,92 @@ Every progress document should follow this structure:
   - Estimated unblock: 2024-01-20
 ```
 
+### Example: Code Review Fix Update
+
+**Before**:
+```markdown
+### ✅ Completed Steps
+
+- [x] **STEP-001**: Create Footer component structure ✅
+```
+
+**After**:
+```markdown
+### ✅ Completed Steps
+
+- [x] **STEP-001**: Create Footer component structure ✅
+- [x] **STEP-007**: Refactor SocialLink interface to types folder ✅
+  - Completed: Code review refactoring
+  - Notes: Moved SocialLink interface from Footer component to app/types/social.ts following project's type organization pattern
+```
+
+### Example: Incidental Fixes Documentation
+
+When fixing issues that are not part of the tracked feature, document them in a separate "Incidental Fixes" section:
+
+```markdown
+## 🔗 Related Files
+
+**Components**:
+- `app/components/Footer.tsx` ✅ (created, refactored to use types and data-driven approach with .map())
+
+**Types**:
+- `app/types/social.ts` ✅ (created - SocialLink interface)
+
+**Layout**:
+- `app/layout.tsx` ✅ (modified - Footer integrated with sticky footer behavior)
+
+**Tests**:
+- `tests/Footer.test.tsx` ✅ (created - 22 tests, all passing)
+
+---
+
+## 🔧 Incidental Fixes
+
+**Note**: The following fixes were discovered and addressed during Footer implementation work but are not part of the Footer component scope.
+
+### Test Timeout Fixes
+
+**Issue**: Test timeout errors in multiple test files causing slow test execution (34+ seconds).
+
+**Files Modified**:
+- `tests/Footer.test.tsx` (timeout issues fixed)
+- `tests/Navbar.test.tsx` (timeout issues fixed)
+- `tests/SocialButtons.test.tsx` (timeout issues fixed)
+- `tests/FirstHome.test.tsx` (timeout issues fixed)
+- `tests/ExperienceTimeline.test.tsx` (timeout issues fixed)
+
+**Solution**: Replaced `forEach` loops with individual queries and replaced `toHaveProperty()` with direct property access (`tagName` direct access).
+
+**Result**: All 129 tests now pass without timeout errors. Test execution time improved from 34+ seconds to ~7 seconds.
+
+---
+
+_Last Updated: Footer component implementation complete - All Footer-related work documented (seven october 2026)_
+```
+
+**Key Points from This Example**:
+
+- ✅ Incidental fixes are in a separate section, clearly marked as not part of the feature scope
+- ✅ All affected files are listed for transparency
+- ✅ The fix is documented with Issue, Solution, and Result
+- ✅ These files are NOT included in the "Related Files" section above
+- ✅ The progress summary does NOT count these fixes in step counts or percentages
+- ✅ Reference: See `.cursor/progress/footer-implementation.md` for a real-world example
+
 ## Integration with Development Workflow
 
 1. **Planning Phase**: Create progress document → Save to `.cursor/progress/`
 2. **Development Phase**: 
-   - Complete step → **Automatically update progress file** → Commit changes
-   - Fix code review issues → **Automatically add fix entry to progress file**
-   - Fix bugs → **Automatically document fix in progress file**
+   - **BEFORE**: Check for progress document
+   - Complete step → **IMMEDIATELY update progress file** → Commit changes
+   - Fix code review issues → **IMMEDIATELY add fix entry to progress file**
+   - Fix bugs → **IMMEDIATELY document fix in progress file**
+   - Implement suggestions → **IMMEDIATELY document in progress file**
 3. **Review Phase**: Reference progress file for context
 4. **Completion Phase**: Mark all steps complete → Archive or update final status
 
-**Key Principle**: Progress updates are NOT optional or manual - they happen automatically as part of every code change that relates to a tracked feature.
+**Key Principle**: Progress updates are NOT optional or manual - they happen automatically as part of EVERY code change that relates to a tracked feature. If a progress document exists, it MUST be updated. No exceptions.
 
 ## Reference Files
 
@@ -277,4 +485,4 @@ When working with progress documents, reference the existing structure:
 
 ---
 
-_This rule ensures consistent progress tracking and documentation throughout the development lifecycle._
+_This rule ensures consistent progress tracking and documentation throughout the development lifecycle. Progress updates are MANDATORY, not optional._

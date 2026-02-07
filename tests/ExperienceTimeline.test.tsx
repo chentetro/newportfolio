@@ -99,6 +99,9 @@ describe('ExperienceTimeline', () => {
     // Verify H2 headings for each entry
     const h2Headings = screen.getAllByRole('heading', { level: 2 });
     expect(h2Headings).toHaveLength(2);
+    // Verify tag names directly to avoid timeout issues
+    expect(h2Headings[0].tagName).toBe('H2');
+    expect(h2Headings[1].tagName).toBe('H2');
     expect(h2Headings[0]).toHaveTextContent('Staff Engineer & AI Lead');
     expect(h2Headings[1]).toHaveTextContent('Frontend Tech Lead');
   });
