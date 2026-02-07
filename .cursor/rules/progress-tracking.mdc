@@ -174,6 +174,21 @@ Every progress document should follow this structure:
 - ✅ Document all significant changes, fixes, and completions
 - ✅ Never skip progress updates - they are mandatory, not optional
 
+### Post-Implementation Checklist
+
+**After completing ANY code changes related to a tracked feature, the AI MUST verify:**
+
+- [ ] Check if a progress document exists in `.cursor/progress/` for the current feature
+- [ ] Move completed steps from "Pending Steps" to "Completed Steps" section
+- [ ] Update progress percentages (overall and phase breakdowns)
+- [ ] Update status line (if phase completed)
+- [ ] Update "Last Updated" timestamp at bottom of document
+- [ ] Update related files section (mark files as created/modified)
+- [ ] Add completion notes with any deviations or important findings
+- [ ] Verify all changes are saved before proceeding
+
+**This checklist MUST be completed as part of the implementation workflow, not as a separate step.**
+
 ## Benefits
 
 1. **Visibility**: Clear tracking of what's done, in progress, and pending
