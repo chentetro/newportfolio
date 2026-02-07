@@ -70,23 +70,28 @@ describe('Navbar', () => {
     expect(links).toHaveLength(5); // Logo link + 4 nav links
 
     // Verify logo link
-    expect(
-      screen.getByLabelText('Navigate to home page - Chen portfolio')
-    ).toBeInTheDocument();
+    const logoLink = screen.getByLabelText(
+      'Navigate to home page - Chen portfolio'
+    );
+    expect(logoLink).toBeInTheDocument();
+    expect(logoLink.tagName).toBe('A');
 
-    // Verify nav links
-    const expectedLabels = [
-      'Navigate to home page',
-      'Navigate to about page',
-      'Navigate to projects page',
-      'Navigate to life page',
-    ];
+    // Verify nav links - query individually to avoid timeout issues
+    const homeLink = screen.getByLabelText('Navigate to home page');
+    expect(homeLink).toBeInTheDocument();
+    expect(homeLink.tagName).toBe('A');
 
-    expectedLabels.forEach((label) => {
-      const link = screen.getByLabelText(label);
-      expect(link).toBeInTheDocument();
-      expect(link.tagName).toBe('A');
-    });
+    const aboutLink = screen.getByLabelText('Navigate to about page');
+    expect(aboutLink).toBeInTheDocument();
+    expect(aboutLink.tagName).toBe('A');
+
+    const projectsLink = screen.getByLabelText('Navigate to projects page');
+    expect(projectsLink).toBeInTheDocument();
+    expect(projectsLink.tagName).toBe('A');
+
+    const lifeLink = screen.getByLabelText('Navigate to life page');
+    expect(lifeLink).toBeInTheDocument();
+    expect(lifeLink.tagName).toBe('A');
   });
 
   it('renders with proper container structure', () => {

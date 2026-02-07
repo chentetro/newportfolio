@@ -61,19 +61,22 @@ describe('SocialButtons', () => {
     const links = screen.getAllByRole('link');
     expect(links).toHaveLength(4);
 
-    // Verify each link has the expected aria-label structure
-    const expectedLabels = [
-      'Visit GitHub profile',
-      'Visit LinkedIn profile',
-      'Download CV',
-      'Contact via email',
-    ];
+    // Verify each link individually to avoid timeout issues
+    const githubLink = screen.getByLabelText('Visit GitHub profile');
+    expect(githubLink).toBeInTheDocument();
+    expect(githubLink.tagName).toBe('A');
 
-    expectedLabels.forEach((label) => {
-      const link = screen.getByLabelText(label);
-      expect(link).toBeInTheDocument();
-      expect(link.tagName).toBe('A');
-    });
+    const linkedinLink = screen.getByLabelText('Visit LinkedIn profile');
+    expect(linkedinLink).toBeInTheDocument();
+    expect(linkedinLink.tagName).toBe('A');
+
+    const cvLink = screen.getByLabelText('Download CV');
+    expect(cvLink).toBeInTheDocument();
+    expect(cvLink.tagName).toBe('A');
+
+    const emailLink = screen.getByLabelText('Contact via email');
+    expect(emailLink).toBeInTheDocument();
+    expect(emailLink.tagName).toBe('A');
   });
 
   // 3. Accessibility Tests

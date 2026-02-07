@@ -47,8 +47,9 @@ describe('FirstHome', () => {
     // Test semantic structure with proper H1 → H2 order
     const headings = screen.getAllByRole('heading');
     expect(headings).toHaveLength(2);
-    expect(headings[0]).toHaveProperty('tagName', 'H1');
-    expect(headings[1]).toHaveProperty('tagName', 'H2');
+    // Use direct property access instead of toHaveProperty to avoid timeout
+    expect(headings[0].tagName).toBe('H1');
+    expect(headings[1].tagName).toBe('H2');
 
     // Test specific content matches hierarchy
     const mainHeading = screen.getByRole('heading', { level: 1 });

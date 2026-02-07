@@ -1,6 +1,36 @@
 import Link from 'next/link';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
+import type { SocialLink } from '@/app/types/social';
+
+// Social media links configuration
+const LINKEDIN_PROFILE_URL =
+  'https://www.linkedin.com/in/chen-tetroashvili-%D7%97%D7%9F-%D7%98%D7%98%D7%A8%D7%95%D7%90%D7%A9%D7%91%D7%99%D7%9C%D7%99-5-%D7%97%D7%95%D7%9E-%D7%97-%D7%99-junior-computer-science/';
+
+const socialLinks: SocialLink[] = [
+  {
+    href: 'https://github.com/chentetro',
+    icon: FaGithub,
+    label: 'Visit GitHub profile',
+    external: true,
+  },
+  {
+    href: LINKEDIN_PROFILE_URL,
+    icon: FaLinkedin,
+    label: 'Visit LinkedIn profile',
+    external: true,
+  },
+  {
+    href: 'mailto:chentetroo@gmail.com',
+    icon: MdEmail,
+    label: 'Contact via email',
+    external: false,
+  },
+];
+
+// Shared link styles for consistency
+const linkClassName =
+  'flex items-center justify-center min-w-[44px] min-h-[44px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded';
 
 /**
  * Footer component displaying social media links (GitHub, LinkedIn, Email).
@@ -19,33 +49,20 @@ export default function Footer() {
           className="flex items-center justify-center gap-6"
           aria-label="Social media links"
         >
-          <Link
-            href="https://github.com/chentetro"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center min-w-[44px] min-h-[44px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded"
-            aria-label="Visit GitHub profile"
-          >
-            <FaGithub className="w-5 h-5" aria-hidden="true" />
-          </Link>
-
-          <Link
-            href="https://www.linkedin.com/in/chen-tetroashvili-%D7%97%D7%9F-%D7%98%D7%98%D7%A8%D7%95%D7%90%D7%A9%D7%91%D7%99%D7%9C%D7%99-5-%D7%97%D7%95%D7%9D-%D7%97-%D7%99-junior-computer-science/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center min-w-[44px] min-h-[44px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded"
-            aria-label="Visit LinkedIn profile"
-          >
-            <FaLinkedin className="w-5 h-5" aria-hidden="true" />
-          </Link>
-
-          <Link
-            href="mailto:chentetroo@gmail.com"
-            className="flex items-center justify-center min-w-[44px] min-h-[44px] text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded"
-            aria-label="Contact via email"
-          >
-            <MdEmail className="w-5 h-5" aria-hidden="true" />
-          </Link>
+          {socialLinks.map(({ href, icon: Icon, label, external }) => (
+            <Link
+              key={href}
+              href={href}
+              {...(external && {
+                target: '_blank',
+                rel: 'noopener noreferrer',
+              })}
+              className={linkClassName}
+              aria-label={label}
+            >
+              <Icon className="w-5 h-5" aria-hidden="true" />
+            </Link>
+          ))}
         </nav>
       </div>
     </footer>
