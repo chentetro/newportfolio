@@ -146,7 +146,15 @@
 - [x] **STEP-002**: Create skills data constant with categories and icons ✅
   - Commit: `feat: create skills data constant with categories and react-icons`
   - Completed: 2026-02-08
-  - Notes: Created SKILLS_DATA constant with all 14 skills organized by 4 categories. Used Simple Icons (react-icons/si) for most icons, with FaJava from react-icons/fa as alternative for Java (SiJava not available). Fixed SiCsharp to SiSharp. All icons imported successfully.
+  - Notes: Created SKILLS_DATA constant with all 14 skills organized by 4 categories. Used Simple Icons (react-icons/si) for most icons, with FaJava from react-icons/fa as alternative for Java (SiJava not available). All icons imported successfully.
+
+- [x] **STEP-002-FIX**: Investigate C# icon import issue ✅
+  - Completed: 2026-02-08
+  - Notes: Investigated C# icon naming issue. `SiCsharp` (correct Simple Icons slug for C#) is not available in react-icons 5.5.0. Currently using `SiSharp` as a workaround. Note: `SiSharp` technically refers to Sharp Corporation brand, not C# language. This is a known limitation - should update to `SiCsharp` when react-icons adds support for it in a future version. No alternative icons found in Font Awesome or Boxicons sets.
+
+- [x] **STEP-002-FIX-2**: Fix C# icon to use TbBrandCSharp from Tabler Icons ✅
+  - Completed: 2026-02-08
+  - Notes: Replaced `SiSharp` (Sharp Corporation brand icon) with `TbBrandCSharp` from `react-icons/tb` (Tabler Icons) for proper C# language icon representation. This resolves the icon mismatch issue and provides the correct C# icon.
 
 ### 🔄 In Progress
 
@@ -791,7 +799,7 @@ docs: update progress tracking for Skills section implementation
 
 **Data**:
 
-- `app/lib/skills.ts` ✅ (created - SKILLS_DATA constant with 14 skills across 4 categories)
+- `app/lib/skills.ts` ✅ (created - SKILLS_DATA constant with 14 skills across 4 categories, uses Tabler Icons for C# icon)
 
 ---
 
@@ -894,4 +902,4 @@ docs: update progress tracking for Skills section implementation
 
 ---
 
-_Last Updated: Phase 1 complete - Type definitions and skills data created (2026-02-08)_
+_Last Updated: Fixed C# icon to use TbBrandCSharp from Tabler Icons - 2026-02-08_

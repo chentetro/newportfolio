@@ -1,7 +1,6 @@
 import {
   SiC,
   SiCplusplus,
-  SiSharp,
   SiPython,
   SiHtml5,
   SiCss3,
@@ -14,6 +13,7 @@ import {
   SiPostman,
 } from 'react-icons/si';
 import { FaJava } from 'react-icons/fa';
+import { TbBrandCSharp } from 'react-icons/tb';
 import type { SkillCategoryData } from '../types/skills';
 
 /**
@@ -27,7 +27,7 @@ export const SKILLS_DATA: SkillCategoryData[] = [
     skills: [
       { name: 'C', icon: SiC },
       { name: 'C++', icon: SiCplusplus },
-      { name: 'C#', icon: SiSharp },
+      { name: 'C#', icon: TbBrandCSharp },
       { name: 'Java', icon: FaJava },
       { name: 'Python', icon: SiPython },
     ],
