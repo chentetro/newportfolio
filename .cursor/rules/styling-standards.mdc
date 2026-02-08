@@ -177,7 +177,7 @@ className="border-red-200" // Only gray scale for borders
 ### Semantic HTML
 - Use proper HTML elements: `<button>`, `<nav>`, `<section>`, `<article>`, `<header>`, `<footer>`, etc.
 - Avoid using `<div>` for interactive elements - use `<button>` or `<a>` instead
-- Use heading hierarchy properly: h1 → h2 → h3 (no skipping levels)
+- Use heading hierarchy properly: h1 (page title only) → h2 (component sections) → h3 (sub-sections)
 
 ### Testing Semantic Elements
 - **Header Elements**: Test `<header>` elements using `container.querySelector('header')` rather than `getByRole('banner')`
@@ -212,37 +212,66 @@ const header = screen.getByRole('banner'); // May fail if header is inside secti
 - Applied via: `className={`${geistSans.variable} ${geistMono.variable} antialiased`}` in layout
 
 ### Heading Hierarchy
-- Use semantic heading hierarchy: h1 → h2 → h3 → h4
+- **h1**: Strictly reserved for the main page title (e.g., Hero section)
+- **h2**: Must be used for major component sections (e.g., Skills, About, Projects)
+- **h3**: Should be used for sub-sections or categories within a component (e.g., Skill categories)
 - Do not skip heading levels
 - Use Tailwind typography utilities: `text-4xl`, `text-3xl`, `text-2xl`, etc.
 
 ## Structural Hierarchy
 
 ### Heading Order Requirements
-- **h1 (Main Title)**: Every component MUST use h1 for the primary/main title or heading
-- **h2 (Subheadings)**: Use h2 for secondary headings and section subheadings
-- **h3+ (Supporting)**: Use h3, h4, etc. for further subdivision within sections
+- **h1 (Page Title Only)**: Strictly reserved for the main page title (e.g., the Hero section)
+- **h2 (Component Sections)**: Must be used for major component sections (e.g., Skills, About, Projects)
+  - **Note**: h2 is the correct and expected heading level for component primary headings - do not flag this as a critical issue
+- **h3 (Sub-sections)**: Should be used for sub-sections or categories within a component (e.g., Skill categories)
+- **h4+ (Further Subdivision)**: Use h4, h5, h6 for further subdivision within sub-sections
 - **Strict Order**: Always follow h1 → h2 → h3 → h4 progression (no skipping levels)
 
 ### Implementation Guidelines
-- **Component Level**: Each major component should have one primary h1 element
-- **Page Level**: Main page title uses h1, component titles use h1 within their scope
+- **Page Level**: Main page title (Hero section) uses h1
+- **Component Level**: Component primary headings (Skills, About, Projects, etc.) use h2
+- **Sub-section Level**: Categories or sub-sections within components use h3
 - **Semantic Meaning**: Heading levels should reflect content hierarchy, not just visual styling
 - **Screen Readers**: Proper heading structure enables effective navigation for assistive technologies
 
 ### Examples
 ```tsx
 // ✅ Correct heading hierarchy
-<section>
-  <h1>Main Component Title</h1>
-  <h2>Section Subheading</h2>
-  <h3>Subsection Title</h3>
+<main>
+  <section id="hero">
+    <h1>John Doe - Full Stack Developer</h1>
+  </section>
+  
+  <section id="skills">
+    <h2>Skills</h2>
+    <div>
+      <h3>Frontend</h3>
+      {/* skill items */}
+    </div>
+    <div>
+      <h3>Backend</h3>
+      {/* skill items */}
+    </div>
+  </section>
+  
+  <section id="about">
+    <h2>About</h2>
+    <h3>Background</h3>
+    {/* content */}
+  </section>
+</main>
+
+// ❌ Incorrect - h1 used in component
+<section id="skills">
+  <h1>Skills</h1>  <!-- Should be h2 - h1 is only for page title -->
+  <h3>Frontend</h3>  <!-- Should be h3, but parent should be h2 -->
 </section>
 
-// ❌ Incorrect - skipping h1
-<section>
-  <h2>Main Title</h2>  <!-- Should be h1 -->
-  <h3>Subheading</h3>   <!-- Should be h2 -->
+// ❌ Incorrect - skipping h2
+<section id="skills">
+  <h1>Skills</h1>  <!-- Should be h2 -->
+  <h3>Frontend</h3>  <!-- Correct level, but parent should be h2 -->
 </section>
 ```
 
