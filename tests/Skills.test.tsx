@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Skills from '@/app/components/Skills';
 import { SKILLS_DATA } from '@/app/lib/skills';
+import type { SkillCategoryData } from '@/app/types/skills';
 
 describe('Skills', () => {
   // 1. Core Functionality Tests
@@ -59,12 +60,6 @@ describe('Skills', () => {
     badges.forEach((badge) => {
       expect(badge).toHaveClass('flex', 'items-center', 'rounded-full');
     });
-  });
-
-  it('returns null when SKILLS_DATA is empty', () => {
-    // Component should render when data exists
-    const { container } = render(<Skills />);
-    expect(container.firstChild).not.toBeNull();
   });
 
   // 2. Structural Hierarchy Tests
@@ -275,6 +270,35 @@ describe('Skills', () => {
     const { container } = render(<Skills />);
     const section = container.querySelector('section');
     expect(section).toBeInTheDocument();
+  });
+
+  describe('Empty data edge case', () => {
+    // Local constant for edge case testing
+    const EMPTY_SKILLS_DATA: SkillCategoryData[] = [];
+
+    beforeEach(() => {
+      // Mock the module before each test in this describe block
+      vi.doMock('@/app/lib/skills', () => ({
+        SKILLS_DATA: EMPTY_SKILLS_DATA,
+      }));
+    });
+
+    afterEach(() => {
+      // Clean up after each test
+      vi.doUnmock('@/app/lib/skills');
+      vi.resetModules();
+    });
+
+    it('returns null when SKILLS_DATA is empty', async () => {
+      // Clear module cache and dynamically import to use mocked module
+      vi.resetModules();
+      const SkillsModule = await import('@/app/components/Skills');
+      const SkillsWithEmptyData = SkillsModule.default;
+      const { container } = render(<SkillsWithEmptyData />);
+
+      // Component should return null when data is empty
+      expect(container.firstChild).toBeNull();
+    });
   });
 
   it('maintains proper structure with all categories', () => {

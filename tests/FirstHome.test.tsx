@@ -128,7 +128,9 @@ describe('FirstHome', () => {
   });
 
   it('renders without background gradient when noBackground is true', () => {
-    const { container } = render(<FirstHome {...mockProps} noBackground={true} />);
+    const { container } = render(
+      <FirstHome {...mockProps} noBackground={true} />
+    );
 
     const section = container.querySelector('section');
     expect(section).not.toHaveClass('bg-gradient-to-br');
@@ -142,7 +144,9 @@ describe('FirstHome', () => {
   });
 
   it('renders with background gradient when noBackground is false', () => {
-    const { container } = render(<FirstHome {...mockProps} noBackground={false} />);
+    const { container } = render(
+      <FirstHome {...mockProps} noBackground={false} />
+    );
 
     const section = container.querySelector('section');
     expect(section).toHaveClass('bg-gradient-to-br');
