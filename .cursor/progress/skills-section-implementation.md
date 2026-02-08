@@ -6,7 +6,7 @@
 
 **Context**: The portfolio currently displays skills on the home page using SkillCard components. Adding a dedicated Skills section to the About page will provide a more detailed, categorized view of technical skills with visual icons. This complements the Experience section and provides visitors with a comprehensive view of technical capabilities.
 
-**Status**: 🔄 In Progress | **Phase**: 2 of 3 | **Progress**: 69% (9/13 steps)
+**Status**: 🔄 In Progress | **Phase**: 2 of 3 | **Progress**: 60% (9/15 steps)
 
 **Success Metrics**:
 
@@ -228,6 +228,63 @@ _No steps in progress_
 **Dependencies**: STEP-006--FIX-2
 
 **Estimated Effort**: 15 minutes
+
+- [x] **STEP-014**: Code review fixes - add aria-label to skill badges ✅
+  - Completed: 2026-02-08
+  - Notes: Code review critical issue fix: Added `aria-label={`${skill.name} skill`}` to each skill badge div element. This resolves the accessibility issue where skill badges had icons marked with `aria-hidden="true"` but the parent container lacked a descriptive label for screen readers. Screen readers can now properly announce the skill name even though the icon is hidden from assistive technologies.
+
+**Description**: Code review critical accessibility fix - skill badges lacked aria-label for screen readers.
+
+**Implementation Details**:
+
+- Added aria-label to skill badge divs:
+  - Added `aria-label={`${skill.name} skill`}` to each skill badge container
+  - Reason: Icons are marked with `aria-hidden="true"` (decorative), so the parent container needs a descriptive label for screen readers to announce the skill name
+  - Fixes critical accessibility issue identified in code review
+
+**Success Criteria**:
+
+- ✅ All skill badges have aria-label attributes
+- ✅ Screen readers can announce skill names properly
+- ✅ Accessibility compliance improved (WCAG AA)
+- ✅ Component follows accessibility standards
+
+**Files Modified**:
+
+- `app/components/Skills.tsx` (added aria-label to skill badge divs)
+
+**Dependencies**: STEP-013
+
+**Estimated Effort**: 5 minutes
+
+- [x] **STEP-015**: Code review fixes - reorganize className order to follow styling standards ✅
+  - Completed: 2026-02-08
+  - Notes: Code review warning fix: Reorganized className order in skill badge div element to follow styling standards (Layout → Spacing → Colors → Effects). Changed from `flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 min-h-[44px]` to `flex items-center gap-2 px-4 py-2 min-h-[44px] border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-full`. This ensures consistent className organization across the codebase per styling-standards.mdc.
+
+**Description**: Code review warning fix - className order doesn't follow styling standards.
+
+**Implementation Details**:
+
+- Reorganized className order in skill badge div:
+  - Layout: `flex items-center` (first)
+  - Spacing: `gap-2 px-4 py-2 min-h-[44px]` (second)
+  - Colors: `border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300` (third)
+  - Effects: `rounded-full` (last)
+  - Reason: Follows styling-standards.mdc requirement for className organization to improve code consistency and maintainability
+
+**Success Criteria**:
+
+- ✅ Skill badge className follows Layout → Spacing → Colors → Effects order
+- ✅ Component follows styling standards for className organization
+- ✅ Code consistency improved across codebase
+
+**Files Modified**:
+
+- `app/components/Skills.tsx` (reorganized className order in skill badge div)
+
+**Dependencies**: STEP-014
+
+**Estimated Effort**: 5 minutes
 
 ### 🚫 Blocked Items
 
@@ -849,7 +906,7 @@ docs: update progress tracking for Skills section implementation
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 54% (7/13 steps completed)
+**Overall Progress**: 60% (9/15 steps completed)
 
 **Phase Breakdown**:
 
@@ -877,12 +934,16 @@ docs: update progress tracking for Skills section implementation
   - STEP-011: Final validation ⏳
   - STEP-012: Update progress document ⏳
 
-- **Additional Steps**: ✅ Complete (1/1 step)
+- **Additional Steps**: ✅ Complete (3/3 steps)
   - STEP-013: Code review fixes - remove interactive states and add responsive breakpoints ✅
     - Removed hover states and transitions from skill badges (made them non-interactive decorative elements to resolve accessibility issue - badges had hover but no focus/keyboard accessibility)
     - Added intermediate responsive breakpoints: section padding `p-6 lg:p-8` → `p-4 sm:p-6 lg:p-8`, heading size `text-2xl lg:text-3xl` → `text-2xl sm:text-3xl lg:text-4xl`, heading margin `mb-6` → `mb-4 sm:mb-6` for better mobile-first design
+  - STEP-014: Code review fixes - add aria-label to skill badges ✅
+    - Added `aria-label={`${skill.name} skill`}` to each skill badge div to resolve critical accessibility issue where icons are marked `aria-hidden="true"` but parent container lacked descriptive label for screen readers
+  - STEP-015: Code review fixes - reorganize className order to follow styling standards ✅
+    - Reorganized className order in skill badge div to follow Layout → Spacing → Colors → Effects order per styling-standards.mdc
 
-**Note**: Progress calculation includes original steps (1-12) plus additional step (13) = 13 total steps. Completed steps: Phase 1 (2) + Phase 2 (4) + Phase 3 (0) + Additional Steps (1) = 7/13 = 54%. FIX entries (STEP-002--FIX, STEP-002--FIX-2, STEP-006--FIX, STEP-006--FIX-2) are displayed in the "Completed Steps" section for visibility and historical tracking but are NOT counted in progress percentages as they are corrections to existing steps, not new work items.
+**Note**: Progress calculation includes original steps (1-12) plus additional steps (13-15) = 15 total steps. Completed steps: Phase 1 (2) + Phase 2 (4) + Phase 3 (0) + Additional Steps (3) = 9/15 = 60%. FIX entries (STEP-002--FIX, STEP-002--FIX-2, STEP-006--FIX, STEP-006--FIX-2) are displayed in the "Completed Steps" section for visibility and historical tracking but are NOT counted in progress percentages as they are corrections to existing steps, not new work items.
 
 ---
 
@@ -898,7 +959,7 @@ docs: update progress tracking for Skills section implementation
 
 **Components**:
 
-- `app/components/Skills.tsx` ✅ (created - Skills component with card layout, pill-shaped badges, monochrome styling, and accessibility attributes. Updated with code review fixes: removed redundant role="region", fixed heading hierarchy h2→h3, added "use client" directive, removed interactive states (hover/transitions) from badges, added intermediate responsive breakpoints)
+- `app/components/Skills.tsx` ✅ (created - Skills component with card layout, pill-shaped badges, monochrome styling, and accessibility attributes. Updated with code review fixes: removed redundant role="region", fixed heading hierarchy h2→h3, added "use client" directive, removed interactive states (hover/transitions) from badges, added intermediate responsive breakpoints, added aria-label to skill badges for screen reader accessibility, reorganized className order to follow Layout → Spacing → Colors → Effects)
 
 ---
 
@@ -1001,4 +1062,4 @@ docs: update progress tracking for Skills section implementation
 
 ---
 
-_Last Updated: Code review fixes applied - removed interactive states (hover/transitions) from skill badges, added intermediate responsive breakpoints (sm:, md:) - 2026-02-08_
+_Last Updated: Code review fixes applied - added aria-label to skill badges, reorganized className order to follow styling standards - 2026-02-08_

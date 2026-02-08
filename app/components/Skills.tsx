@@ -24,7 +24,8 @@ export default function Skills() {
                 return (
                   <div
                     key={skill.name}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 min-h-[44px]"
+                    className="flex items-center gap-2 px-4 py-2 min-h-[44px] border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-full"
+                    aria-label={`${skill.name} skill`}
                   >
                     <IconComponent className="w-5 h-5" aria-hidden="true" />
                     <span className="text-sm font-medium">{skill.name}</span>
