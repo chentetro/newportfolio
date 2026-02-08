@@ -93,7 +93,8 @@ The AI MUST automatically update progress documents in the following scenarios W
 - Include details about what was modified and why
 - Example format: "STEP-006--FIX: Fix heading hierarchy and semantic structure"
 - Do NOT replace the original step entry - keep both for historical tracking
-- Update progress counters to reflect the fix (count as additional step if it adds work)
+- **FIX entries should be displayed in the "Completed Steps" section for visibility and historical tracking**
+- **DO NOT count FIX entries in progress calculations** - they are corrections to existing steps, not new steps. Progress percentages should only count the original numbered steps (STEP-001, STEP-002, etc.) and additional steps from the "Additional Steps Not Included in the Original Plan" section
 
 **When Adding New Steps Not in Original Plan**:
 
