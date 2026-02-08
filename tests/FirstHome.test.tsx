@@ -116,7 +116,45 @@ describe('FirstHome', () => {
   });
 
   // 4. Styling and Layout Tests
-  it('applies correct styling classes for gradient background', () => {
+  it('applies correct styling classes for gradient background by default', () => {
+    const { container } = render(<FirstHome {...mockProps} />);
+
+    const section = container.querySelector('section');
+    expect(section).toHaveClass('bg-gradient-to-br');
+    expect(section).toHaveClass('from-blue-50');
+    expect(section).toHaveClass('to-white');
+    expect(section).toHaveClass('dark:from-gray-800');
+    expect(section).toHaveClass('dark:to-gray-900');
+  });
+
+  it('renders without background gradient when noBackground is true', () => {
+    const { container } = render(<FirstHome {...mockProps} noBackground={true} />);
+
+    const section = container.querySelector('section');
+    expect(section).not.toHaveClass('bg-gradient-to-br');
+    expect(section).not.toHaveClass('from-blue-50');
+    expect(section).not.toHaveClass('to-white');
+    expect(section).not.toHaveClass('dark:from-gray-800');
+    expect(section).not.toHaveClass('dark:to-gray-900');
+    // Should still have padding classes
+    expect(section).toHaveClass('py-12');
+    expect(section).toHaveClass('px-4');
+  });
+
+  it('renders with background gradient when noBackground is false', () => {
+    const { container } = render(<FirstHome {...mockProps} noBackground={false} />);
+
+    const section = container.querySelector('section');
+    expect(section).toHaveClass('bg-gradient-to-br');
+    expect(section).toHaveClass('from-blue-50');
+    expect(section).toHaveClass('to-white');
+    expect(section).toHaveClass('dark:from-gray-800');
+    expect(section).toHaveClass('dark:to-gray-900');
+    expect(section).toHaveClass('py-12');
+    expect(section).toHaveClass('px-4');
+  });
+
+  it('renders with background gradient when noBackground is not provided', () => {
     const { container } = render(<FirstHome {...mockProps} />);
 
     const section = container.querySelector('section');
