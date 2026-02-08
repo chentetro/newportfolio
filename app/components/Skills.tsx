@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { SKILLS_DATA } from '../lib/skills';
 
