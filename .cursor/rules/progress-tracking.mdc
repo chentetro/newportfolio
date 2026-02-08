@@ -86,6 +86,24 @@ The AI MUST automatically update progress documents in the following scenarios W
 - Update progress counters accordingly
 - Example: "STEP-011: Move SocialLink interface to app/types/social.ts following project organization pattern"
 
+**When Modifying Existing Steps**:
+
+- For every step that is modified or needs correction, add a 'STEP-NUMBER--FIX' entry directly below the original step entry
+- The fix entry should be placed immediately after the original step in the "Completed Steps" section
+- Include details about what was modified and why
+- Example format: "STEP-006--FIX: Fix heading hierarchy and semantic structure"
+- Do NOT replace the original step entry - keep both for historical tracking
+- Update progress counters to reflect the fix (count as additional step if it adds work)
+
+**When Adding New Steps Not in Original Plan**:
+
+- If adding steps that were not part of the original implementation plan, create a separate section titled "Additional Steps Not Included in the Original Plan"
+- Place this section after the "Pending Steps" section and before "Blocked Items" (or after "Blocked Items" if that section exists)
+- List all new steps in this section with full details following the same format as original steps
+- These steps should still be tracked and counted in progress percentages
+- Use sequential numbering continuing from the last original step (e.g., if original plan had STEP-012, new steps start at STEP-013)
+- Update the progress percentage calculation to include these additional steps
+
 **When Fixing Issues Unrelated to the Tracked Feature**:
 
 - **DO NOT** add these fixes as steps in the main progress tracking
@@ -231,6 +249,9 @@ Every progress document should follow this structure:
 
 ### ⏳ Pending Steps
 [Steps not yet started]
+
+### 📋 Additional Steps Not Included in the Original Plan
+[New steps added during implementation that weren't in the original plan]
 
 ### 🚫 Blocked Items
 [Steps that cannot proceed]

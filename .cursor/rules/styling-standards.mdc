@@ -219,13 +219,11 @@ const header = screen.getByRole('banner'); // May fail if header is inside secti
 ## Structural Hierarchy
 
 ### Heading Order Requirements
-- **h1 (Main Title)**: Every component MUST use h1 for the primary/main title or heading
 - **h2 (Subheadings)**: Use h2 for secondary headings and section subheadings
 - **h3+ (Supporting)**: Use h3, h4, etc. for further subdivision within sections
 - **Strict Order**: Always follow h1 → h2 → h3 → h4 progression (no skipping levels)
 
 ### Implementation Guidelines
-- **Component Level**: Each major component should have one primary h1 element
 - **Page Level**: Main page title uses h1, component titles use h1 within their scope
 - **Semantic Meaning**: Heading levels should reflect content hierarchy, not just visual styling
 - **Screen Readers**: Proper heading structure enables effective navigation for assistive technologies
