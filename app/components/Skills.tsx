@@ -1,5 +1,3 @@
-'use client';
-
 import { SKILLS_DATA } from '../lib/skills';
 
 export default function Skills() {
@@ -9,9 +7,6 @@ export default function Skills() {
 
   return (
     <section className="p-4 sm:p-6 lg:p-8" aria-label="Skills section">
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 dark:text-gray-100 mb-4 sm:mb-6">
-        Skills
-      </h2>
       <div className="space-y-8">
         {SKILLS_DATA.map((categoryData) => (
           <div key={categoryData.category}>

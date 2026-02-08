@@ -11,14 +11,16 @@ alwaysApply: true//איך לכתוב בדיקה לCOMPONENTOSבהמשך אוסי
 
 Every component MUST maintain proper heading order to ensure accessibility and semantic structure:
 
-- **H1 for Main Titles**: Each component must have one primary H1 element for the main title
-- **H2 for Subheadings**: Use H2 for section subheadings and secondary content
-- **H3+ for Supporting**: Use H3, H4, etc. for further subdivision within sections
-- **Strict Order**: Always follow H1 → H2 → H3 → H4 progression (no skipping levels)
+- **Flexible Starting Point**: Components can start with H1, H2, or H3 depending on their context within the page structure
+- **Strict Order**: Once a heading level is chosen, always follow sequential progression (no skipping levels)
+  - If starting with H1: H1 → H2 → H3 → H4
+  - If starting with H2: H2 → H3 → H4 → H5
+  - If starting with H3: H3 → H4 → H5 → H6
+- **No Level Skipping**: Never skip heading levels (e.g., H1 → H3 is invalid, H2 → H4 is invalid)
 - **Test Both Semantic and Visual**: Verify both the semantic tag and visual hierarchy
 
 ```tsx
-// ✅ Correct heading hierarchy testing
+// ✅ Correct heading hierarchy testing - Component starting with H1
 it('maintains proper heading hierarchy', () => {
   render(<Component {...props} />);
   
@@ -33,6 +35,48 @@ it('maintains proper heading hierarchy', () => {
   
   const subHeading = screen.getByRole('heading', { level: 2 });
   expect(subHeading).toHaveTextContent('Expected Subtitle');
+});
+
+// ✅ Correct heading hierarchy testing - Component starting with H2
+it('maintains proper heading hierarchy', () => {
+  render(<Component {...props} />);
+  
+  // Test semantic structure for H2 → H3 hierarchy
+  const headings = screen.getAllByRole('heading');
+  expect(headings[0]).toHaveProperty('tagName', 'H2');
+  expect(headings[1]).toHaveProperty('tagName', 'H3');
+  
+  // Test specific content
+  const mainHeading = screen.getByRole('heading', { level: 2 });
+  expect(mainHeading).toHaveTextContent('Expected Title');
+  
+  const subHeading = screen.getByRole('heading', { level: 3 });
+  expect(subHeading).toHaveTextContent('Expected Subtitle');
+});
+
+// ✅ Correct heading hierarchy testing - Component starting with H3
+it('maintains proper heading hierarchy', () => {
+  render(<Component {...props} />);
+  
+  // Test semantic structure for H3 → H4 hierarchy
+  const headings = screen.getAllByRole('heading');
+  expect(headings[0]).toHaveProperty('tagName', 'H3');
+  expect(headings[1]).toHaveProperty('tagName', 'H4');
+  
+  // Test specific content
+  const mainHeading = screen.getByRole('heading', { level: 3 });
+  expect(mainHeading).toHaveTextContent('Expected Title');
+  
+  const subHeading = screen.getByRole('heading', { level: 4 });
+  expect(subHeading).toHaveTextContent('Expected Subtitle');
+});
+
+// ❌ Incorrect - skipping heading levels
+it('has headings', () => {
+  render(<Component {...props} />);
+  const headings = screen.getAllByRole('heading');
+  expect(headings[0]).toHaveProperty('tagName', 'H1');
+  expect(headings[1]).toHaveProperty('tagName', 'H3'); // ❌ Skipped H2
 });
 
 // ❌ Incorrect - missing hierarchy validation
@@ -184,7 +228,8 @@ describe('ComponentName', () => {
 
   // 2. Structural Hierarchy
   it('maintains proper heading hierarchy', () => {
-    // Test H1 → H2 → H3 structure
+    // Test sequential heading structure (H1→H2, H2→H3, H3→H4, etc.)
+    // Verify no level skipping occurs
   });
 
   it('uses semantic HTML structure', () => {
@@ -419,7 +464,7 @@ it('handles all edge cases gracefully', () => {
 
 Every component MUST pass these quality gates:
 
-1. ✅ **Heading Hierarchy**: Proper H1 → H2 → H3 structure verified
+1. ✅ **Heading Hierarchy**: Proper sequential heading structure verified (can start with H1, H2, or H3, but must maintain sequential order with no level skipping)
 2. ✅ **Stable Selectors**: Uses querySelector for semantic elements
 3. ✅ **Direct Verification**: All attributes verified directly
 4. ✅ **Accessibility**: All interactive elements have aria-labels, icons have aria-hidden

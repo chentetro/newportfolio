@@ -1,12 +1,5 @@
 import Image from 'next/image';
-
-interface FirstHomeProps {
-  imageUrl: string;
-  imageAlt: string;
-  mainHeading: string;
-  subHeading: string;
-  paragraphContent: string;
-}
+import type { FirstHomeProps } from '@/app/types/firsthomeprops';
 
 export default function FirstHome({
   imageUrl,
@@ -14,10 +7,15 @@ export default function FirstHome({
   mainHeading,
   subHeading,
   paragraphContent,
+  noBackground = false,
 }: FirstHomeProps) {
+  const backgroundClasses = noBackground
+    ? 'py-12 px-4'
+    : 'bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 py-12 px-4';
+
   return (
     <section
-      className="relative bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 py-12 px-4"
+      className={`relative ${backgroundClasses}`}
       role="region"
       aria-label="First about section"
     >
