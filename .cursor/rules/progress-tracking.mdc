@@ -1,6 +1,6 @@
 ---
 description: "Progress tracking standards for maintaining development progress documents in .cursor/progress folder and updating them after each step completion"
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Progress Tracking Standards

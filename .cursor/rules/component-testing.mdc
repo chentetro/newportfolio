@@ -1,6 +1,6 @@
 ---
 description: "Comprehensive testing standards for UI components and future features including structural hierarchy, stable selectors, direct data verification, and accessibility requirements"
-alwaysApply: true//איך לכתוב בדיקה לCOMPONENTOSבהמשך אוסיף בדיקה לCHATBOT וכו קצת שונה מבדיקה של קומפננטה רגילה
+alwaysApply: true
 ---
 
 # Component Testing Standards
