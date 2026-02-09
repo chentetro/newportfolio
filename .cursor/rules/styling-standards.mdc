@@ -1,6 +1,6 @@
 ---
 description: "Styling standards and design system guidelines for the portfolio project including Tailwind CSS, mobile-first design, monochrome color palette, and accessibility requirements"
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Styling Standards for Portfolio Project
