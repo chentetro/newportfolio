@@ -59,7 +59,7 @@ When this command is run:
 
 7. **Provide structured feedback:**
 
-   ```markdown
+   ````markdown
    ## MDC Rule File Validation Results
 
    **File:** [relative-path-to-file]
@@ -81,6 +81,7 @@ When this command is run:
    **Fix:** [How to fix the issue]
 
    **Example:**
+
    ```yaml
    # Current (problematic)
    alwaysApply: true//comment here
@@ -89,8 +90,9 @@ When this command is run:
    alwaysApply: true
    # comment here
    ```
+   ````
 
-   ---
+   ***
 
    ## ⚠️ Warnings (Should Fix)
 
@@ -99,14 +101,16 @@ When this command is run:
    **Issue:** [Description of the warning]
    **Suggestion:** [How to improve]
 
-   ---
+   ***
 
    ## 📊 Summary
-
    - **File:** [file path]
    - **Status:** ✅ Valid | ❌ Invalid | ⚠️ Valid with warnings
    - **Errors:** [count]
    - **Warnings:** [count]
+
+   ```
+
    ```
 
 ## Validation Rules
@@ -136,11 +140,13 @@ When this command is run:
 ### Issue: JavaScript-style comment in YAML
 
 **Problem:**
+
 ```yaml
 alwaysApply: true//comment here
 ```
 
 **Fix:**
+
 ```yaml
 alwaysApply: true
 # comment here
@@ -149,6 +155,7 @@ alwaysApply: true
 ### Issue: Missing description field
 
 **Problem:**
+
 ```yaml
 ---
 alwaysApply: true
@@ -156,9 +163,10 @@ alwaysApply: true
 ```
 
 **Fix:**
+
 ```yaml
 ---
-description: "Description of what this rule does"
+description: 'Description of what this rule does'
 alwaysApply: true
 ---
 ```
@@ -166,6 +174,7 @@ alwaysApply: true
 ### Issue: Description is not a string
 
 **Problem:**
+
 ```yaml
 ---
 description: true
@@ -173,26 +182,29 @@ description: true
 ```
 
 **Fix:**
+
 ```yaml
 ---
-description: "Description of what this rule does"
+description: 'Description of what this rule does'
 ---
 ```
 
 ### Issue: AlwaysApply is a string instead of boolean
 
 **Problem:**
+
 ```yaml
 ---
-description: "Rule description"
-alwaysApply: "true"
+description: 'Rule description'
+alwaysApply: 'true'
 ---
 ```
 
 **Fix:**
+
 ```yaml
 ---
-description: "Rule description"
+description: 'Rule description'
 alwaysApply: true
 ---
 ```
@@ -200,6 +212,7 @@ alwaysApply: true
 ## Integration with Cursor Rules
 
 This validation ensures compliance with Cursor's official rules format:
+
 - Reference: https://cursor.com/docs/context/rules
 - Rules should be stored in `.cursor/rules/` directory
 - Rules should have proper YAML frontmatter with description
@@ -248,4 +261,3 @@ This validation ensures compliance with Cursor's official rules format:
 ---
 
 _This command validates `.mdc` rule files to ensure they comply with Cursor's rules format specification, helping maintain consistency and correctness across project rules._
-
