@@ -97,6 +97,11 @@
   - **Completed**: Phase 1 implementation
   - **Notes**: Created `app/types/project.ts` with `Technology`, `Language`, and `Project` types following existing type patterns. Created `content/projects.ts` with 4 example projects using existing GitHub base URL and image path. Types are ready for use in components and pages.
 
+- [x] **STEP-001--FIX**: Refine `projects` typing using `satisfies Project[]` ✅
+  - **Phase**: 1 – Data & Types Setup
+  - **Description**: Update `content/projects.ts` to use `satisfies Project[]` instead of a direct `Project[]` annotation on the `projects` export and refine project metadata.
+  - **Notes**: Keeps `projects` strongly typed while preserving literal types for better inference in consuming components, and removes the duplicate `Python` entry from both technologies and languages for the data visualization project by keeping `Python` only in `languages`.
+
 ### 🔄 In Progress
 
 _(None – Phase 1 complete, ready for Phase 2.)_
@@ -207,4 +212,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 - `imageSrc` and `imageAlt` live in the content layer so components stay presentational and accessible.
 - All new code should follow the existing component testing, styling, and progress-tracking standards.
 
-_Last Updated: Phase 1 complete - STEP-001 completed (types and content created)._
+_Last Updated: Phase 1 refinements - STEP-001 and STEP-001--FIX completed (types, content, typing refinement, and tech/language de-duplication)._
