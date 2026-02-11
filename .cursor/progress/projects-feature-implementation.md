@@ -6,9 +6,9 @@
 
 **Context**: The portfolio currently has a minimal `/projects` page. This feature will turn it into a content-driven, accessible, monochrome-styled projects section that follows your global styling, component testing, and progress-tracking standards.
 
-**Status**: ⏳ Not Started  
-**Phase**: 0 of 5  
-**Progress**: 0% (0/7 steps completed)
+**Status**: 🔄 In Progress  
+**Phase**: 1 of 5  
+**Progress**: 14% (1/7 steps completed)
 
 **Success Metrics**:
 
@@ -90,18 +90,23 @@
 
 ### ✅ Completed Steps
 
-_(None yet – initial document creation only.)_
-
-### 🔄 In Progress
-
-_(None – feature not started.)_
-
-### ⏳ Pending Steps
-
-- [ ] **STEP-001**: Data & types setup in `types/project.ts` and `content/projects.ts`
+- [x] **STEP-001**: Data & types setup in `app/types/project.ts` and `content/projects.ts` ✅
   - **Phase**: 1 – Data & Types Setup
   - **Description**: Define `Project` interface and create `projects` array with all required fields including `imageSrc` and `imageAlt`.
   - **Success Criteria**: `projects` is strongly typed and used in both pages and components without TypeScript errors.
+  - **Completed**: Phase 1 implementation
+  - **Notes**: Created `app/types/project.ts` with `Technology`, `Language`, and `Project` types following existing type patterns. Created `content/projects.ts` with 4 example projects using existing GitHub base URL and image path. Types are ready for use in components and pages.
+
+- [x] **STEP-001--FIX**: Refine `projects` typing using `satisfies Project[]` ✅
+  - **Phase**: 1 – Data & Types Setup
+  - **Description**: Update `content/projects.ts` to use `satisfies Project[]` instead of a direct `Project[]` annotation on the `projects` export and refine project metadata.
+  - **Notes**: Keeps `projects` strongly typed while preserving literal types for better inference in consuming components, and removes the duplicate `Python` entry from both technologies and languages for the data visualization project by keeping `Python` only in `languages`.
+
+### 🔄 In Progress
+
+_(None – Phase 1 complete, ready for Phase 2.)_
+
+### ⏳ Pending Steps
 
 - [ ] **STEP-002**: Implement `ProjectCard` component
   - **Phase**: 2 – Project Card Component
@@ -162,12 +167,12 @@ _(None.)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 0% (0/7 steps completed)
+**Overall Progress**: 14% (1/7 steps completed)
 
 **Phase Breakdown**:
 
-- Phase 1 – Data & Types Setup: 0/1
-  - Steps: **STEP-001**
+- Phase 1 – Data & Types Setup: 1/1 ✅
+  - Steps: **STEP-001** ✅
 - Phase 2 – Project Card Component: 0/1
   - Steps: **STEP-002**
 - Phase 3 – Projects Index Page: 0/1
@@ -181,13 +186,16 @@ _(None.)_
 
 ## 🔗 Related Files
 
+**Created**:
+
+- `app/types/project.ts` ✅ (created - Project interface with Technology and Language union types)
+- `content/projects.ts` ✅ (created - typed projects array with 4 example projects)
+
 **Planned / To Be Created or Updated**:
 
 - `app/projects/page.tsx` (extend existing minimal page)
 - `app/projects/[slug]/page.tsx`
 - `app/components/ProjectCard.tsx`
-- `types/project.ts`
-- `content/projects.ts`
 - `tests/ProjectsPage.test.tsx`
 - `tests/ProjectDetailPage.test.tsx`
 
@@ -204,4 +212,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 - `imageSrc` and `imageAlt` live in the content layer so components stay presentational and accessible.
 - All new code should follow the existing component testing, styling, and progress-tracking standards.
 
-_Last Updated: Initial projects feature progress document created._
+_Last Updated: Phase 1 refinements - STEP-001 and STEP-001--FIX completed (types, content, typing refinement, and tech/language de-duplication)._
