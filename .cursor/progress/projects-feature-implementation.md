@@ -108,6 +108,11 @@
   - **Success Criteria**: Card is keyboard-focusable, uses `Link` to `/projects/{slug}`, and reveals stack info on hover.
   - **Notes**: Created `ProjectCard` with `Project`-typed props using `next/image` and `next/link`. The card is fully monochrome for foreground elements, mobile-first, uses a hover/focus overlay (`group-hover` and `group-focus-within`) to reveal technologies and languages, and includes proper ARIA labels, alt text, explicit 44x44px touch target sizing on the interactive link, and focus ring. A dedicated `tests/ProjectCard.test.tsx` file verifies structure, accessibility, monochrome styling, and edge cases.
 
+- [x] **STEP-002--FIX**: Use a stable selector for the description paragraph in `ProjectCard` tests ✅
+  - **Phase**: 2 – Project Card Component
+  - **Description**: Update `tests/ProjectCard.test.tsx` to avoid selecting the overlay's "Stack" label when asserting the description paragraph.
+  - **Notes**: Replaced `container.querySelector('p')` in the "stable selectors" test with a more specific selector (`'div.flex.flex-col.gap-2.p-4 > p'`) that targets the content area's description paragraph rather than the overlay labels, aligning with the testing standards for stable selectors.
+
 ### 🔄 In Progress
 
 _(None – Phase 1 and Phase 2 complete, ready for Phase 3.)_
@@ -213,4 +218,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 - `imageSrc` and `imageAlt` live in the content layer so components stay presentational and accessible.
 - All new code should follow the existing component testing, styling, and progress-tracking standards.
 
-_Last Updated: Phase 2 – STEP-002 completed (ProjectCard component implemented with hover/focus overlay, accessibility, monochrome styling, explicit touch targets, and dedicated tests)._
+_Last Updated: Phase 2 – STEP-002--FIX applied (ProjectCard description selector in tests refined to avoid overlay labels and improve selector stability)._

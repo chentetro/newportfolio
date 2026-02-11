@@ -70,7 +70,9 @@ describe('ProjectCard', () => {
     const titleHeading = container.querySelector('h2');
     expect(titleHeading).toBeInTheDocument();
 
-    const descriptionParagraph = container.querySelector('p');
+    const descriptionParagraph = container.querySelector(
+      'div.flex.flex-col.gap-2.p-4 > p',
+    );
     expect(descriptionParagraph).toBeInTheDocument();
   });
 
