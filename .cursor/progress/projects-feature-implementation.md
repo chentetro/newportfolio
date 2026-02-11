@@ -102,16 +102,22 @@
   - **Description**: Update `content/projects.ts` to use `satisfies Project[]` instead of a direct `Project[]` annotation on the `projects` export and refine project metadata.
   - **Notes**: Keeps `projects` strongly typed while preserving literal types for better inference in consuming components, and removes the duplicate `Python` entry from both technologies and languages for the data visualization project by keeping `Python` only in `languages`.
 
-### 🔄 In Progress
-
-_(None – Phase 1 complete, ready for Phase 2.)_
-
-### ⏳ Pending Steps
-
-- [ ] **STEP-002**: Implement `ProjectCard` component
+- [x] **STEP-002**: Implement `ProjectCard` component ✅
   - **Phase**: 2 – Project Card Component
   - **Description**: Build a card that shows project image, title, short description, and hover overlay with technologies and languages.
   - **Success Criteria**: Card is keyboard-focusable, uses `Link` to `/projects/{slug}`, and reveals stack info on hover.
+  - **Notes**: Created `ProjectCard` with `Project`-typed props using `next/image` and `next/link`. The card is fully monochrome for foreground elements, mobile-first, uses a hover/focus overlay (`group-hover` and `group-focus-within`) to reveal technologies and languages, and includes proper ARIA labels, alt text, explicit 44x44px touch target sizing on the interactive link, and focus ring. A dedicated `tests/ProjectCard.test.tsx` file verifies structure, accessibility, monochrome styling, and edge cases.
+
+- [x] **STEP-002--FIX**: Use a stable selector for the description paragraph in `ProjectCard` tests ✅
+  - **Phase**: 2 – Project Card Component
+  - **Description**: Update `tests/ProjectCard.test.tsx` to avoid selecting the overlay's "Stack" label when asserting the description paragraph.
+  - **Notes**: Replaced `container.querySelector('p')` in the "stable selectors" test with a more specific selector (`'div.flex.flex-col.gap-2.p-4 > p'`) that targets the content area's description paragraph rather than the overlay labels, aligning with the testing standards for stable selectors.
+
+### 🔄 In Progress
+
+_(None – Phase 1 and Phase 2 complete, ready for Phase 3.)_
+
+### ⏳ Pending Steps
 
 - [ ] **STEP-003**: Wire up `/projects` index page
   - **Phase**: 3 – Projects Index Page
@@ -167,14 +173,14 @@ _(None.)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 14% (1/7 steps completed)
+**Overall Progress**: 28% (2/7 steps completed)
 
 **Phase Breakdown**:
 
 - Phase 1 – Data & Types Setup: 1/1 ✅
   - Steps: **STEP-001** ✅
-- Phase 2 – Project Card Component: 0/1
-  - Steps: **STEP-002**
+- Phase 2 – Project Card Component: 1/1 ✅
+  - Steps: **STEP-002** ✅
 - Phase 3 – Projects Index Page: 0/1
   - Steps: **STEP-003**
 - Phase 4 – Dynamic Detail Page: 0/1
@@ -190,12 +196,12 @@ _(None.)_
 
 - `app/types/project.ts` ✅ (created - Project interface with Technology and Language union types)
 - `content/projects.ts` ✅ (created - typed projects array with 4 example projects)
+- `app/components/ProjectCard.tsx` ✅ (created - accessible, monochrome project card with hover/focus overlay and typed Project props)
 
 **Planned / To Be Created or Updated**:
 
 - `app/projects/page.tsx` (extend existing minimal page)
 - `app/projects/[slug]/page.tsx`
-- `app/components/ProjectCard.tsx`
 - `tests/ProjectsPage.test.tsx`
 - `tests/ProjectDetailPage.test.tsx`
 
@@ -212,4 +218,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 - `imageSrc` and `imageAlt` live in the content layer so components stay presentational and accessible.
 - All new code should follow the existing component testing, styling, and progress-tracking standards.
 
-_Last Updated: Phase 1 refinements - STEP-001 and STEP-001--FIX completed (types, content, typing refinement, and tech/language de-duplication)._
+_Last Updated: Phase 2 – STEP-002--FIX applied (ProjectCard description selector in tests refined to avoid overlay labels and improve selector stability)._
