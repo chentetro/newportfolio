@@ -1,9 +1,11 @@
 ---
 description: "Standards and checklists for page-level tests (structure, accessibility, and behavior)"
-globs: ['app/**/*.{ts,tsx}', 'tests/**/*.{ts,tsx}']
+globs:
+  - 'app/**/page.tsx'
+  - 'tests/**/*.ts'
+  - 'tests/**/*.tsx'
 alwaysApply: false
 ---
-
 # Page Testing
 
 This rule defines **page-level testing standards** for Next.js App Router pages and page shells (route pages that compose multiple components).
@@ -60,6 +62,20 @@ Test user-visible behavior, not implementation details:
 - For forms: type, submit, verify success/error UI and accessible announcements where applicable
 - For async UI: prefer `findBy*` queries for loaded content
 
+### 7) Edge Cases & Error Handling (Mandatory)
+
+Every page MUST include edge-case coverage appropriate to its responsibilities:
+
+- Missing/empty data: renders fallback UI (no crash).
+- Invalid/unexpected data: handles gracefully (no crash), shows safe defaults.
+- Network/data-loading errors (if the page fetches): shows error UI and recovery affordance (retry or navigation).
+- Accessibility feature failures: page remains usable if an enhancement fails (e.g., icon missing, animation disabled, reduced-motion).
+- Loading states: skeleton/spinner is accessible (e.g., `role="status"` / `aria-live` when applicable) and is removed once content loads.
+
+In tests:
+- Prefer asserting visible fallback/error text and that the page still renders `<main>` and key headings.
+- Avoid mocking implementation details; test what the user sees.
+
 ---
 
 ## Recommended Test Skeleton (RTL)
@@ -70,7 +86,7 @@ import userEvent from '@testing-library/user-event'
 import Page from './page'
 
 describe('Page', () => {
-  // 1) Core functionality
+  // 1) Core Functionality
   it('renders the page title and main content', () => {
     const { container } = render(<Page />)
 
@@ -78,7 +94,7 @@ describe('Page', () => {
     expect(container.querySelector('main')).toBeInTheDocument()
   })
 
-  // 2) Structural hierarchy
+  // 2) Structural Hierarchy
   it('maintains proper heading hierarchy', () => {
     render(<Page />)
     const headings = screen.getAllByRole('heading')
@@ -87,15 +103,30 @@ describe('Page', () => {
   })
 
   // 3) Accessibility
-  it('ensures icon-only controls are labeled', () => {
-    render(<Page />)
+  it('meets accessibility requirements for interactive elements and icons', () => {
+    const { container } = render(<Page />)
     const links = screen.getAllByRole('link')
     links.forEach((link) => {
       expect(link.getAttribute('aria-label') || link.textContent?.trim()).toBeTruthy()
     })
+
+    const svgs = container.querySelectorAll('svg')
+    svgs.forEach((svg) => {
+      // Decorative icons should be hidden from screen readers
+      expect(svg.getAttribute('aria-hidden')).toBe('true')
+    })
   })
 
-  // 5) Interactive behavior
+  // 4) Styling and Layout
+  it('applies expected layout constraints (no obvious overflow primitives)', () => {
+    const { container } = render(<Page />)
+
+    // Keep this high-signal and stable: assert key containers exist and have intended structure.
+    expect(container.querySelector('main')).toBeInTheDocument()
+    // Add class assertions only when they are stable requirements (avoid brittle snapshots).
+  })
+
+  // 5) Interactive Behavior
   it('handles primary CTA interaction', async () => {
     const user = userEvent.setup()
     render(<Page />)
@@ -103,6 +134,13 @@ describe('Page', () => {
     const cta = screen.getByRole('link', { name: /projects/i })
     await user.click(cta)
     // assert navigation/scroll outcome appropriate for the page
+  })
+
+  // 6) Edge Cases and Error Handling
+  it('handles missing or empty data gracefully (no crash, fallback UI)', () => {
+    render(<Page />)
+    // Add assertions for fallback UI when applicable to the route
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
   })
 })
 ```
