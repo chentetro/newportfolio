@@ -19,13 +19,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <article
-      className="group bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 min-h-[44px]"
+      className="group min-h-[44px] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
       aria-label={`Project: ${title}`}
     >
       <Link
         href={`/projects/${slug}`}
         aria-label={`View project: ${title}`}
-        className="flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-gray-500"
+        className="flex flex-col h-full min-h-[44px] focus:outline-none focus:ring-2 focus:ring-gray-500"
       >
         <div className="relative w-full h-52 sm:h-56">
           <Image
@@ -36,7 +36,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
 
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4 gap-2">
+          <div className="absolute inset-0 flex flex-col justify-end p-4 gap-2 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200">
             {technologies.length > 0 && (
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-100 mb-1">
@@ -75,7 +75,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </div>
         </div>
 
-        <div className="p-4 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 leading-relaxed">
             {title}
           </h2>

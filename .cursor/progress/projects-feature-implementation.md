@@ -102,12 +102,11 @@
   - **Description**: Update `content/projects.ts` to use `satisfies Project[]` instead of a direct `Project[]` annotation on the `projects` export and refine project metadata.
   - **Notes**: Keeps `projects` strongly typed while preserving literal types for better inference in consuming components, and removes the duplicate `Python` entry from both technologies and languages for the data visualization project by keeping `Python` only in `languages`.
 
--- [x] **STEP-002**: Implement `ProjectCard` component ✅
-
-- **Phase**: 2 – Project Card Component
-- **Description**: Build a card that shows project image, title, short description, and hover overlay with technologies and languages.
-- **Success Criteria**: Card is keyboard-focusable, uses `Link` to `/projects/{slug}`, and reveals stack info on hover.
-- **Notes**: Created `ProjectCard` with `Project`-typed props using `next/image` and `next/link`. The card is fully monochrome for foreground elements, mobile-first, uses a hover/focus overlay (`group-hover` and `group-focus-within`) to reveal technologies and languages, and includes proper ARIA labels, alt text, touch target sizing, and focus ring.
+- [x] **STEP-002**: Implement `ProjectCard` component ✅
+  - **Phase**: 2 – Project Card Component
+  - **Description**: Build a card that shows project image, title, short description, and hover overlay with technologies and languages.
+  - **Success Criteria**: Card is keyboard-focusable, uses `Link` to `/projects/{slug}`, and reveals stack info on hover.
+  - **Notes**: Created `ProjectCard` with `Project`-typed props using `next/image` and `next/link`. The card is fully monochrome for foreground elements, mobile-first, uses a hover/focus overlay (`group-hover` and `group-focus-within`) to reveal technologies and languages, and includes proper ARIA labels, alt text, explicit 44x44px touch target sizing on the interactive link, and focus ring. A dedicated `tests/ProjectCard.test.tsx` file verifies structure, accessibility, monochrome styling, and edge cases.
 
 ### 🔄 In Progress
 
@@ -214,4 +213,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 - `imageSrc` and `imageAlt` live in the content layer so components stay presentational and accessible.
 - All new code should follow the existing component testing, styling, and progress-tracking standards.
 
-_Last Updated: Phase 2 – STEP-002 completed (ProjectCard component implemented with hover/focus overlay, accessibility, and monochrome styling)._
+_Last Updated: Phase 2 – STEP-002 completed (ProjectCard component implemented with hover/focus overlay, accessibility, monochrome styling, explicit touch targets, and dedicated tests)._
