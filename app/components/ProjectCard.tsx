@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import type { Project } from '@/app/types/project';
+import ProjectImage from '@/app/components/ProjectImage';
 
 interface ProjectCardProps {
   project: Project;
@@ -28,10 +28,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         className="flex flex-col h-full min-h-[44px] focus:outline-none focus:ring-2 focus:ring-gray-500"
       >
         <div className="relative w-full h-52 sm:h-56">
-          <Image
+          <ProjectImage
             src={imageSrc}
             alt={imageAlt}
-            fill
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />

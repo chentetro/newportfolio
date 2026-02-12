@@ -7,8 +7,8 @@
 **Context**: The portfolio currently has a minimal `/projects` page. This feature will turn it into a content-driven, accessible, monochrome-styled projects section that follows your global styling, component testing, and progress-tracking standards.
 
 **Status**: 🔄 In Progress  
-**Phase**: 3 of 5  
-**Progress**: 42% (3/7 steps completed)
+**Phase**: 4 of 5  
+**Progress**: 57% (4/7 steps completed)
 
 **Success Metrics**:
 
@@ -120,16 +120,23 @@
   - **Completed**: Phase 3 implementation
   - **Notes**: Updated `app/projects/page.tsx` to import `ProjectCard` and `projects`, wrapped the h1 in a semantic `header` element with a descriptive paragraph, and created a responsive grid layout (`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6`) that maps over all projects. The page maintains proper heading hierarchy (h1 for page title), semantic structure (`main` → `section` → `div` → `header` + grid), and follows monochrome styling standards.
 
-### 🔄 In Progress
-
-_(None – Phase 1, Phase 2, and Phase 3 complete, ready for Phase 4.)_
-
-### ⏳ Pending Steps
-
-- [ ] **STEP-004**: Implement `/projects/[slug]` dynamic page
+- [x] **STEP-004**: Implement `/projects/[slug]` dynamic page ✅
   - **Phase**: 4 – Dynamic Detail Page
   - **Description**: Create `[slug]/page.tsx` that loads a project by `slug` and shows details and GitHub link.
   - **Success Criteria**: Known slugs render correct data; unknown slugs call `notFound()`.
+  - **Completed**: Phase 4 implementation
+  - **Notes**: Created `app/projects/[slug]/page.tsx` with async params handling (Next.js 16 pattern), `generateStaticParams` for static generation of all project pages, and `notFound()` error handling. The page renders semantic HTML structure with proper heading hierarchy (h1 → h2 → h3), displays project image with priority loading, full description, technology and language badges, and GitHub link with all required accessibility attributes (aria-label, target="\_blank", rel="noopener noreferrer"). All styling follows monochrome foreground rules, mobile-first responsive design, and includes proper focus states and 44x44px touch targets.
+
+- [x] **STEP-004--FIX**: Replace inline GitHub SVG with React Icons FaGithub component ✅
+  - **Phase**: 4 – Dynamic Detail Page
+  - **Description**: Refactor GitHub icon in project detail page to use React Icons `FaGithub` component instead of inline SVG for consistency with other components.
+  - **Notes**: Replaced inline SVG GitHub icon (lines 143-154) with `FaGithub` from `react-icons/fa` to match the pattern used in `Footer.tsx` and other components. Maintains same styling (`w-5 h-5`) and accessibility (`aria-hidden="true"`). Code is cleaner and more maintainable.
+
+### 🔄 In Progress
+
+_(None – Phase 1, Phase 2, Phase 3, and Phase 4 complete, ready for Phase 5.)_
+
+### ⏳ Pending Steps
 
 - [ ] **STEP-005**: Apply monochrome, mobile-first styling & accessibility
   - **Phase**: 5 – Styling, Accessibility & Testing
@@ -148,7 +155,12 @@ _(None – Phase 1, Phase 2, and Phase 3 complete, ready for Phase 4.)_
 
 ### 📋 Additional Steps Not Included in the Original Plan
 
-_(None yet.)_
+- [x] **STEP-008**: Add image error handling and fallback UI ✅
+  - **Phase**: 4 – Dynamic Detail Page (Code Review Fix)
+  - **Description**: Implement error handling for project images with fallback UI when images fail to load, addressing code review feedback about missing error state handling.
+  - **Success Criteria**: Images gracefully handle load failures with accessible fallback UI; no broken image displays.
+  - **Completed**: Code review fix implementation
+  - **Notes**: Created `ProjectImage` client component (`app/components/ProjectImage.tsx`) that wraps `next/image` with error handling using `onError` handler and state management. When an image fails to load, displays a monochrome fallback UI with an image icon and "Image unavailable" message. Updated both `app/projects/[slug]/page.tsx` and `app/components/ProjectCard.tsx` to use the new `ProjectImage` component for consistent error handling across all project images. Fallback UI follows monochrome styling standards (gray scale only) and includes proper accessibility attributes (`role="img"`, `aria-label`). Moved `ProjectImageProps` interface to `app/types/projectimage.ts` following project's type organization pattern.
 
 ### 🚫 Blocked Items
 
@@ -175,7 +187,7 @@ _(None.)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 42% (3/7 steps completed)
+**Overall Progress**: 57% (4/7 steps completed)
 
 **Phase Breakdown**:
 
@@ -185,8 +197,8 @@ _(None.)_
   - Steps: **STEP-002** ✅
 - Phase 3 – Projects Index Page: 1/1 ✅
   - Steps: **STEP-003** ✅
-- Phase 4 – Dynamic Detail Page: 0/1
-  - Steps: **STEP-004**
+- Phase 4 – Dynamic Detail Page: 1/1 ✅
+  - Steps: **STEP-004** ✅
 - Phase 5 – Styling, Accessibility & Testing: 0/3
   - Steps: **STEP-005**, **STEP-006**, **STEP-007**
 
@@ -198,15 +210,20 @@ _(None.)_
 
 - `app/types/project.ts` ✅ (created - Project interface with Technology and Language union types)
 - `content/projects.ts` ✅ (created - typed projects array with 4 example projects)
-- `app/components/ProjectCard.tsx` ✅ (created - accessible, monochrome project card with hover/focus overlay and typed Project props)
+- `app/components/ProjectCard.tsx` ✅ (created - accessible, monochrome project card with hover/focus overlay and typed Project props; updated - replaced Image with ProjectImage component for error handling)
 
 **Updated**:
 
 - `app/projects/page.tsx` ✅ (updated - imports ProjectCard and projects, renders responsive grid with header and descriptive paragraph)
 
+**Created** (continued):
+
+- `app/projects/[slug]/page.tsx` ✅ (created - dynamic project detail page with static generation, notFound handling, semantic structure, and full accessibility; updated - refactored GitHub icon to use React Icons FaGithub component for consistency; updated - replaced Image with ProjectImage component for error handling)
+- `app/components/ProjectImage.tsx` ✅ (created - client component with error handling and fallback UI for project images)
+- `app/types/projectimage.ts` ✅ (created - ProjectImageProps interface following project's type organization pattern)
+
 **Planned / To Be Created or Updated**:
 
-- `app/projects/[slug]/page.tsx`
 - `tests/ProjectsPage.test.tsx`
 - `tests/ProjectDetailPage.test.tsx`
 
@@ -225,4 +242,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 
 ---
 
-_Last Updated: Phase 3 implementation complete - Projects index page wired up with responsive grid layout (12 February 2026)_
+_Last Updated: Added image error handling with ProjectImage component and fallback UI for all project images (12 February 2026)_
