@@ -153,9 +153,9 @@ export default async function ProjectDetailPage({
 
           {/* Repository Section */}
           <section className="mb-12">
-            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Repository
-            </h2>
+            </h3>
             <Link
               href={githubUrl}
               target="_blank"

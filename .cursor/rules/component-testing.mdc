@@ -150,6 +150,34 @@ const mockLink = jest.fn();
 // Complex setup for simple link verification
 ```
 
+### 3.5. Mocking Next.js Hooks and Functions (When Needed)
+
+Components that use Next.js hooks or navigation functions may require mocking:
+
+- **When to Mock**: Only when hooks/functions throw errors or have side effects that break tests
+- **What to Mock**: `useRouter()`, `usePathname()`, `useSearchParams()` from `next/navigation`
+- **What NOT to Mock**: `next/link` Link component (test it directly)
+
+```tsx
+// ✅ Correct - Mock Next.js hooks when component uses them
+import { vi } from 'vitest';
+import { useRouter } from 'next/navigation';
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+  }),
+  usePathname: () => '/current-path',
+}));
+
+// ❌ Avoid - Don't mock basic UI components
+vi.mock('next/link', () => ({ default: () => <div>Mock Link</div> }));
+```
+
+**Guideline**: Prefer testing components without Next.js hooks when possible. Only mock when the hook is essential to the component's functionality and cannot be tested otherwise.
+
 ### 4. Accessibility Defaults (Mandatory)
 
 Every interactive element MUST have proper accessibility attributes:

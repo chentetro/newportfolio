@@ -6,9 +6,9 @@
 
 **Context**: The portfolio currently has a minimal `/projects` page. This feature will turn it into a content-driven, accessible, monochrome-styled projects section that follows your global styling, component testing, and progress-tracking standards.
 
-**Status**: 🔄 In Progress  
-**Phase**: 4 of 5  
-**Progress**: 57% (4/7 steps completed)
+**Status**: ✅ Complete  
+**Phase**: 5 of 5  
+**Progress**: 100% (7/7 steps completed + 1 documentation step)
 
 **Success Metrics**:
 
@@ -132,26 +132,34 @@
   - **Description**: Refactor GitHub icon in project detail page to use React Icons `FaGithub` component instead of inline SVG for consistency with other components.
   - **Notes**: Replaced inline SVG GitHub icon (lines 143-154) with `FaGithub` from `react-icons/fa` to match the pattern used in `Footer.tsx` and other components. Maintains same styling (`w-5 h-5`) and accessibility (`aria-hidden="true"`). Code is cleaner and more maintainable.
 
-### 🔄 In Progress
-
-_(None – Phase 1, Phase 2, Phase 3, and Phase 4 complete, ready for Phase 5.)_
-
-### ⏳ Pending Steps
-
-- [ ] **STEP-005**: Apply monochrome, mobile-first styling & accessibility
+- [x] **STEP-005**: Apply monochrome, mobile-first styling & accessibility ✅
   - **Phase**: 5 – Styling, Accessibility & Testing
   - **Description**: Ensure all project-related UI follows monochrome foreground rules, mobile-first layout, and accessibility guidelines.
   - **Success Criteria**: No non-gray foreground colors; correct ARIA labels, alt text, focus states, and touch targets.
+  - **Completed**: Phase 5 implementation
+  - **Notes**: Verified all styling and accessibility compliance in `app/projects/page.tsx` and `app/projects/[slug]/page.tsx`. All pages meet requirements: monochrome classes (`text-gray-*`, `border-gray-*`), semantic structure (`main`, `section`, `header`, `article`), proper heading hierarchy (h1 → h2 → h3), ARIA labels on interactive elements, meaningful alt text, 44x44px touch targets, and visible focus states. No code changes needed - all requirements already met.
 
-- [ ] **STEP-006**: Add tests for Projects index page
+- [x] **STEP-006**: Add tests for Projects index page ✅
   - **Phase**: 5 – Styling, Accessibility & Testing
   - **Description**: Add tests for `/projects` to validate structure, attributes, and rendering from content.
   - **Success Criteria**: Tests pass and match the component testing standards (heading hierarchy, stable selectors, direct attribute checks).
+  - **Completed**: Phase 5 implementation
+  - **Notes**: Created `tests/ProjectsPage.test.tsx` with comprehensive test coverage following `.cursor/rules/page-testing.mdc` checklist. Tests cover: core rendering & landmarks, heading hierarchy, semantic structure with stable selectors, accessibility (ARIA labels, icons, touch targets), links & navigation, content rendering, styling, and edge cases. All tests pass and verify monochrome styling, proper heading order, and accessibility requirements.
 
-- [ ] **STEP-007**: Add tests for project detail page
+- [x] **STEP-007**: Add tests for project detail page ✅
   - **Phase**: 5 – Styling, Accessibility & Testing
   - **Description**: Add tests for `/projects/[slug]` covering slug handling, attributes, and content.
   - **Success Criteria**: Tests pass, including notFound behavior and GitHub link verification.
+  - **Completed**: Phase 5 implementation
+  - **Notes**: Created `tests/ProjectDetailPage.test.tsx` with comprehensive test coverage following `.cursor/rules/page-testing.mdc` checklist. Tests cover: core rendering & landmarks, heading hierarchy, semantic structure, accessibility, links & navigation (direct verification of GitHub link attributes), content rendering, error handling with `notFound()` mocking, and styling. Includes helper function `createMockParams()` for async component testing and proper mocking of `next/navigation` module. All tests pass including edge cases for invalid slugs and empty arrays.
+
+### 🔄 In Progress
+
+_(None – All phases complete.)_
+
+### ⏳ Pending Steps
+
+_(None – All steps completed.)_
 
 ### 📋 Additional Steps Not Included in the Original Plan
 
@@ -161,6 +169,13 @@ _(None – Phase 1, Phase 2, Phase 3, and Phase 4 complete, ready for Phase 5.)_
   - **Success Criteria**: Images gracefully handle load failures with accessible fallback UI; no broken image displays.
   - **Completed**: Code review fix implementation
   - **Notes**: Created `ProjectImage` client component (`app/components/ProjectImage.tsx`) that wraps `next/image` with error handling using `onError` handler and state management. When an image fails to load, displays a monochrome fallback UI with an image icon and "Image unavailable" message. Updated both `app/projects/[slug]/page.tsx` and `app/components/ProjectCard.tsx` to use the new `ProjectImage` component for consistent error handling across all project images. Fallback UI follows monochrome styling standards (gray scale only) and includes proper accessibility attributes (`role="img"`, `aria-label`). Moved `ProjectImageProps` interface to `app/types/projectimage.ts` following project's type organization pattern.
+
+- [x] **STEP-009**: Update testing rules documentation with mocking guidance ✅
+  - **Phase**: 5 – Styling, Accessibility & Testing (Documentation)
+  - **Description**: Add mocking guidance for Next.js navigation functions and hooks to testing rules documentation.
+  - **Success Criteria**: Both `page-testing.mdc` and `component-testing.mdc` include comprehensive mocking guidance with code examples.
+  - **Completed**: Phase 5 documentation
+  - **Notes**: Updated `.cursor/rules/page-testing.mdc` with new "Mocking Next.js Navigation Functions" section covering when to mock, common functions to mock (`notFound()`, `redirect()`, `useRouter()`, `usePathname()`), mocking patterns with Vitest, testing async page components, best practices, and what NOT to mock. Updated `.cursor/rules/component-testing.mdc` with new subsection "3.5. Mocking Next.js Hooks and Functions (When Needed)" covering when to mock Next.js hooks, what to mock, and guidelines. Both sections include code examples and follow existing documentation patterns.
 
 ### 🚫 Blocked Items
 
@@ -187,7 +202,7 @@ _(None.)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 57% (4/7 steps completed)
+**Overall Progress**: 100% (7/7 steps completed + 1 documentation step)
 
 **Phase Breakdown**:
 
@@ -199,8 +214,8 @@ _(None.)_
   - Steps: **STEP-003** ✅
 - Phase 4 – Dynamic Detail Page: 1/1 ✅
   - Steps: **STEP-004** ✅
-- Phase 5 – Styling, Accessibility & Testing: 0/3
-  - Steps: **STEP-005**, **STEP-006**, **STEP-007**
+- Phase 5 – Styling, Accessibility & Testing: 3/3 ✅
+  - Steps: **STEP-005** ✅, **STEP-006** ✅, **STEP-007** ✅
 
 ---
 
@@ -222,10 +237,15 @@ _(None.)_
 - `app/components/ProjectImage.tsx` ✅ (created - client component with error handling and fallback UI for project images)
 - `app/types/projectimage.ts` ✅ (created - ProjectImageProps interface following project's type organization pattern)
 
-**Planned / To Be Created or Updated**:
+**Created** (continued):
 
-- `tests/ProjectsPage.test.tsx`
-- `tests/ProjectDetailPage.test.tsx`
+- `tests/ProjectsPage.test.tsx` ✅ (created - comprehensive test suite for Projects index page following page-testing.mdc checklist with 7 test categories)
+- `tests/ProjectDetailPage.test.tsx` ✅ (created - comprehensive test suite for project detail page with async component testing, notFound() mocking, and full page-testing.mdc checklist coverage)
+
+**Updated** (continued):
+
+- `.cursor/rules/page-testing.mdc` ✅ (updated - added "Mocking Next.js Navigation Functions" section with comprehensive guidance and code examples)
+- `.cursor/rules/component-testing.mdc` ✅ (updated - added "3.5. Mocking Next.js Hooks and Functions (When Needed)" subsection with guidance for component-level mocking)
 
 ---
 
@@ -242,4 +262,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 
 ---
 
-_Last Updated: Added image error handling with ProjectImage component and fallback UI for all project images (12 February 2026)_
+_Last Updated: Phase 5 complete - All styling/accessibility verified, comprehensive test suites created for both pages, and testing rules documentation updated with mocking guidance (12 February 2026)_

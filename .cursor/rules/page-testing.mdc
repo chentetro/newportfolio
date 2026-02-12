@@ -78,6 +78,118 @@ In tests:
 
 ---
 
+## Mocking Next.js Navigation Functions
+
+### When to Mock
+
+Mock Next.js navigation functions when they:
+- **Throw errors** (e.g., `notFound()`, `redirect()`)
+- **Have side effects** that can't be tested in unit tests (e.g., `useRouter()`, `usePathname()`)
+- **Depend on runtime environment** that isn't available in test environment
+
+### Common Functions to Mock
+
+- `next/navigation`:
+  - `notFound()` - throws error when page should return 404
+  - `redirect()` - throws error when redirecting
+  - `useRouter()` - router hook (for client components)
+  - `usePathname()` - pathname hook (for client components)
+- `next/link` - Usually doesn't need mocking, but may need for E2E tests
+
+### Mocking Pattern
+
+Use Vitest's `vi.mock()` to mock Next.js navigation modules:
+
+```tsx
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { notFound } from 'next/navigation';
+import Page from './page';
+
+// Mock next/navigation at the top level
+vi.mock('next/navigation', () => ({
+  notFound: vi.fn(),
+  redirect: vi.fn(),
+}));
+
+describe('Page', () => {
+  beforeEach(() => {
+    // Clear mocks between tests
+    vi.clearAllMocks();
+  });
+
+  it('calls notFound() for invalid data', async () => {
+    const invalidParams = Promise.resolve({ slug: 'invalid' });
+    
+    try {
+      await Page({ params: invalidParams });
+    } catch (error) {
+      // notFound() throws, so we expect an error
+    }
+
+    // Verify the function was called
+    expect(notFound).toHaveBeenCalled();
+  });
+});
+```
+
+### Testing Async Page Components
+
+For Next.js App Router pages with async components and `params`:
+
+```tsx
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { notFound } from 'next/navigation';
+import Page from './page';
+
+vi.mock('next/navigation', () => ({
+  notFound: vi.fn(),
+}));
+
+describe('Dynamic Page', () => {
+  // Helper to create mock params
+  const createMockParams = (slug: string) => Promise.resolve({ slug });
+
+  it('renders content for valid params', async () => {
+    const params = createMockParams('valid-slug');
+    const { container } = render(await Page({ params }));
+
+    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+    expect(container.querySelector('main')).toBeInTheDocument();
+  });
+
+  it('calls notFound() for invalid params', async () => {
+    const params = createMockParams('invalid-slug');
+    vi.clearAllMocks();
+
+    try {
+      await Page({ params });
+    } catch (error) {
+      // Expected - notFound() throws
+    }
+
+    expect(notFound).toHaveBeenCalled();
+  });
+});
+```
+
+### Best Practices
+
+- **Mock at module level**: Use `vi.mock()` at the top of the test file, not inside tests
+- **Clear mocks between tests**: Use `vi.clearAllMocks()` in `beforeEach` to prevent test pollution
+- **Verify function calls**: Assert that navigation functions were called with correct arguments
+- **Test the behavior, not the mock**: Focus on what the user sees, not implementation details
+- **Avoid over-mocking**: Only mock what's necessary for the test to run
+
+### What NOT to Mock
+
+- **Component imports**: Use real components from your codebase
+- **Data sources**: Use real data or test fixtures, not mocks (unless testing error states)
+- **UI interactions**: Test actual user interactions with `@testing-library/user-event`
+
+---
+
 ## Recommended Test Skeleton (RTL)
 
 ```tsx
