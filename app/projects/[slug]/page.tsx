@@ -1,12 +1,21 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { FaGithub } from 'react-icons/fa';
 import { projects } from '@/content/projects';
 import type { Project } from '@/app/types/project';
 
 interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;
+}
+
+/**
+ * Finds a project by its slug.
+ * Returns undefined if no project matches the slug.
+ */
+function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((project) => project.slug === slug);
 }
 
 /**
@@ -20,11 +29,27 @@ export async function generateStaticParams() {
 }
 
 /**
- * Finds a project by its slug.
- * Returns undefined if no project matches the slug.
+ * Generates metadata for each project detail page.
+ * Provides SEO-friendly titles and descriptions.
  */
-function getProjectBySlug(slug: string): Project | undefined {
-  return projects.find((project) => project.slug === slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
+
+  if (!project) {
+    return {
+      title: 'Project Not Found',
+    };
+  }
+
+  return {
+    title: `${project.title} | Projects`,
+    description: project.description,
+  };
 }
 
 /**
@@ -79,11 +104,9 @@ export default async function ProjectDetailPage({
             <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               About this project
             </h2>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              <p className="text-base lg:text-lg text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
-                {description}
-              </p>
-            </div>
+            <p className="text-base lg:text-lg text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+              {description}
+            </p>
           </section>
 
           {/* Stack & Languages Section */}
@@ -139,7 +162,7 @@ export default async function ProjectDetailPage({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`View ${title} repository on GitHub`}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px] focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               <FaGithub className="w-5 h-5" aria-hidden="true" />
               View on GitHub
