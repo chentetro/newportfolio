@@ -1,10 +1,10 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { FaGithub } from 'react-icons/fa';
 import { projects } from '@/content/projects';
 import type { Project } from '@/app/types/project';
+import ProjectImage from '@/app/components/ProjectImage';
 
 interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -89,10 +89,9 @@ export default async function ProjectDetailPage({
 
           {/* Project Image */}
           <div className="relative w-full h-64 sm:h-80 lg:h-96 mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-            <Image
+            <ProjectImage
               src={imageSrc}
               alt={imageAlt}
-              fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 896px"
               priority
