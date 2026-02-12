@@ -7,8 +7,8 @@
 **Context**: The portfolio currently has a minimal `/projects` page. This feature will turn it into a content-driven, accessible, monochrome-styled projects section that follows your global styling, component testing, and progress-tracking standards.
 
 **Status**: 🔄 In Progress  
-**Phase**: 1 of 5  
-**Progress**: 14% (1/7 steps completed)
+**Phase**: 3 of 5  
+**Progress**: 42% (3/7 steps completed)
 
 **Success Metrics**:
 
@@ -113,16 +113,18 @@
   - **Description**: Update `tests/ProjectCard.test.tsx` to avoid selecting the overlay's "Stack" label when asserting the description paragraph.
   - **Notes**: Replaced `container.querySelector('p')` in the "stable selectors" test with a more specific selector (`'div.flex.flex-col.gap-2.p-4 > p'`) that targets the content area's description paragraph rather than the overlay labels, aligning with the testing standards for stable selectors.
 
-### 🔄 In Progress
-
-_(None – Phase 1 and Phase 2 complete, ready for Phase 3.)_
-
-### ⏳ Pending Steps
-
-- [ ] **STEP-003**: Wire up `/projects` index page
+- [x] **STEP-003**: Wire up `/projects` index page ✅
   - **Phase**: 3 – Projects Index Page
   - **Description**: Extend `app/projects/page.tsx` to render a grid of `ProjectCard`s under the existing `h1`.
   - **Success Criteria**: All projects from `content/projects.ts` are shown; heading hierarchy and semantics are correct.
+  - **Completed**: Phase 3 implementation
+  - **Notes**: Updated `app/projects/page.tsx` to import `ProjectCard` and `projects`, wrapped the h1 in a semantic `header` element with a descriptive paragraph, and created a responsive grid layout (`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6`) that maps over all projects. The page maintains proper heading hierarchy (h1 for page title), semantic structure (`main` → `section` → `div` → `header` + grid), and follows monochrome styling standards.
+
+### 🔄 In Progress
+
+_(None – Phase 1, Phase 2, and Phase 3 complete, ready for Phase 4.)_
+
+### ⏳ Pending Steps
 
 - [ ] **STEP-004**: Implement `/projects/[slug]` dynamic page
   - **Phase**: 4 – Dynamic Detail Page
@@ -173,7 +175,7 @@ _(None.)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 28% (2/7 steps completed)
+**Overall Progress**: 42% (3/7 steps completed)
 
 **Phase Breakdown**:
 
@@ -181,8 +183,8 @@ _(None.)_
   - Steps: **STEP-001** ✅
 - Phase 2 – Project Card Component: 1/1 ✅
   - Steps: **STEP-002** ✅
-- Phase 3 – Projects Index Page: 0/1
-  - Steps: **STEP-003**
+- Phase 3 – Projects Index Page: 1/1 ✅
+  - Steps: **STEP-003** ✅
 - Phase 4 – Dynamic Detail Page: 0/1
   - Steps: **STEP-004**
 - Phase 5 – Styling, Accessibility & Testing: 0/3
@@ -198,9 +200,12 @@ _(None.)_
 - `content/projects.ts` ✅ (created - typed projects array with 4 example projects)
 - `app/components/ProjectCard.tsx` ✅ (created - accessible, monochrome project card with hover/focus overlay and typed Project props)
 
+**Updated**:
+
+- `app/projects/page.tsx` ✅ (updated - imports ProjectCard and projects, renders responsive grid with header and descriptive paragraph)
+
 **Planned / To Be Created or Updated**:
 
-- `app/projects/page.tsx` (extend existing minimal page)
 - `app/projects/[slug]/page.tsx`
 - `tests/ProjectsPage.test.tsx`
 - `tests/ProjectDetailPage.test.tsx`
@@ -218,4 +223,6 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 - `imageSrc` and `imageAlt` live in the content layer so components stay presentational and accessible.
 - All new code should follow the existing component testing, styling, and progress-tracking standards.
 
-_Last Updated: Phase 2 – STEP-002--FIX applied (ProjectCard description selector in tests refined to avoid overlay labels and improve selector stability)._
+---
+
+_Last Updated: Phase 3 implementation complete - Projects index page wired up with responsive grid layout (12 February 2026)_

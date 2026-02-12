@@ -30,9 +30,7 @@ describe('ProjectCard', () => {
     expect(heading).toBeInTheDocument();
     expect(heading).toHaveTextContent(baseProject.title);
 
-    expect(
-      screen.getByText(baseProject.shortDescription),
-    ).toBeInTheDocument();
+    expect(screen.getByText(baseProject.shortDescription)).toBeInTheDocument();
 
     const link = screen.getByRole('link', {
       name: `View project: ${baseProject.title}`,
@@ -52,7 +50,7 @@ describe('ProjectCard', () => {
     expect(article).toBeInTheDocument();
     expect(article).toHaveAttribute(
       'aria-label',
-      `Project: ${baseProject.title}`,
+      `Project: ${baseProject.title}`
     );
 
     const heading = screen.getByRole('heading', { level: 2 });
@@ -71,7 +69,7 @@ describe('ProjectCard', () => {
     expect(titleHeading).toBeInTheDocument();
 
     const descriptionParagraph = container.querySelector(
-      'div.flex.flex-col.gap-2.p-4 > p',
+      'div.flex.flex-col.gap-2.p-4 > p'
     );
     expect(descriptionParagraph).toBeInTheDocument();
   });
@@ -84,7 +82,7 @@ describe('ProjectCard', () => {
     expect(article).toBeInTheDocument();
     expect(article).toHaveAttribute(
       'aria-label',
-      `Project: ${baseProject.title}`,
+      `Project: ${baseProject.title}`
     );
 
     const link = screen.getByRole('link', {
@@ -171,8 +169,8 @@ describe('ProjectCard', () => {
       imageAlt: 'Minimal project image',
     };
 
-    expect(() => render(<ProjectCard project={minimalProject} />)).not.toThrow();
+    expect(() =>
+      render(<ProjectCard project={minimalProject} />)
+    ).not.toThrow();
   });
 });
-
-

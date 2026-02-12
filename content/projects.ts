@@ -23,7 +23,7 @@ export const projects = [
     ],
     languages: ['TypeScript'],
     githubUrl: 'https://github.com/chentetro/newportfolio',
-    imageSrc: '/protfolio.png',
+    imageSrc: '/images/portfolio.png',
     imageAlt:
       'Screenshot of the portfolio website homepage showing the hero section and navigation',
   },
