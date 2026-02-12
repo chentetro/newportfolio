@@ -122,11 +122,15 @@ describe('Project Detail Page', () => {
     const { container } = render(await ProjectDetailPage({ params }));
 
     const interactiveElements = container.querySelectorAll('a, button');
+    expect(interactiveElements.length).toBeGreaterThan(0);
+
     interactiveElements.forEach((element) => {
       const hasMinHeight = element.classList.contains('min-h-[44px]');
       const hasMinWidth = element.classList.contains('min-w-[44px]');
 
-      // At least one dimension should meet the 44px minimum
+      // At least one dimension should meet the 44px minimum via class
+      // Or verify element exists and is interactive
+      expect(element).toBeInTheDocument();
       expect(hasMinHeight || hasMinWidth).toBe(true);
     });
   });
@@ -211,28 +215,72 @@ describe('Project Detail Page', () => {
   });
 
   it('handles project with empty technologies array gracefully', async () => {
-    // Find a project or create a test scenario
-    // For now, we test that the page renders even if arrays are empty
     const params = createMockParams(validSlug);
-    render(await ProjectDetailPage({ params }));
+    const { container } = render(await ProjectDetailPage({ params }));
+
+    const project = projects.find((p) => p.slug === validSlug);
 
     // Page should still render main structure
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+
+    // Verify conditional rendering: Technologies section only renders if array has items
+    if (project!.technologies.length === 0) {
+      // When empty, Technologies heading should not be present
+      const technologiesHeading = Array.from(
+        container.querySelectorAll('h3')
+      ).find((h) => h.textContent?.includes('Technologies'));
+      expect(technologiesHeading).toBeUndefined();
+    } else {
+      // When technologies exist, verify the section renders with heading and items
+      expect(
+        screen.getByRole('heading', { level: 3, name: /^Technologies$/i })
+      ).toBeInTheDocument();
+      // Verify at least one technology badge is rendered
+      // Use getAllByText since items may appear in both technologies and languages
+      project!.technologies.forEach((tech) => {
+        const elements = screen.getAllByText(tech);
+        expect(elements.length).toBeGreaterThan(0);
+        expect(elements[0]).toBeInTheDocument();
+      });
+    }
   });
 
   it('handles project with empty languages array gracefully', async () => {
     const params = createMockParams(validSlug);
-    render(await ProjectDetailPage({ params }));
+    const { container } = render(await ProjectDetailPage({ params }));
+
+    const project = projects.find((p) => p.slug === validSlug);
 
     // Page should still render main structure
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+
+    // Verify conditional rendering: Languages section only renders if array has items
+    if (project!.languages.length === 0) {
+      // When empty, Languages heading should not be present
+      const languagesHeading = Array.from(
+        container.querySelectorAll('h3')
+      ).find((h) => h.textContent?.includes('Languages'));
+      expect(languagesHeading).toBeUndefined();
+    } else {
+      // When languages exist, verify the section renders with heading and items
+      expect(
+        screen.getByRole('heading', { level: 3, name: /^Languages$/i })
+      ).toBeInTheDocument();
+      // Verify at least one language badge is rendered
+      // Use getAllByText since items may appear in both technologies and languages
+      project!.languages.forEach((lang) => {
+        const elements = screen.getAllByText(lang);
+        expect(elements.length).toBeGreaterThan(0);
+        expect(elements[0]).toBeInTheDocument();
+      });
+    }
   });
 
   it('renders without throwing errors for valid slug', async () => {
     const params = createMockParams(validSlug);
-    expect(async () => {
-      render(await ProjectDetailPage({ params }));
-    }).not.toThrow();
+    const { container } = render(await ProjectDetailPage({ params }));
+    // If render succeeds, no error was thrown
+    expect(container).toBeInTheDocument();
   });
 
   // 8. Styling Tests
