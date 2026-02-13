@@ -69,13 +69,22 @@ describe('Project Detail Page', () => {
     const h2Headings = headings.filter((h) => h.tagName === 'H2');
     expect(h2Headings.length).toBeGreaterThan(0);
 
-    // Verify heading order: h1 → h2 → h3 (no skipping, no going backwards)
+    // Verify heading order: no skipping levels, decreases allowed when closing subsections
+    // Example: h1 → h2 → h2 → h3 → h3 → h2 is valid (closing H3 subsection, starting new H2 section)
     const headingLevels = headings.map((h) => parseInt(h.tagName.charAt(1)));
     for (let i = 1; i < headingLevels.length; i++) {
-      // Each heading should be >= previous (can stay same or increase)
-      // And difference should be <= 1 (no skipping levels)
-      expect(headingLevels[i]).toBeGreaterThanOrEqual(headingLevels[i - 1]);
-      expect(headingLevels[i] - headingLevels[i - 1]).toBeLessThanOrEqual(1);
+      const currentLevel = headingLevels[i];
+      const previousLevel = headingLevels[i - 1];
+      const difference = currentLevel - previousLevel;
+      
+      // No skipping levels: difference should be <= 1 (can increase by 1 or stay same)
+      // Decreases are allowed (e.g., H3 → H2 when closing subsection and starting new section)
+      // But we should never skip levels (e.g., H1 → H3 is invalid)
+      if (difference > 0) {
+        // Increasing: can only increase by 1 level maximum
+        expect(difference).toBeLessThanOrEqual(1);
+      }
+      // Decreasing is allowed (no check needed - H3 → H2 is valid)
     }
   });
 
@@ -263,11 +272,11 @@ describe('Project Detail Page', () => {
       screen.getByRole('heading', { name: /Stack & languages/i })
     ).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Links/i })).toBeInTheDocument();
-    // Links is H3 (subsection under Stack & languages section)
+    // Links is H2 (major section at same level as About this project and Stack & languages)
     const linksHeading = screen.getByRole('heading', {
       name: /Links/i,
     });
-    expect(linksHeading.tagName).toBe('H3');
+    expect(linksHeading.tagName).toBe('H2');
   });
 
   // 7. Edge Cases and Error Handling

@@ -78,6 +78,10 @@ export default async function ProjectDetailPage({
     videoUrl,
   } = project;
 
+  // Shared className for all link buttons in the Links section
+  const linkButtonClasses =
+    'inline-flex items-center gap-2 px-4 py-2 min-h-[44px] bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500';
+
   return (
     <main>
       <article className="py-12 px-4 overflow-x-hidden">
@@ -155,9 +159,9 @@ export default async function ProjectDetailPage({
 
           {/* Links Section */}
           <section className="mt-8 mb-12">
-            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
               Links
-            </h3>
+            </h2>
             <div className="flex flex-col sm:flex-row gap-4">
               {liveUrl && (
                 <Link
@@ -165,7 +169,7 @@ export default async function ProjectDetailPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit live demo of ${title}`}
-                  className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className={linkButtonClasses}
                 >
                   <FaExternalLinkAlt className="w-5 h-5" aria-hidden="true" />
                   Live Demo
@@ -177,7 +181,7 @@ export default async function ProjectDetailPage({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Watch video demonstration of ${title}`}
-                  className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className={linkButtonClasses}
                 >
                   <FaPlay className="w-5 h-5" aria-hidden="true" />
                   Watch Video
@@ -188,7 +192,7 @@ export default async function ProjectDetailPage({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`View ${title} repository on GitHub`}
-                className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className={linkButtonClasses}
               >
                 <FaGithub className="w-5 h-5" aria-hidden="true" />
                 View on GitHub

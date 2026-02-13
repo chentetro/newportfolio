@@ -2,6 +2,10 @@
  * Represents a technology or tool used in a project.
  * Union type ensures type safety and prevents invalid technology values.
  */
+/**
+ * Represents a technology or tool used in a project.
+ * Note: Programming languages (e.g., Python, JavaScript, TypeScript) are in the Language type, not Technology.
+ */
 export type Technology =
   | 'React'
   | 'Next.js'
