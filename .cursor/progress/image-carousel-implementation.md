@@ -6,7 +6,7 @@
 
 **Context**: The Life page currently only has a basic heading. Adding an image carousel will showcase life moments in an engaging, accessible way. The carousel should support smooth scrolling, keyboard navigation, and work seamlessly on mobile and desktop devices.
 
-**Status**: 🔄 In Progress | **Phase**: 1 of 4 | **Progress**: 29% (2/7 steps completed)
+**Status**: 🔄 In Progress | **Phase**: 2 of 4 | **Progress**: 71% (5/7 steps completed)
 
 **Success Metrics**:
 
@@ -99,38 +99,26 @@
   - **Completed**: Phase 1 implementation
   - **Notes**: Created `content/life.ts` exporting `lifeImages: CarouselItem[]` array using `satisfies CarouselItem[]` pattern. Includes 3 placeholder entries with example image paths pointing to `public/images/life/` folder. Follows same pattern as `content/projects.ts`.
 
+- [x] **STEP-003**: Create ImageCarousel component structure ✅
+  - **Phase**: 2 – Carousel Component Development
+  - **Completed**: Phase 2 implementation
+  - **Notes**: Created `app/components/ImageCarousel.tsx` as a client component with `'use client'` directive. Component accepts `title: string` and `items: CarouselItem[]` props. Basic structure includes semantic HTML with `<section>`, `<header>`, and `<h2>` for proper heading hierarchy. Component returns `null` if items array is empty (edge case handling).
+
+- [x] **STEP-004**: Implement scrollable image container and navigation buttons ✅
+  - **Phase**: 2 – Carousel Component Development
+  - **Completed**: Phase 2 implementation
+  - **Notes**: Implemented horizontal scrollable container with `overflow-x-auto`, `flex`, and `gap-4` classes. Added left/right navigation buttons using `useRef` for container reference and `useState` for scroll state tracking (`canScrollLeft`, `canScrollRight`). Created `checkScrollability()` function to update button disabled states based on scroll position. Implemented `scroll()` function with smooth scrolling behavior (80% of container width per click). Added `useEffect` hook to handle scroll and resize event listeners with proper cleanup.
+
+- [x] **STEP-005**: Add Next.js Image components and styling ✅
+  - **Phase**: 2 – Carousel Component Development
+  - **Completed**: Phase 2 implementation
+  - **Notes**: Mapped over `items` array to render Next.js `Image` components with proper `fill`, `sizes`, and `alt` attributes. Applied monochrome styling to navigation buttons (gray-900/gray-100 for foreground elements). Implemented responsive image sizing (w-64 h-64 on mobile, w-80 h-80 on sm, w-96 h-96 on lg). Added proper spacing, rounded corners, focus states, hover states, and transitions. All interactive elements meet 44x44px touch target minimum. SVG icons have `aria-hidden="true"` and buttons have descriptive `aria-label` attributes.
+
 ### 🔄 In Progress
 
-_(None - implementation not started)_
+_(None - Phase 2 completed)_
 
 ### ⏳ Pending Steps
-
-- [ ] **STEP-003**: Create ImageCarousel component structure
-  - **Phase**: 2 – Carousel Component Development
-  - **Description**: Create `app/components/ImageCarousel.tsx` as a client component (`'use client'`). Accept `title: string` and `items: CarouselItem[]` props. Set up basic structure with section, header with h2, and scrollable container div.
-  - **Success Criteria**: Component renders without errors; accepts props correctly; basic structure is in place.
-  - **Testing Requirements**: Component renders with provided props; basic structure test passes.
-  - **Estimated Effort**: 30 minutes
-  - **Dependencies**: STEP-001 (requires CarouselItem type)
-  - **Commit Strategy**: Can be committed independently
-
-- [ ] **STEP-004**: Implement scrollable image container and navigation buttons
-  - **Phase**: 2 – Carousel Component Development
-  - **Description**: Add horizontal scrollable container with `overflow-x-auto`, `flex`, and `gap-4` classes. Implement left/right navigation buttons with `useRef` for container reference and `useState` for scroll state tracking. Add `checkScrollability` function to update button disabled states. Implement `scroll` function for smooth scrolling behavior.
-  - **Success Criteria**: Container scrolls horizontally; navigation buttons appear and control scrolling; buttons disable appropriately at scroll boundaries.
-  - **Testing Requirements**: Manual testing: buttons scroll container; buttons disable at start/end; smooth scrolling works.
-  - **Estimated Effort**: 1-2 hours
-  - **Dependencies**: STEP-003 (requires component structure)
-  - **Commit Strategy**: Can be committed independently
-
-- [ ] **STEP-005**: Add Next.js Image components and styling
-  - **Phase**: 2 – Carousel Component Development
-  - **Description**: Map over `items` array to render Next.js `Image` components with proper `fill`, `sizes`, and `alt` attributes. Apply monochrome styling to navigation buttons (white/gray/black only for foreground). Ensure proper image sizing and responsive behavior. Add proper spacing and rounded corners.
-  - **Success Criteria**: All images render correctly; images are properly optimized; styling follows monochrome design system; responsive sizing works on mobile and desktop.
-  - **Testing Requirements**: Images render with correct attributes; styling classes are applied correctly; responsive behavior verified.
-  - **Estimated Effort**: 1 hour
-  - **Dependencies**: STEP-004 (requires scrollable container)
-  - **Commit Strategy**: Can be committed independently
 
 - [ ] **STEP-006**: Integrate carousel into Life page and add scrollbar hiding CSS
   - **Phase**: 3 – Integration & Styling
@@ -186,14 +174,14 @@ _(None currently)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 29% (2/7 steps completed)
+**Overall Progress**: 71% (5/7 steps completed)
 
 **Phase Breakdown**:
 
 - Phase 1 – Type Definitions & Content Structure: 2/2 ✅
   - Steps: **STEP-001** ✅, **STEP-002** ✅
-- Phase 2 – Carousel Component Development: 0/3 ⏳
-  - Steps: **STEP-003** ⏳, **STEP-004** ⏳, **STEP-005** ⏳
+- Phase 2 – Carousel Component Development: 3/3 ✅
+  - Steps: **STEP-003** ✅, **STEP-004** ✅, **STEP-005** ✅
 - Phase 3 – Integration & Styling: 0/1 ⏳
   - Steps: **STEP-006** ⏳
 - Phase 4 – Testing & Accessibility: 0/1 ⏳
@@ -205,9 +193,11 @@ _(None currently)_
 
 **To Be Created**:
 
-- `app/components/ImageCarousel.tsx` ⏳ (main carousel component)
-- `app/components/ImageCarousel.tsx` ⏳ (main carousel component)
 - `tests/ImageCarousel.test.tsx` ⏳ (comprehensive test suite)
+
+**Created**:
+
+- `app/components/ImageCarousel.tsx` ✅ (main carousel component with scrollable container, navigation buttons, and Next.js Image integration)
 
 **Created**:
 
@@ -237,4 +227,4 @@ _(None currently)_
 
 ---
 
-_Last Updated: Phase 1 completed - Type definitions and content structure implemented (12 February 2026)_
+_Last Updated: Phase 2 completed - ImageCarousel component fully implemented with scrollable container, navigation buttons, and Next.js Image integration (12 February 2026)_
