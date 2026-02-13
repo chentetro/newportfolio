@@ -3,7 +3,7 @@ import type { CarouselItem } from '@/app/types/carousel';
 /**
  * Life images data for the carousel component.
  * Each entry includes metadata for image display and accessibility.
- * 
+ *
  * Note: Update image paths and alt text with actual photos placed in public/images/life/
  */
 export const lifeImages = [
@@ -26,6 +26,5 @@ export const lifeImages = [
     id: 'life-4',
     imageUrl: '/images/life/placeholder-4.jpg',
     imageAlt: 'Photo of the author with their twin sister',
-  }
+  },
 ] satisfies CarouselItem[];
-
