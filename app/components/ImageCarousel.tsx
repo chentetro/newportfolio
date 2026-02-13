@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import type { CarouselItem } from '@/app/types/carousel';
 
@@ -14,7 +14,7 @@ export default function ImageCarousel({ title, items }: ImageCarouselProps) {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  const checkScrollability = () => {
+  const checkScrollability = useCallback(() => {
     if (!scrollContainerRef.current) return;
 
     const container = scrollContainerRef.current;
@@ -22,7 +22,7 @@ export default function ImageCarousel({ title, items }: ImageCarouselProps) {
 
     setCanScrollLeft(scrollLeft > 0);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-  };
+  }, []);
 
   useEffect(() => {
     checkScrollability();
@@ -37,9 +37,9 @@ export default function ImageCarousel({ title, items }: ImageCarouselProps) {
       container.removeEventListener('scroll', checkScrollability);
       window.removeEventListener('resize', checkScrollability);
     };
-  }, [items]);
+  }, [checkScrollability, items]);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = useCallback((direction: 'left' | 'right') => {
     if (!scrollContainerRef.current) return;
 
     const container = scrollContainerRef.current;
@@ -53,7 +53,32 @@ export default function ImageCarousel({ title, items }: ImageCarouselProps) {
       left: targetScroll,
       behavior: 'smooth',
     });
-  };
+  }, []);
+
+  // Keyboard navigation handler
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only handle if container is focused
+      if (document.activeElement === container) {
+        if (e.key === 'ArrowLeft' && canScrollLeft) {
+          e.preventDefault();
+          scroll('left');
+        } else if (e.key === 'ArrowRight' && canScrollRight) {
+          e.preventDefault();
+          scroll('right');
+        }
+      }
+    };
+
+    container.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      container.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [canScrollLeft, canScrollRight, scroll]);
 
   if (items.length === 0) {
     return null;
@@ -95,11 +120,10 @@ export default function ImageCarousel({ title, items }: ImageCarouselProps) {
           {/* Scrollable Image Container */}
           <div
             ref={scrollContainerRef}
-            className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide"
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-            }}
+            tabIndex={0}
+            role="region"
+            aria-label={`${title} carousel - use arrow keys to navigate`}
+            className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
             {items.map((item) => (
               <div
