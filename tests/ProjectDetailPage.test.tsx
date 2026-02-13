@@ -76,7 +76,7 @@ describe('Project Detail Page', () => {
       const currentLevel = headingLevels[i];
       const previousLevel = headingLevels[i - 1];
       const difference = currentLevel - previousLevel;
-      
+
       // No skipping levels: difference should be <= 1 (can increase by 1 or stay same)
       // Decreases are allowed (e.g., H3 → H2 when closing subsection and starting new section)
       // But we should never skip levels (e.g., H1 → H3 is invalid)
