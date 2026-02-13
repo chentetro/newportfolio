@@ -1,0 +1,224 @@
+---
+description: "Project folder role separation and three-layer data architecture pattern defining Types, Content, and Lib layers"
+alwaysApply: true
+---
+
+# Project Folder Role Separation
+
+## Three-Layer Architecture
+
+This project follows a clear separation of concerns with three distinct folder roles:
+
+### 1. Types (`app/types/`)
+
+**Purpose**: Define data structures (Interfaces/Types)
+
+**Responsibilities**:
+- Define TypeScript interfaces and types
+- Establish contracts for data structures
+- Provide type safety across the application
+- Document data structure requirements
+
+**Examples**:
+- [app/types/project.ts](mdc:app/types/project.ts) - Defines `Project` interface
+- [app/types/carousel.ts](mdc:app/types/carousel.ts) - Defines `CarouselItem` interface
+- [app/types/experience.ts](mdc:app/types/experience.ts) - Defines `ExperienceEntry` interface
+- [app/types/skills.ts](mdc:app/types/skills.ts) - Defines `SkillCategoryData` interface
+
+**Guidelines**:
+- ✅ Export interfaces/types that describe data structures
+- ✅ Include JSDoc comments for documentation
+- ✅ Use union types for constrained values (e.g., `Technology`, `Language`)
+- ❌ Do NOT store actual data in type files
+- ❌ Do NOT include business logic in type files
+
+### 2. Content (`content/`)
+
+**Purpose**: Store the raw data itself
+
+**Responsibilities**:
+- Store actual data arrays, objects, or files
+- Hold markdown files for content-driven features
+- Contain static data that doesn't require processing logic
+- Serve as the single source of truth for content
+
+**Examples**:
+- [content/projects.ts](mdc:content/projects.ts) - Array of project data objects
+- [content/life.ts](mdc:content/life.ts) - Array of life image data
+- `content/experience/*.md` - Markdown files for experience entries
+
+**Guidelines**:
+- ✅ Use `satisfies` keyword to ensure data matches type definitions
+- ✅ Import types from `app/types/` to ensure type safety
+- ✅ Keep data clean and readable
+- ✅ Store markdown files in subdirectories when appropriate
+- ❌ Do NOT define types in content files (use `app/types/` instead)
+- ❌ Do NOT include complex processing logic (use `app/lib/` instead)
+
+**Example Pattern**:
+```typescript
+import type { Project } from '@/app/types/project';
+
+export const projects = [
+  // ... project data
+] satisfies Project[];
+```
+
+### 3. Lib (`app/lib/`)
+
+**Purpose**: Contain the logic that connects content and types
+
+**Responsibilities**:
+- Read and process content files
+- Transform raw data into typed structures
+- Provide functions that return typed data
+- Handle file system operations (reading markdown, parsing, etc.)
+- Apply business logic (sorting, filtering, validation)
+
+**Examples**:
+- [app/lib/experience.ts](mdc:app/lib/experience.ts) - Reads markdown files, parses frontmatter, returns `ExperienceEntry[]`
+- [app/lib/skills.ts](mdc:app/lib/skills.ts) - Exports `SKILLS_DATA` that matches `SkillCategoryData[]`
+
+**Guidelines**:
+- ✅ Import types from `app/types/` for return types and parameters
+- ✅ Read content from `content/` directory
+- ✅ Return typed data structures
+- ✅ Handle file system operations (fs, path, etc.)
+- ✅ Apply business logic (sorting, filtering, validation)
+- ❌ Do NOT define types in lib files (use `app/types/` instead)
+- ❌ Do NOT store raw data in lib files (use `content/` instead)
+
+**Example Pattern**:
+```typescript
+import { ExperienceEntry } from '../types/experience';
+import fs from 'fs';
+import path from 'path';
+
+export function getAllExperienceEntries(): ExperienceEntry[] {
+  // Read content files
+  // Process and transform data
+  // Return typed array
+}
+```
+
+## Data Flow Pattern
+
+```
+┌─────────────┐
+│   Types     │  Define structure
+│ app/types/  │
+└──────┬──────┘
+       │
+       │ (imports)
+       │
+┌──────▼──────┐      ┌─────────────┐
+│  Content    │─────▶│    Lib      │
+│  content/   │      │  app/lib/   │
+│             │      │             │
+│ Raw data    │      │ Processing  │
+│             │      │ Logic       │
+└─────────────┘      └──────┬──────┘
+                             │
+                             │ (returns typed data)
+                             │
+                    ┌────────▼────────┐
+                    │   Components    │
+                    │  app/components │
+                    └─────────────────┘
+```
+
+## Decision Tree
+
+When adding new data or features, follow this decision tree:
+
+1. **Need to define a data structure?**
+   - ✅ Create/update file in `app/types/`
+
+2. **Need to store actual data?**
+   - ✅ Create/update file in `content/`
+   - ✅ Import type from `app/types/`
+   - ✅ Use `satisfies` to ensure type safety
+
+3. **Need to process/transform data?**
+   - ✅ Create/update file in `app/lib/`
+   - ✅ Import type from `app/types/`
+   - ✅ Read from `content/` directory
+   - ✅ Return typed data
+
+## Benefits
+
+1. **Type Safety**: Types are defined once and reused everywhere
+2. **Separation of Concerns**: Data, structure, and logic are clearly separated
+3. **Maintainability**: Easy to find and update data, types, or logic
+4. **Testability**: Each layer can be tested independently
+5. **Scalability**: Easy to add new content, types, or processing logic
+
+## File Naming Conventions
+
+- **Types**: Use singular form (e.g., `project.ts`, `carousel.ts`)
+- **Content**: Use plural form when storing arrays (e.g., `projects.ts`, `life.ts`)
+- **Lib**: Use descriptive function names (e.g., `getAllExperienceEntries()`)
+
+## Examples from Codebase
+
+### Complete Example: Experience Feature
+
+1. **Type Definition** ([app/types/experience.ts](mdc:app/types/experience.ts)):
+   - Defines `ExperienceEntry` interface
+
+2. **Content Storage** (`content/experience/*.md`):
+   - Markdown files with frontmatter containing experience data
+
+3. **Processing Logic** ([app/lib/experience.ts](mdc:app/lib/experience.ts)):
+   - `getAllExperienceEntries()` function
+   - Reads markdown files
+   - Parses frontmatter
+   - Returns `ExperienceEntry[]`
+
+### Complete Example: Projects Feature
+
+1. **Type Definition** ([app/types/project.ts](mdc:app/types/project.ts)):
+   - Defines `Project` interface
+   - Defines `Technology` and `Language` union types
+
+2. **Content Storage** ([content/projects.ts](mdc:content/projects.ts)):
+   - Array of project objects
+   - Uses `satisfies Project[]` for type safety
+
+3. **Usage** (in components):
+   - Components import directly from `content/projects.ts`
+   - Type safety ensured through `satisfies` keyword
+
+### Complete Example: Life/Carousel Feature
+
+1. **Type Definition** ([app/types/carousel.ts](mdc:app/types/carousel.ts)):
+   - Defines `CarouselItem` interface
+
+2. **Content Storage** ([content/life.ts](mdc:content/life.ts)):
+   - Array of carousel image data
+   - Uses `satisfies CarouselItem[]` for type safety
+
+3. **Usage** (in components):
+   - Components import directly from `content/life.ts`
+   - Type safety ensured through `satisfies` keyword
+
+## Anti-Patterns to Avoid
+
+❌ **Mixing concerns**: Don't define types in content files
+❌ **Duplication**: Don't duplicate type definitions
+❌ **Logic in content**: Don't put processing logic in content files
+❌ **Data in types**: Don't store actual data in type files
+❌ **Types in lib**: Don't define types in lib files (unless they're internal helper types)
+
+## Migration Guide
+
+If you find code that doesn't follow this pattern:
+
+1. **Types in wrong location**: Move to `app/types/`
+2. **Data in type files**: Move to `content/` and import types
+3. **Logic in content files**: Extract to `app/lib/`
+4. **Missing type safety**: Add `satisfies` keyword and import types
+
+---
+
+_This rule ensures consistent data architecture and separation of concerns throughout the project._
