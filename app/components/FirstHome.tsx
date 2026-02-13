@@ -16,8 +16,8 @@ export default function FirstHome({
   return (
     <section
       className={`relative ${backgroundClasses}`}
-      role="region"
       aria-label="First about section"
+      role="region"
     >
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">

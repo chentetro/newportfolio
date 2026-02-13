@@ -8,7 +8,7 @@
 
 **Status**: ✅ Complete  
 **Phase**: 5 of 5  
-**Progress**: 100% (7/7 original steps + 2 additional steps = 9 total steps completed)
+**Progress**: 100% (7/7 original steps + 3 additional steps = 10 total steps completed)
 
 **Success Metrics**:
 
@@ -177,6 +177,13 @@ _(None – All steps completed.)_
   - **Completed**: Phase 5 documentation
   - **Notes**: Updated `.cursor/rules/page-testing.mdc` with new "Mocking Next.js Navigation Functions" section covering when to mock, common functions to mock (`notFound()`, `redirect()`, `useRouter()`, `usePathname()`), mocking patterns with Vitest, testing async page components, best practices, and what NOT to mock. Updated `.cursor/rules/component-testing.mdc` with new subsection "3.5. Mocking Next.js Hooks and Functions (When Needed)" covering when to mock Next.js hooks, what to mock, and guidelines. Both sections include code examples and follow existing documentation patterns.
 
+- [x] **STEP-010**: Add optional liveUrl and videoUrl fields to Project interface and display in detail page ✅
+  - **Phase**: 1 – Data & Types Setup (also affects Phase 4 & Phase 5)
+  - **Description**: Add optional `liveUrl` and `videoUrl` string properties to the `Project` interface and display them in the project detail page as accessible link buttons.
+  - **Success Criteria**: Projects can optionally include live demo and video URLs; detail page displays them conditionally with proper accessibility attributes; tests verify the new functionality.
+  - **Completed**: Phase 1, Phase 4 & Phase 5 enhancement
+  - **Notes**: Added `liveUrl?: string` and `videoUrl?: string` optional properties to `Project` interface in `app/types/project.ts`. Updated `content/projects.ts` to include these fields (initially as empty strings for user to fill). Updated `app/projects/[slug]/page.tsx` to display these links conditionally in a new "Links" section (changed from "Repository" section) with proper heading hierarchy (h3), responsive flex layout, and accessible link buttons using React Icons (`FaExternalLinkAlt` for live demo, `FaPlay` for video). All links include proper accessibility attributes (aria-label, target="\_blank", rel="noopener noreferrer") and follow monochrome styling standards with 44x44px touch targets. Updated `tests/ProjectDetailPage.test.tsx` to reflect the "Links" section name change (from "Repository") and added comprehensive tests for liveUrl and videoUrl links: tests verify link attributes (href, target, rel, aria-label) when URLs exist, test conditional rendering (links only appear when URLs are present), and ensure proper accessibility compliance. All tests follow existing patterns with direct attribute verification and conditional rendering checks.
+
 ### 🚫 Blocked Items
 
 _(None.)_
@@ -202,7 +209,7 @@ _(None.)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 100% (7/7 original steps + 2 additional steps = 9 total steps completed)
+**Overall Progress**: 100% (7/7 original steps + 3 additional steps = 10 total steps completed)
 
 **Phase Breakdown**:
 
@@ -214,7 +221,7 @@ _(None.)_
   - Steps: **STEP-003** ✅
 - Phase 4 – Dynamic Detail Page: 1/1 ✅
   - Steps: **STEP-004** ✅
-- Phase 5 – Styling, Accessibility & Testing: 3/3 ✅
+- Phase 5 – Styling, Accessibility & Testing: 3/3 ✅ (includes test updates for STEP-010)
   - Steps: **STEP-005** ✅, **STEP-006** ✅, **STEP-007** ✅
 
 ---
@@ -223,8 +230,8 @@ _(None.)_
 
 **Created**:
 
-- `app/types/project.ts` ✅ (created - Project interface with Technology and Language union types)
-- `content/projects.ts` ✅ (created - typed projects array with 4 example projects)
+- `app/types/project.ts` ✅ (created - Project interface with Technology and Language union types; updated - added optional liveUrl and videoUrl properties)
+- `content/projects.ts` ✅ (created - typed projects array with 4 example projects; updated - added liveUrl and videoUrl fields to project data)
 - `app/components/ProjectCard.tsx` ✅ (created - accessible, monochrome project card with hover/focus overlay and typed Project props; updated - replaced Image with ProjectImage component for error handling)
 
 **Updated**:
@@ -233,14 +240,14 @@ _(None.)_
 
 **Created** (continued):
 
-- `app/projects/[slug]/page.tsx` ✅ (created - dynamic project detail page with static generation, notFound handling, semantic structure, and full accessibility; updated - refactored GitHub icon to use React Icons FaGithub component for consistency; updated - replaced Image with ProjectImage component for error handling)
+- `app/projects/[slug]/page.tsx` ✅ (created - dynamic project detail page with static generation, notFound handling, semantic structure, and full accessibility; updated - refactored GitHub icon to use React Icons FaGithub component for consistency; updated - replaced Image with ProjectImage component for error handling; updated - added Links section with conditional liveUrl and videoUrl display, changed Repository section to Links section with proper h3 heading hierarchy)
 - `app/components/ProjectImage.tsx` ✅ (created - client component with error handling and fallback UI for project images)
 - `app/types/projectimage.ts` ✅ (created - ProjectImageProps interface following project's type organization pattern)
 
 **Created** (continued):
 
 - `tests/ProjectsPage.test.tsx` ✅ (created - comprehensive test suite for Projects index page following page-testing.mdc checklist with 7 test categories)
-- `tests/ProjectDetailPage.test.tsx` ✅ (created - comprehensive test suite for project detail page with async component testing, notFound() mocking, and full page-testing.mdc checklist coverage)
+- `tests/ProjectDetailPage.test.tsx` ✅ (created - comprehensive test suite for project detail page with async component testing, notFound() mocking, and full page-testing.mdc checklist coverage; updated - changed "Repository" heading test to "Links", added tests for liveUrl and videoUrl link attributes and conditional rendering)
 
 **Updated** (continued):
 
@@ -262,4 +269,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 
 ---
 
-_Last Updated: Phase 5 complete - All styling/accessibility verified, comprehensive test suites created for both pages, and testing rules documentation updated with mocking guidance (12 February 2026)_
+_Last Updated: Added optional liveUrl and videoUrl fields to Project interface, displayed them in project detail page with proper accessibility and heading hierarchy, and updated tests to verify new functionality (12 February 2026)_

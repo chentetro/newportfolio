@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { FaGithub } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaPlay } from 'react-icons/fa';
 import { projects } from '@/content/projects';
 import type { Project } from '@/app/types/project';
 import ProjectImage from '@/app/components/ProjectImage';
@@ -74,7 +74,13 @@ export default async function ProjectDetailPage({
     githubUrl,
     imageSrc,
     imageAlt,
+    liveUrl,
+    videoUrl,
   } = project;
+
+  // Shared className for all link buttons in the Links section
+  const linkButtonClasses =
+    'inline-flex items-center gap-2 px-4 py-2 min-h-[44px] bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500';
 
   return (
     <main>
@@ -151,21 +157,47 @@ export default async function ProjectDetailPage({
             )}
           </section>
 
-          {/* Repository Section */}
+          {/* Links Section */}
           <section className="mt-8 mb-12">
-            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Repository
-            </h3>
-            <Link
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View ${title} repository on GitHub`}
-              className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
-            >
-              <FaGithub className="w-5 h-5" aria-hidden="true" />
-              View on GitHub
-            </Link>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+              Links
+            </h2>
+            <div className="flex flex-col sm:flex-row gap-4">
+              {liveUrl && (
+                <Link
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visit live demo of ${title}`}
+                  className={linkButtonClasses}
+                >
+                  <FaExternalLinkAlt className="w-5 h-5" aria-hidden="true" />
+                  Live Demo
+                </Link>
+              )}
+              {videoUrl && (
+                <Link
+                  href={videoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Watch video demonstration of ${title}`}
+                  className={linkButtonClasses}
+                >
+                  <FaPlay className="w-5 h-5" aria-hidden="true" />
+                  Watch Video
+                </Link>
+              )}
+              <Link
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${title} repository on GitHub`}
+                className={linkButtonClasses}
+              >
+                <FaGithub className="w-5 h-5" aria-hidden="true" />
+                View on GitHub
+              </Link>
+            </div>
           </section>
         </div>
       </article>

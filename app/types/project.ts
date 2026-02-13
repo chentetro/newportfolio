@@ -2,6 +2,10 @@
  * Represents a technology or tool used in a project.
  * Union type ensures type safety and prevents invalid technology values.
  */
+/**
+ * Represents a technology or tool used in a project.
+ * Note: Programming languages (e.g., Python, JavaScript, TypeScript) are in the Language type, not Technology.
+ */
 export type Technology =
   | 'React'
   | 'Next.js'
@@ -9,7 +13,6 @@ export type Technology =
   | 'JavaScript'
   | 'Tailwind CSS'
   | 'Node.js'
-  | 'Python'
   | 'MongoDB'
   | 'MySQL'
   | 'PostgreSQL'
@@ -69,4 +72,8 @@ export interface Project {
   imageSrc: string;
   /** Descriptive alt text for the project image (required for accessibility) */
   imageAlt: string;
+  /** Live demo URL (optional) */
+  liveUrl?: string;
+  /** Video demonstration URL (optional) */
+  videoUrl?: string;
 }
