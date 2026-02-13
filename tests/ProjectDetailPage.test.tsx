@@ -151,6 +151,81 @@ describe('Project Detail Page', () => {
     expect(githubLink).toHaveAttribute('aria-label');
   });
 
+  it('renders live demo link with correct attributes when liveUrl exists', async () => {
+    const params = createMockParams(validSlug);
+    render(await ProjectDetailPage({ params }));
+
+    const project = projects.find((p) => p.slug === validSlug);
+
+    if (project!.liveUrl) {
+      const liveLink = screen.getByRole('link', {
+        name: /Visit live demo/i,
+      });
+
+      expect(liveLink).toHaveAttribute('href', project!.liveUrl);
+      expect(liveLink).toHaveAttribute('target', '_blank');
+      expect(liveLink).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(liveLink).toHaveAttribute('aria-label');
+    }
+  });
+
+  it('renders video link with correct attributes when videoUrl exists', async () => {
+    const params = createMockParams(validSlug);
+    render(await ProjectDetailPage({ params }));
+
+    const project = projects.find((p) => p.slug === validSlug);
+
+    if (project!.videoUrl) {
+      const videoLink = screen.getByRole('link', {
+        name: /Watch video demonstration/i,
+      });
+
+      expect(videoLink).toHaveAttribute('href', project!.videoUrl);
+      expect(videoLink).toHaveAttribute('target', '_blank');
+      expect(videoLink).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(videoLink).toHaveAttribute('aria-label');
+    }
+  });
+
+  it('conditionally renders liveUrl and videoUrl links only when they exist', async () => {
+    const params = createMockParams(validSlug);
+    render(await ProjectDetailPage({ params }));
+
+    const project = projects.find((p) => p.slug === validSlug);
+
+    // GitHub link should always be present
+    const githubLink = screen.getByRole('link', {
+      name: /View.*repository on GitHub/i,
+    });
+    expect(githubLink).toBeInTheDocument();
+
+    // Live demo link should only be present if liveUrl exists
+    if (project!.liveUrl) {
+      const liveLink = screen.getByRole('link', {
+        name: /Visit live demo/i,
+      });
+      expect(liveLink).toBeInTheDocument();
+    } else {
+      const liveLink = screen.queryByRole('link', {
+        name: /Visit live demo/i,
+      });
+      expect(liveLink).not.toBeInTheDocument();
+    }
+
+    // Video link should only be present if videoUrl exists
+    if (project!.videoUrl) {
+      const videoLink = screen.getByRole('link', {
+        name: /Watch video demonstration/i,
+      });
+      expect(videoLink).toBeInTheDocument();
+    } else {
+      const videoLink = screen.queryByRole('link', {
+        name: /Watch video demonstration/i,
+      });
+      expect(videoLink).not.toBeInTheDocument();
+    }
+  });
+
   // 6. Content Rendering Tests
   it('renders all technologies and languages as badges', async () => {
     const params = createMockParams(validSlug);
@@ -187,14 +262,12 @@ describe('Project Detail Page', () => {
     expect(
       screen.getByRole('heading', { name: /Stack & languages/i })
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: /Repository/i })
-    ).toBeInTheDocument();
-    // Repository is H3 (subsection under Stack & languages section)
-    const repositoryHeading = screen.getByRole('heading', {
-      name: /Repository/i,
+    expect(screen.getByRole('heading', { name: /Links/i })).toBeInTheDocument();
+    // Links is H3 (subsection under Stack & languages section)
+    const linksHeading = screen.getByRole('heading', {
+      name: /Links/i,
     });
-    expect(repositoryHeading.tagName).toBe('H3');
+    expect(linksHeading.tagName).toBe('H3');
   });
 
   // 7. Edge Cases and Error Handling

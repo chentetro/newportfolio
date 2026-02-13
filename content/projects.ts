@@ -26,5 +26,7 @@ export const projects = [
     imageSrc: '/images/portfolio.png',
     imageAlt:
       'Screenshot of the portfolio website homepage showing the hero section and navigation',
+    liveUrl: 'https://newportfolio-sigma-seven.vercel.app/',
+    videoUrl: 'https://www.youtube.com/watch?v=DJK1vi2NXYM',
   },
 ] satisfies Project[];

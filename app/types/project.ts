@@ -9,7 +9,6 @@ export type Technology =
   | 'JavaScript'
   | 'Tailwind CSS'
   | 'Node.js'
-  | 'Python'
   | 'MongoDB'
   | 'MySQL'
   | 'PostgreSQL'
@@ -69,4 +68,8 @@ export interface Project {
   imageSrc: string;
   /** Descriptive alt text for the project image (required for accessibility) */
   imageAlt: string;
+  /** Live demo URL (optional) */
+  liveUrl?: string;
+  /** Video demonstration URL (optional) */
+  videoUrl?: string;
 }
