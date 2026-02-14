@@ -75,23 +75,54 @@ The AI MUST automatically update progress documents in the following scenarios W
 **When Fixing Issues Found in Code Reviews**:
 
 - Add a new step entry documenting the fix (e.g., "STEP-010: Code review fixes")
+- **MUST include the phase information** that the fix relates to (e.g., "Phase 2: Component Development")
 - Note what issues were found and how they were resolved
 - Update progress counters accordingly
+- **Phase Association**: Always document which phase the fix relates to, even if the fix is applied after the phase is marked complete
 - Example: "STEP-010: Fix monochrome design system violation - replaced teal colors with gray scale"
+- Example with phase: 
+  ```markdown
+  - [x] **STEP-010**: Fix monochrome design system violation ✅
+    - Completed: Code review fix
+    - Phase: Phase 2 - Component Development
+    - Notes: Replaced teal colors with gray scale to comply with styling standards
+  ```
 
 **When Implementing Suggestions**:
 
 - Add a new step entry documenting the implementation (e.g., "STEP-011: Refactor interface to types folder")
+- **MUST include the phase information** that the implementation relates to
 - Note what was refactored and why
 - Update progress counters accordingly
+- **Phase Association**: Always document which phase the implementation relates to
 - Example: "STEP-011: Move SocialLink interface to app/types/social.ts following project organization pattern"
+- Example with phase:
+  ```markdown
+  - [x] **STEP-011**: Refactor SocialLink interface to types folder ✅
+    - Completed: Code review refactoring
+    - Phase: Phase 1 - Foundation Setup
+    - Notes: Moved SocialLink interface from Footer component to app/types/social.ts following project organization pattern
+  ```
 
 **When Modifying Existing Steps**:
 
 - For every step that is modified or needs correction, add a 'STEP-NUMBER--FIX' entry directly below the original step entry
 - The fix entry should be placed immediately after the original step in the "Completed Steps" section
+- **MUST include the phase information** that the original step belongs to (e.g., "Phase 2: Component Development")
 - Include details about what was modified and why
 - Example format: "STEP-006--FIX: Fix heading hierarchy and semantic structure"
+- **Phase Association Example**: 
+  ```markdown
+  - [x] **STEP-003**: Create LifeBeyondCode component structure ✅
+    - Commit: `feat: create LifeBeyondCode component with gradient background and interest cards`
+    - Completed: Phase 2, STEP-003
+    - Notes: Created component with gradient background section, heart icon, main heading (H2), description, section heading (H3), and responsive interest cards grid (H4).
+
+  - [x] **STEP-003--FIX**: Fix monochrome design system violation - heart icon color ✅
+    - Completed: Code review fix
+    - Phase: Phase 2 - Component Development
+    - Notes: Fixed critical monochrome design system violation by replacing red heart icon color (`text-red-500 dark:text-red-400`) with gray scale colors (`text-gray-700 dark:text-gray-300`) to comply with styling standards. Foreground elements (icons, text, borders) must remain strictly monochrome (white, gray, black only).
+  ```
 - Do NOT replace the original step entry - keep both for historical tracking
 - **FIX entries should be displayed in the "Completed Steps" section for visibility and historical tracking**
 - **DO NOT count FIX entries in progress calculations** - they are corrections to existing steps, not new steps. Progress percentages should only count the original numbered steps (STEP-001, STEP-002, etc.) and additional steps from the "Additional Steps Not Included in the Original Plan" section
@@ -298,6 +329,7 @@ Every progress document should follow this structure:
 
 - ✅ **AUTOMATIC**: MUST update progress file when fixing issues related to tracked features
 - ✅ MUST add new step entry documenting the fix
+- ✅ **MUST include phase information** that the fix relates to (e.g., "Phase 2: Component Development")
 - ✅ MUST note what was fixed and how
 - ✅ MUST update progress counters
 - ✅ MUST update "Last Updated" timestamp
@@ -307,6 +339,7 @@ Every progress document should follow this structure:
 
 - ✅ **AUTOMATIC**: MUST update progress file when implementing suggestions
 - ✅ MUST add new step entry documenting the implementation
+- ✅ **MUST include phase information** that the implementation relates to
 - ✅ MUST note what was changed and why
 - ✅ MUST update progress counters
 - ✅ MUST update "Last Updated" timestamp
@@ -428,7 +461,35 @@ Every progress document should follow this structure:
 - [x] **STEP-001**: Create Footer component structure ✅
 - [x] **STEP-007**: Refactor SocialLink interface to types folder ✅
   - Completed: Code review refactoring
+  - Phase: Phase 1 - Foundation Setup
   - Notes: Moved SocialLink interface from Footer component to app/types/social.ts following project's type organization pattern
+```
+
+### Example: Fix Entry with Phase Information
+
+**Before**:
+```markdown
+### ✅ Completed Steps
+
+- [x] **STEP-003**: Create LifeBeyondCode component structure ✅
+  - Commit: `feat: create LifeBeyondCode component with gradient background and interest cards`
+  - Completed: Phase 2, STEP-003
+  - Notes: Created component with gradient background section, heart icon, main heading (H2), description, section heading (H3), and responsive interest cards grid (H4).
+```
+
+**After** (with fix entry):
+```markdown
+### ✅ Completed Steps
+
+- [x] **STEP-003**: Create LifeBeyondCode component structure ✅
+  - Commit: `feat: create LifeBeyondCode component with gradient background and interest cards`
+  - Completed: Phase 2, STEP-003
+  - Notes: Created component with gradient background section, heart icon, main heading (H2), description, section heading (H3), and responsive interest cards grid (H4). All styling standards and accessibility requirements met.
+
+- [x] **STEP-003--FIX**: Fix monochrome design system violation - heart icon color ✅
+  - Completed: Code review fix
+  - Phase: Phase 2 - Component Development
+  - Notes: Fixed critical monochrome design system violation by replacing red heart icon color (`text-red-500 dark:text-red-400`) with gray scale colors (`text-gray-700 dark:text-gray-300`) to comply with styling standards. Foreground elements (icons, text, borders) must remain strictly monochrome (white, gray, black only). Component now fully compliant with monochrome design system requirements.
 ```
 
 ### Example: Incidental Fixes Documentation
