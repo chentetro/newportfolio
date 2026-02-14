@@ -2,15 +2,36 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import type { CarouselItem } from '@/app/types/carousel';
+import type { ImageCarouselProps } from '@/app/types/carousel';
 
-interface ImageCarouselProps {
-  title: string;
-  items: CarouselItem[];
-  autoSlide?: boolean;
-  autoSlideInterval?: number;
-}
-
+/**
+ * ImageCarousel component displays a scrollable carousel of images with navigation controls.
+ *
+ * Features:
+ * - Single-slide display with smooth transform transitions
+ * - Navigation arrows (left/right) for manual navigation
+ * - Indicator dots showing current slide position
+ * - Optional auto-slide functionality with configurable interval
+ * - Keyboard navigation support (ArrowLeft/ArrowRight)
+ * - Full accessibility compliance (WCAG AA)
+ *
+ * @param title - Title displayed above the carousel (required)
+ * @param items - Array of carousel items to display (required)
+ * @param autoSlide - Whether the carousel should automatically slide (default: false)
+ * @param autoSlideInterval - Interval in milliseconds between automatic slides (default: 3000)
+ *
+ * @returns JSX.Element or null if items array is empty
+ *
+ * @example
+ * ```tsx
+ * <ImageCarousel
+ *   title="Life Moments"
+ *   items={lifeImages}
+ *   autoSlide={true}
+ *   autoSlideInterval={5000}
+ * />
+ * ```
+ */
 export default function ImageCarousel({
   title,
   items,
@@ -77,6 +98,8 @@ export default function ImageCarousel({
 
         <div className="relative overflow-hidden rounded-lg">
           {/* Carousel Container */}
+          {/* Dynamic transform for carousel positioning - inline style required
+              as Tailwind utilities cannot handle dynamic percentage-based transforms */}
           <div
             className="flex transition-transform ease-out duration-500"
             style={

@@ -297,11 +297,25 @@ describe('Navbar', () => {
     const links = screen.getAllByRole('link');
     expect(links).toHaveLength(5); // Logo link + 4 nav links
 
-    links.forEach((link) => {
-      expect(link).toHaveAttribute('aria-label');
-      expect(link.getAttribute('aria-label')).toBeTruthy();
-      expect(link.getAttribute('href')).toBeTruthy();
-    });
+    expect(links[0]).toHaveAttribute('aria-label');
+    expect(links[0].getAttribute('aria-label')).toBeTruthy();
+    expect(links[0].getAttribute('href')).toBeTruthy();
+
+    expect(links[1]).toHaveAttribute('aria-label');
+    expect(links[1].getAttribute('aria-label')).toBeTruthy();
+    expect(links[1].getAttribute('href')).toBeTruthy();
+
+    expect(links[2]).toHaveAttribute('aria-label');
+    expect(links[2].getAttribute('aria-label')).toBeTruthy();
+    expect(links[2].getAttribute('href')).toBeTruthy();
+
+    expect(links[3]).toHaveAttribute('aria-label');
+    expect(links[3].getAttribute('aria-label')).toBeTruthy();
+    expect(links[3].getAttribute('href')).toBeTruthy();
+
+    expect(links[4]).toHaveAttribute('aria-label');
+    expect(links[4].getAttribute('aria-label')).toBeTruthy();
+    expect(links[4].getAttribute('href')).toBeTruthy();
   });
 
   it('handles component rendering without breaking', () => {

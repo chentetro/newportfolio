@@ -10,3 +10,17 @@ export interface CarouselItem {
   /** Descriptive alt text for the image (required for accessibility) */
   imageAlt: string;
 }
+
+/**
+ * Props for the ImageCarousel component.
+ */
+export interface ImageCarouselProps {
+  /** Title displayed above the carousel */
+  title: string;
+  /** Array of carousel items to display */
+  items: CarouselItem[];
+  /** Whether the carousel should automatically slide */
+  autoSlide?: boolean;
+  /** Interval in milliseconds between automatic slides */
+  autoSlideInterval?: number;
+}

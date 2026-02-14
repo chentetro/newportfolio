@@ -6,7 +6,7 @@
 
 **Context**: The Life page currently only has a basic heading. Adding an image carousel will showcase life moments in an engaging, accessible way. The carousel displays one image at a time using CSS transforms for smooth transitions, supports keyboard navigation, and works seamlessly on mobile and desktop devices.
 
-**Status**: 🔄 In Progress | **Phase**: 3 of 4 | **Progress**: 86% (6/7 steps completed)
+**Status**: ✅ Complete | **Phase**: 4 of 4 | **Progress**: 100% (7/7 steps completed)
 
 **Success Metrics**:
 
@@ -37,7 +37,7 @@
 - ✅ Single-slide display with smooth transform transitions
 - ✅ Optional auto-slide functionality
 - ✅ Integration into Life page
-- ✅ Comprehensive test suite
+- ✅ Comprehensive test suite ✅
 - ❌ Touch/swipe gestures (future enhancement)
 - ❌ Image lightbox/modal (future enhancement)
 
@@ -48,6 +48,7 @@
 ### Phase 1: Type Definitions & Content Structure
 
 - Create `CarouselItem` interface in `app/types/carousel.ts` with `id`, `imageUrl`, and `imageAlt` fields
+- Create `ImageCarouselProps` interface in `app/types/carousel.ts` following project's type organization pattern
 - Create `content/life.ts` exporting a typed `lifeImages: CarouselItem[]` array
 - Follow the same pattern as `content/projects.ts` using `satisfies CarouselItem[]`
 - Prepare folder structure: `public/images/life/` for user's photos
@@ -94,6 +95,12 @@
   - **Phase**: 1 – Type Definitions & Content Structure
   - **Completed**: Phase 1 implementation
   - **Notes**: Created `app/types/carousel.ts` with `CarouselItem` interface containing `id: string`, `imageUrl: string`, and `imageAlt: string` fields. Type is properly exported and follows the same pattern as `app/types/project.ts` with JSDoc comments.
+
+- [x] **STEP-001--REFACTOR**: Move `ImageCarouselProps` interface to types folder ✅
+  - **Phase**: 1 – Type Definitions & Content Structure
+  - **Completed**: Type organization refactoring
+  - **Notes**: Refactored `ImageCarouselProps` interface from `app/components/ImageCarousel.tsx` to `app/types/carousel.ts` following the project's three-layer architecture pattern (Types → Content → Lib). This keeps all carousel-related types together in one location, improves maintainability, and follows the same pattern as `FirstHomeProps` in `app/types/firsthomeprops.tsx`. Component now imports `ImageCarouselProps` from the types folder alongside `CarouselItem`.
+  - **Files Modified**: `app/types/carousel.ts` (added ImageCarouselProps interface), `app/components/ImageCarousel.tsx` (updated import to use ImageCarouselProps from types folder)
 
 - [x] **STEP-002**: Create content file for life images ✅
   - **Phase**: 1 – Type Definitions & Content Structure
@@ -142,20 +149,61 @@
     - This ensures proper UX with small visual dots while maintaining WCAG AA touch target requirements
   - **Files Modified**: `app/components/ImageCarousel.tsx`
 
+- [x] **STEP-007**: Add comprehensive test suite ✅
+  - **Phase**: 4 – Testing & Accessibility
+  - **Completed**: Phase 4 implementation
+  - **Notes**: Created `tests/ImageCarousel.test.tsx` with comprehensive test suite following component testing standards. Test suite includes all 6 required test categories:
+    - **Core Functionality**: Rendering, props, navigation buttons, indicator dots, empty array handling, image attributes
+    - **Structural Hierarchy**: Heading order (H2), semantic HTML structure (section, header, role="region"), container structure
+    - **Accessibility**: ARIA labels, touch targets (44x44px), focus states, keyboard navigation, decorative icons, ARIA attributes for carousel region and indicator dots
+    - **Styling**: Monochrome classes, carousel container classes, image container classes, indicator dot styling, container constraints
+    - **Interactive Behavior**: Button clicks, indicator clicks, keyboard navigation (ArrowLeft/ArrowRight), auto-slide with fake timers, wrapping behavior
+    - **Edge Cases**: Single image, many images (10+), empty array, error handling
+  - **Testing Implementation**:
+    - Mocked Next.js Image component to render as standard `<img>` tag with data attributes
+    - Used Vitest fake timers (`vi.useFakeTimers()`, `vi.advanceTimersByTime()`) for auto-slide testing
+    - Used `fireEvent` from `@testing-library/react` for interactions
+    - Used `container.querySelector()` for stable selectors
+    - Used `waitFor` for async state updates
+    - Direct attribute verification for all image and interactive element attributes
+  - **Files Created**: `tests/ImageCarousel.test.tsx` ✅ (comprehensive test suite with 30+ test cases covering all requirements)
+
+- [x] **STEP-007--FIX**: Code review improvements ✅
+  - **Phase**: 4 – Testing & Accessibility
+  - **Completed**: Code review improvements
+  - **Notes**: Implemented all warnings and suggestions from code review:
+    - **Replaced `fireEvent` with `user-event`**: Updated all test cases to use `@testing-library/user-event` instead of `fireEvent` for more realistic user interaction simulation. All click interactions now use `userEvent.setup()` and `await user.click()`, and keyboard navigation uses `userEvent.keyboard()` instead of `fireEvent.keyDown()`.
+    - **Added JSDoc comments to component**: Added comprehensive JSDoc documentation block above the `ImageCarousel` component function, including description, feature list, parameter documentation with types, return type, and usage example.
+    - **Added inline style comment**: Added explanatory comment above the inline `style` prop explaining that dynamic percentage-based transforms cannot be achieved with Tailwind utilities alone, documenting the exception to the styling standards rule.
+    - **Added mobile responsiveness test**: Added new test case `renders correctly at mobile width (375px)` in the "Styling and Layout Tests" section to verify the component renders without horizontal overflow at mobile width and that container constraints work correctly.
+    - **Installed `@testing-library/user-event`**: Added `@testing-library/user-event` version `^14.5.2` to `package.json` devDependencies.
+  - **Files Modified**:
+    - `tests/ImageCarousel.test.tsx` ✅ (replaced fireEvent with user-event, added mobile responsiveness test)
+    - `app/components/ImageCarousel.tsx` ✅ (added JSDoc comments and inline style explanation comment)
+    - `package.json` ✅ (added @testing-library/user-event dependency)
+
+- [x] **STEP-007--FIX-2**: Fix test failures and timeouts in ImageCarousel and Navbar tests ✅
+  - **Phase**: 4 – Testing & Accessibility
+  - **Completed**: Test fixes
+  - **Notes**: Fixed 12 failing ImageCarousel tests and 2 timeout issues discovered during precommit validation:
+    - **Removed global fake timers**: Removed `vi.useFakeTimers()` from `beforeEach` that was interfering with user interactions and React's async rendering. Fake timers are now only used in specific auto-slide tests that require them.
+    - **Configured userEvent properly**: Updated all user interaction tests to use `userEvent.setup({ delay: null })` for immediate interactions and removed unnecessary `act` wrappers.
+    - **Fixed timeout issues**: Replaced `forEach` loops with individual queries in:
+      - `tests/ImageCarousel.test.tsx` - "provides adequate touch targets" test
+      - `tests/Navbar.test.tsx` - "maintains accessibility with all links present" test
+    - **Cleaned up unused imports**: Removed unused `afterEach` import and unused `container` variable.
+  - **Result**: All 233 tests now passing. Precommit validation successful.
+  - **Files Modified**: 
+    - `tests/ImageCarousel.test.tsx` ✅ (fixed test failures and timeouts)
+    - `tests/Navbar.test.tsx` ✅ (fixed timeout issue)
+
 ### 🔄 In Progress
 
-_(None - Phase 3 completed)_
+_(None - All phases completed)_
 
 ### ⏳ Pending Steps
 
-- [ ] **STEP-007**: Add comprehensive test suite
-  - **Phase**: 4 – Testing & Accessibility
-  - **Description**: Create `tests/ImageCarousel.test.tsx` following component testing standards. Include tests for: core functionality (rendering, props, auto-slide), structural hierarchy (heading order, semantic HTML), accessibility (ARIA labels, keyboard navigation, focus states, touch targets), styling (monochrome classes, responsive design, transitions), interactive behavior (button clicks, indicator clicks, auto-slide), and edge cases (empty array, single image, many images).
-  - **Success Criteria**: All tests pass; test coverage meets requirements; tests follow component testing standards from `.cursor/rules/component-testing.mdc`.
-  - **Testing Requirements**: All test categories covered; tests use stable selectors; direct attribute verification; accessibility requirements verified; auto-slide functionality tested; transform transitions tested.
-  - **Estimated Effort**: 1-2 hours
-  - **Dependencies**: STEP-006 (requires complete integration)
-  - **Commit Strategy**: Can be committed independently
+_(None - All steps completed)_
 
 ### 🚫 Blocked Items
 
@@ -196,7 +244,7 @@ _(None currently)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 86% (6/7 steps completed)
+**Overall Progress**: 100% (7/7 steps completed)
 
 **Phase Breakdown**:
 
@@ -206,16 +254,16 @@ _(None currently)_
   - Steps: **STEP-003** ✅, **STEP-004** ✅, **STEP-005** ✅
 - Phase 3 – Integration & Styling: 1/1 ✅
   - Steps: **STEP-006** ✅
-- Phase 4 – Testing & Accessibility: 0/1 ⏳
-  - Steps: **STEP-007** ⏳
+- Phase 4 – Testing & Accessibility: 1/1 ✅
+  - Steps: **STEP-007** ✅
 
 ---
 
 ## 🔗 Related Files
 
-**To Be Created**:
+**Created**:
 
-- `tests/ImageCarousel.test.tsx` ⏳ (comprehensive test suite)
+- `tests/ImageCarousel.test.tsx` ✅ (comprehensive test suite with 30+ test cases covering all 6 test categories: core functionality, structural hierarchy, accessibility, styling, interactive behavior, and edge cases)
 
 **Created**:
 
@@ -223,13 +271,17 @@ _(None currently)_
 
 **Created**:
 
-- `app/types/carousel.ts` ✅ (CarouselItem interface)
+- `app/types/carousel.ts` ✅ (CarouselItem and ImageCarouselProps interfaces)
 - `content/life.ts` ✅ (lifeImages array with typed data)
 
 **Updated**:
 
 - `app/life/page.tsx` ✅ (integrated ImageCarousel component with lifeImages)
-- `app/components/ImageCarousel.tsx` ✅ (code review fixes - replaced inline styles with CSS custom properties and Tailwind utilities, scoped keyboard navigation, improved performance, fixed indicator dots visual rendering)
+- `app/components/ImageCarousel.tsx` ✅ (code review fixes - replaced inline styles with CSS custom properties and Tailwind utilities, scoped keyboard navigation, improved performance, fixed indicator dots visual rendering; refactored to import ImageCarouselProps from types folder; added JSDoc comments and inline style explanation comment)
+- `app/types/carousel.ts` ✅ (added ImageCarouselProps interface following project's type organization pattern)
+- `tests/ImageCarousel.test.tsx` ✅ (replaced fireEvent with user-event for better user interaction simulation, added mobile responsiveness test; fixed test failures and timeouts by removing global fake timers, configuring userEvent properly, and replacing forEach loops)
+- `tests/Navbar.test.tsx` ✅ (fixed timeout issue by replacing forEach loop with individual queries)
+- `package.json` ✅ (added @testing-library/user-event dependency)
 
 **User Action Required**:
 
@@ -253,4 +305,4 @@ _(None currently)_
 
 ---
 
-_Last Updated: Fixed indicator dots visual rendering - separated visual dot from touch target to display small dots (w-2 h-2) while maintaining 44x44px touch target - all code review issues resolved (14 February 2026)_
+_Last Updated: Test fixes complete - Fixed 12 failing ImageCarousel tests and 2 timeout issues by removing global fake timers, configuring userEvent properly, and replacing forEach loops with individual queries. All 233 tests now passing. Precommit validation successful (14 February 2026)_
