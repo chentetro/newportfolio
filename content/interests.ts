@@ -1,4 +1,5 @@
 import type { InterestCard } from '@/app/types/interests';
+// Icons from react-icons/fa (Font Awesome) for interest cards
 import { FaUtensils, FaDumbbell, FaMusic, FaBook } from 'react-icons/fa';
 
 /**

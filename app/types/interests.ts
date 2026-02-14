@@ -1,3 +1,4 @@
+// External dependency for icon components from react-icons library
 import type { IconType } from 'react-icons';
 
 /**
