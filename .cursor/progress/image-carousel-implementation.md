@@ -182,6 +182,21 @@
     - `app/components/ImageCarousel.tsx` ✅ (added JSDoc comments and inline style explanation comment)
     - `package.json` ✅ (added @testing-library/user-event dependency)
 
+- [x] **STEP-007--FIX-2**: Fix test failures and timeouts in ImageCarousel and Navbar tests ✅
+  - **Phase**: 4 – Testing & Accessibility
+  - **Completed**: Test fixes
+  - **Notes**: Fixed 12 failing ImageCarousel tests and 2 timeout issues discovered during precommit validation:
+    - **Removed global fake timers**: Removed `vi.useFakeTimers()` from `beforeEach` that was interfering with user interactions and React's async rendering. Fake timers are now only used in specific auto-slide tests that require them.
+    - **Configured userEvent properly**: Updated all user interaction tests to use `userEvent.setup({ delay: null })` for immediate interactions and removed unnecessary `act` wrappers.
+    - **Fixed timeout issues**: Replaced `forEach` loops with individual queries in:
+      - `tests/ImageCarousel.test.tsx` - "provides adequate touch targets" test
+      - `tests/Navbar.test.tsx` - "maintains accessibility with all links present" test
+    - **Cleaned up unused imports**: Removed unused `afterEach` import and unused `container` variable.
+  - **Result**: All 233 tests now passing. Precommit validation successful.
+  - **Files Modified**: 
+    - `tests/ImageCarousel.test.tsx` ✅ (fixed test failures and timeouts)
+    - `tests/Navbar.test.tsx` ✅ (fixed timeout issue)
+
 ### 🔄 In Progress
 
 _(None - All phases completed)_
@@ -264,7 +279,8 @@ _(None currently)_
 - `app/life/page.tsx` ✅ (integrated ImageCarousel component with lifeImages)
 - `app/components/ImageCarousel.tsx` ✅ (code review fixes - replaced inline styles with CSS custom properties and Tailwind utilities, scoped keyboard navigation, improved performance, fixed indicator dots visual rendering; refactored to import ImageCarouselProps from types folder; added JSDoc comments and inline style explanation comment)
 - `app/types/carousel.ts` ✅ (added ImageCarouselProps interface following project's type organization pattern)
-- `tests/ImageCarousel.test.tsx` ✅ (replaced fireEvent with user-event for better user interaction simulation, added mobile responsiveness test)
+- `tests/ImageCarousel.test.tsx` ✅ (replaced fireEvent with user-event for better user interaction simulation, added mobile responsiveness test; fixed test failures and timeouts by removing global fake timers, configuring userEvent properly, and replacing forEach loops)
+- `tests/Navbar.test.tsx` ✅ (fixed timeout issue by replacing forEach loop with individual queries)
 - `package.json` ✅ (added @testing-library/user-event dependency)
 
 **User Action Required**:
@@ -289,4 +305,4 @@ _(None currently)_
 
 ---
 
-_Last Updated: Code review improvements complete - Replaced fireEvent with user-event, added JSDoc comments, inline style explanation, and mobile responsiveness test. All code review warnings and suggestions addressed (14 February 2026)_
+_Last Updated: Test fixes complete - Fixed 12 failing ImageCarousel tests and 2 timeout issues by removing global fake timers, configuring userEvent properly, and replacing forEach loops with individual queries. All 233 tests now passing. Precommit validation successful (14 February 2026)_
