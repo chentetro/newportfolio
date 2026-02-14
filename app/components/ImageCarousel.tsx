@@ -2,14 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import type { CarouselItem } from '@/app/types/carousel';
-
-interface ImageCarouselProps {
-  title: string;
-  items: CarouselItem[];
-  autoSlide?: boolean;
-  autoSlideInterval?: number;
-}
+import type { ImageCarouselProps } from '@/app/types/carousel';
 
 export default function ImageCarousel({
   title,
