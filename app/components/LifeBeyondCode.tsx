@@ -37,7 +37,7 @@ export default function LifeBeyondCode({
           <div className="flex flex-col items-center text-center space-y-4">
             {/* Heart Icon */}
             <FaHeart
-              className="w-8 h-8 text-red-500 dark:text-red-400"
+              className="w-8 h-8 text-gray-700 dark:text-gray-300"
               aria-hidden="true"
             />
 
