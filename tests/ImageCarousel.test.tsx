@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ImageCarousel from '@/app/components/ImageCarousel';
 import type { CarouselItem } from '@/app/types/carousel';
 
@@ -61,11 +62,6 @@ describe('ImageCarousel', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
   });
 
   // 1. Core Functionality Tests
@@ -224,23 +220,23 @@ describe('ImageCarousel', () => {
   });
 
   it('provides adequate touch targets for all interactive elements', () => {
-    const { container } = render(
-      <ImageCarousel title="Life Moments" items={mockItems} />
-    );
+    render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
-    const navButtons = container.querySelectorAll(
-      'button[aria-label="Previous image"], button[aria-label="Next image"]'
-    );
-    navButtons.forEach((button) => {
-      expect(button).toHaveClass('min-h-[44px]');
-      expect(button).toHaveClass('min-w-[44px]');
-    });
+    const prevButton = screen.getByLabelText('Previous image');
+    const nextButton = screen.getByLabelText('Next image');
+
+    expect(prevButton).toHaveClass('min-h-[44px]');
+    expect(prevButton).toHaveClass('min-w-[44px]');
+    expect(nextButton).toHaveClass('min-h-[44px]');
+    expect(nextButton).toHaveClass('min-w-[44px]');
 
     const indicatorButtons = screen.getAllByRole('tab');
-    indicatorButtons.forEach((button) => {
-      expect(button).toHaveClass('min-h-[44px]');
-      expect(button).toHaveClass('min-w-[44px]');
-    });
+    expect(indicatorButtons[0]).toHaveClass('min-h-[44px]');
+    expect(indicatorButtons[0]).toHaveClass('min-w-[44px]');
+    expect(indicatorButtons[1]).toHaveClass('min-h-[44px]');
+    expect(indicatorButtons[1]).toHaveClass('min-w-[44px]');
+    expect(indicatorButtons[2]).toHaveClass('min-h-[44px]');
+    expect(indicatorButtons[2]).toHaveClass('min-w-[44px]');
   });
 
   it('ensures proper focus and keyboard accessibility', () => {
@@ -363,8 +359,45 @@ describe('ImageCarousel', () => {
     expect(maxWidthContainer).toHaveClass('mx-auto');
   });
 
+  it('renders correctly at mobile width (375px)', () => {
+    // Set viewport to mobile size
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 375,
+    });
+    Object.defineProperty(window, 'innerHeight', {
+      writable: true,
+      configurable: true,
+      value: 667,
+    });
+
+    const { container } = render(
+      <ImageCarousel title="Life Moments" items={mockItems} />
+    );
+
+    const section = container.querySelector('section');
+    expect(section).toBeInTheDocument();
+    expect(section).toHaveClass('px-4'); // Mobile padding
+
+    // Verify container constraints prevent horizontal overflow
+    const maxWidthContainer = container.querySelector('.max-w-7xl.mx-auto');
+    expect(maxWidthContainer).toBeInTheDocument();
+
+    // Verify carousel container has overflow hidden
+    const carouselContainer = container.querySelector(
+      '.relative.overflow-hidden.rounded-lg'
+    );
+    expect(carouselContainer).toBeInTheDocument();
+
+    // Verify all images are rendered
+    const images = screen.getAllByRole('img');
+    expect(images).toHaveLength(3);
+  });
+
   // 5. Interactive Behavior Tests
   it('navigates to next slide when next button is clicked', async () => {
+    const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
     const nextButton = screen.getByLabelText('Next image');
@@ -373,9 +406,7 @@ describe('ImageCarousel', () => {
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
     expect(indicators[1]).toHaveAttribute('aria-selected', 'false');
 
-    await act(async () => {
-      fireEvent.click(nextButton);
-    });
+    await user.click(nextButton);
 
     const updatedIndicators = screen.getAllByRole('tab');
     expect(updatedIndicators[0]).toHaveAttribute('aria-selected', 'false');
@@ -383,6 +414,7 @@ describe('ImageCarousel', () => {
   });
 
   it('navigates to previous slide when previous button is clicked', async () => {
+    const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
     const prevButton = screen.getByLabelText('Previous image');
@@ -391,9 +423,7 @@ describe('ImageCarousel', () => {
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
 
     // Start at slide 1, clicking prev should wrap to last slide
-    await act(async () => {
-      fireEvent.click(prevButton);
-    });
+    await user.click(prevButton);
 
     const updatedIndicators = screen.getAllByRole('tab');
     expect(updatedIndicators[2]).toHaveAttribute('aria-selected', 'true');
@@ -401,6 +431,7 @@ describe('ImageCarousel', () => {
   });
 
   it('navigates to specific slide when indicator dot is clicked', async () => {
+    const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
     const thirdIndicator = screen.getByLabelText('Go to slide 3');
@@ -408,9 +439,7 @@ describe('ImageCarousel', () => {
 
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
 
-    await act(async () => {
-      fireEvent.click(thirdIndicator);
-    });
+    await user.click(thirdIndicator);
 
     const updatedIndicators = screen.getAllByRole('tab');
     expect(updatedIndicators[0]).toHaveAttribute('aria-selected', 'false');
@@ -419,6 +448,7 @@ describe('ImageCarousel', () => {
   });
 
   it('navigates with keyboard arrow keys', async () => {
+    const user = userEvent.setup({ delay: null });
     const { container } = render(
       <ImageCarousel title="Life Moments" items={mockItems} />
     );
@@ -431,17 +461,13 @@ describe('ImageCarousel', () => {
     const indicators = screen.getAllByRole('tab');
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
 
-    await act(async () => {
-      fireEvent.keyDown(window, { key: 'ArrowRight' });
-    });
+    await user.keyboard('{ArrowRight}');
 
     const updatedIndicators1 = screen.getAllByRole('tab');
     expect(updatedIndicators1[1]).toHaveAttribute('aria-selected', 'true');
     expect(updatedIndicators1[0]).toHaveAttribute('aria-selected', 'false');
 
-    await act(async () => {
-      fireEvent.keyDown(window, { key: 'ArrowLeft' });
-    });
+    await user.keyboard('{ArrowLeft}');
 
     const updatedIndicators2 = screen.getAllByRole('tab');
     expect(updatedIndicators2[0]).toHaveAttribute('aria-selected', 'true');
@@ -449,6 +475,7 @@ describe('ImageCarousel', () => {
   });
 
   it('does not navigate with keyboard when input is focused', async () => {
+    const user = userEvent.setup({ delay: null });
     const { container } = render(
       <ImageCarousel title="Life Moments" items={mockItems} />
     );
@@ -464,9 +491,7 @@ describe('ImageCarousel', () => {
       'Life Moments carousel - slide 1 of 3'
     );
 
-    await act(async () => {
-      fireEvent.keyDown(window, { key: 'ArrowRight' });
-    });
+    await user.keyboard('{ArrowRight}');
 
     // Should still be on slide 1 because input is focused
     expect(carouselRegion).toHaveAttribute(
@@ -478,6 +503,7 @@ describe('ImageCarousel', () => {
   });
 
   it('auto-slides when autoSlide prop is enabled', async () => {
+    vi.useFakeTimers();
     render(
       <ImageCarousel
         title="Life Moments"
@@ -498,9 +524,12 @@ describe('ImageCarousel', () => {
     const updatedIndicators = screen.getAllByRole('tab');
     expect(updatedIndicators[1]).toHaveAttribute('aria-selected', 'true');
     expect(updatedIndicators[0]).toHaveAttribute('aria-selected', 'false');
+
+    vi.useRealTimers();
   });
 
   it('does not auto-slide when autoSlide prop is disabled', async () => {
+    vi.useFakeTimers();
     const { container } = render(
       <ImageCarousel
         title="Life Moments"
@@ -517,43 +546,43 @@ describe('ImageCarousel', () => {
     );
 
     // Fast-forward time by 2000ms
-    vi.advanceTimersByTime(2000);
+    await act(async () => {
+      vi.advanceTimersByTime(2000);
+    });
 
     // Should still be on slide 1
     expect(carouselRegion).toHaveAttribute(
       'aria-label',
       'Life Moments carousel - slide 1 of 3'
     );
+
+    vi.useRealTimers();
   });
 
   it('wraps around when navigating past last slide', async () => {
+    const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
     const nextButton = screen.getByLabelText('Next image');
 
     // Navigate to last slide
-    await act(async () => {
-      fireEvent.click(nextButton);
-    });
+    await user.click(nextButton);
     let indicators = screen.getAllByRole('tab');
     expect(indicators[1]).toHaveAttribute('aria-selected', 'true');
 
-    await act(async () => {
-      fireEvent.click(nextButton);
-    });
+    await user.click(nextButton);
     indicators = screen.getAllByRole('tab');
     expect(indicators[2]).toHaveAttribute('aria-selected', 'true');
 
     // Click next again - should wrap to first slide
-    await act(async () => {
-      fireEvent.click(nextButton);
-    });
+    await user.click(nextButton);
     indicators = screen.getAllByRole('tab');
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
     expect(indicators[2]).toHaveAttribute('aria-selected', 'false');
   });
 
   it('wraps around when navigating before first slide', async () => {
+    const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
     const prevButton = screen.getByLabelText('Previous image');
@@ -562,9 +591,7 @@ describe('ImageCarousel', () => {
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
 
     // Start at slide 1, click prev - should wrap to last slide
-    await act(async () => {
-      fireEvent.click(prevButton);
-    });
+    await user.click(prevButton);
 
     const updatedIndicators = screen.getAllByRole('tab');
     expect(updatedIndicators[2]).toHaveAttribute('aria-selected', 'true');
@@ -572,6 +599,7 @@ describe('ImageCarousel', () => {
   });
 
   it('updates aria-label correctly when slide changes', async () => {
+    const user = userEvent.setup({ delay: null });
     const { container } = render(
       <ImageCarousel title="Life Moments" items={mockItems} />
     );
@@ -584,9 +612,7 @@ describe('ImageCarousel', () => {
       'Life Moments carousel - slide 1 of 3'
     );
 
-    await act(async () => {
-      fireEvent.click(nextButton);
-    });
+    await user.click(nextButton);
 
     const updatedRegion = container.querySelector('[role="region"]');
     expect(updatedRegion).toHaveAttribute(
