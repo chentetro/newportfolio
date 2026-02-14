@@ -193,7 +193,7 @@
       - `tests/Navbar.test.tsx` - "maintains accessibility with all links present" test
     - **Cleaned up unused imports**: Removed unused `afterEach` import and unused `container` variable.
   - **Result**: All 233 tests now passing. Precommit validation successful.
-  - **Files Modified**: 
+  - **Files Modified**:
     - `tests/ImageCarousel.test.tsx` ✅ (fixed test failures and timeouts)
     - `tests/Navbar.test.tsx` ✅ (fixed timeout issue)
 
