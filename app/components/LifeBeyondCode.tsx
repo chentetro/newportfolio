@@ -58,7 +58,7 @@ export default function LifeBeyondCode({
       <div className="bg-white dark:bg-gray-900 py-12 px-4">
         <div className="max-w-6xl mx-auto">
           {/* Section Heading (H3) */}
-          <h3 className="text-2xl lg:text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-8">
+          <h3 className="text-center text-2xl lg:text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-8">
             {sectionHeading}
           </h3>
 
