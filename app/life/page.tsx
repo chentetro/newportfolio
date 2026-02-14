@@ -1,3 +1,6 @@
+import ImageCarousel from '@/app/components/ImageCarousel';
+import { lifeImages } from '@/content/life';
+
 export default function Life() {
   return (
     <main>
@@ -8,6 +11,8 @@ export default function Life() {
           </h1>
         </div>
       </section>
+
+      <ImageCarousel title="Life Moments" items={lifeImages} />
     </main>
   );
 }

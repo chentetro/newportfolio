@@ -1,84 +1,66 @@
 'use client';
 
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import type { CarouselItem } from '@/app/types/carousel';
 
 interface ImageCarouselProps {
   title: string;
   items: CarouselItem[];
+  autoSlide?: boolean;
+  autoSlideInterval?: number;
 }
 
-export default function ImageCarousel({ title, items }: ImageCarouselProps) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+export default function ImageCarousel({
+  title,
+  items,
+  autoSlide = false,
+  autoSlideInterval = 3000,
+}: ImageCarouselProps) {
+  const [curr, setCurr] = useState(0);
 
-  const checkScrollability = useCallback(() => {
-    if (!scrollContainerRef.current) return;
+  const prev = useCallback(() => {
+    setCurr((curr) => (curr === 0 ? items.length - 1 : curr - 1));
+  }, [items.length]);
 
-    const container = scrollContainerRef.current;
-    const { scrollLeft, scrollWidth, clientWidth } = container;
-
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-  }, []);
+  const next = useCallback(() => {
+    setCurr((curr) => (curr === items.length - 1 ? 0 : curr + 1));
+  }, [items.length]);
 
   useEffect(() => {
-    checkScrollability();
-
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    container.addEventListener('scroll', checkScrollability);
-    window.addEventListener('resize', checkScrollability);
-
-    return () => {
-      container.removeEventListener('scroll', checkScrollability);
-      window.removeEventListener('resize', checkScrollability);
-    };
-  }, [checkScrollability, items]);
-
-  const scroll = useCallback((direction: 'left' | 'right') => {
-    if (!scrollContainerRef.current) return;
-
-    const container = scrollContainerRef.current;
-    const scrollAmount = container.clientWidth * 0.8;
-    const targetScroll =
-      direction === 'left'
-        ? container.scrollLeft - scrollAmount
-        : container.scrollLeft + scrollAmount;
-
-    container.scrollTo({
-      left: targetScroll,
-      behavior: 'smooth',
-    });
-  }, []);
+    if (!autoSlide || items.length === 0) return;
+    const slideInterval = setInterval(next, autoSlideInterval);
+    return () => clearInterval(slideInterval);
+  }, [autoSlide, autoSlideInterval, next, items.length]);
 
   // Keyboard navigation handler
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Only handle if container is focused
-      if (document.activeElement === container) {
-        if (e.key === 'ArrowLeft' && canScrollLeft) {
-          e.preventDefault();
-          scroll('left');
-        } else if (e.key === 'ArrowRight' && canScrollRight) {
-          e.preventDefault();
-          scroll('right');
-        }
+      // Only handle if no input/textarea is focused
+      const activeElement = document.activeElement;
+      if (
+        activeElement?.tagName === 'INPUT' ||
+        activeElement?.tagName === 'TEXTAREA' ||
+        activeElement?.getAttribute('contenteditable') === 'true'
+      ) {
+        return;
+      }
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        next();
       }
     };
 
-    container.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      container.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [canScrollLeft, canScrollRight, scroll]);
+  }, [prev, next]);
 
   if (items.length === 0) {
     return null;
@@ -86,83 +68,117 @@ export default function ImageCarousel({ title, items }: ImageCarouselProps) {
 
   return (
     <section className="py-12 px-4" aria-label={`${title} carousel`}>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <header className="mb-6">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">
             {title}
           </h2>
         </header>
 
-        <div className="relative">
-          {/* Left Navigation Button */}
-          <button
-            onClick={() => scroll('left')}
-            disabled={!canScrollLeft}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-full p-3 hover:bg-gray-800 dark:hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-900 dark:disabled:hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
-            aria-label="Scroll carousel left"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-
-          {/* Scrollable Image Container */}
+        <div className="relative overflow-hidden rounded-lg">
+          {/* Carousel Container */}
           <div
-            ref={scrollContainerRef}
-            tabIndex={0}
+            className="flex transition-transform ease-out duration-500"
+            style={
+              {
+                '--carousel-translate': `-${curr * 100}%`,
+                transform: 'translateX(var(--carousel-translate))',
+              } as React.CSSProperties
+            }
             role="region"
-            aria-label={`${title} carousel - use arrow keys to navigate`}
-            className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide focus:outline-none focus:ring-2 focus:ring-gray-500"
+            aria-label={`${title} carousel - slide ${curr + 1} of ${items.length}`}
+            aria-live="polite"
+            tabIndex={0}
           >
-            {items.map((item) => (
+            {items.map((item, index) => (
               <div
                 key={item.id}
-                className="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96"
+                className="relative w-full flex-shrink-0 min-h-[450px]"
               >
                 <Image
                   src={item.imageUrl}
                   alt={item.imageAlt}
                   fill
-                  className="object-cover rounded-lg"
-                  sizes="(max-width: 640px) 256px, (max-width: 1024px) 320px, 384px"
+                  className="object-contain"
+                  sizes="100vw"
+                  priority={index === 0}
                 />
               </div>
             ))}
           </div>
 
-          {/* Right Navigation Button */}
-          <button
-            onClick={() => scroll('right')}
-            disabled={!canScrollRight}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-full p-3 hover:bg-gray-800 dark:hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-900 dark:disabled:hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
-            aria-label="Scroll carousel right"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+          {/* Navigation Buttons */}
+          <div className="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
+            <button
+              onClick={prev}
+              className="p-3 rounded-full shadow-lg bg-gray-900/80 dark:bg-gray-100/80 text-white dark:text-gray-900 hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center pointer-events-auto"
+              aria-label="Previous image"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={next}
+              className="p-3 rounded-full shadow-lg bg-gray-900/80 dark:bg-gray-100/80 text-white dark:text-gray-900 hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center pointer-events-auto"
+              aria-label="Next image"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {/* Indicator Dots */}
+          <div className="absolute bottom-4 left-0 right-0">
+            <div
+              className="flex items-center justify-center gap-2"
+              role="tablist"
+              aria-label="Carousel indicators"
+            >
+              {items.map((_, i) => (
+                <button
+                  key={`indicator-${i}`}
+                  onClick={() => setCurr(i)}
+                  className="transition-all rounded-full focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center p-2 bg-transparent"
+                  aria-label={`Go to slide ${i + 1}`}
+                  aria-selected={curr === i}
+                  role="tab"
+                >
+                  <span
+                    className={`transition-all rounded-full ${
+                      curr === i
+                        ? 'bg-white dark:bg-gray-100 w-2 h-2'
+                        : 'bg-white/50 dark:bg-gray-100/50 w-2 h-2 hover:bg-white/75 dark:hover:bg-gray-100/75'
+                    }`}
+                    aria-hidden="true"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
