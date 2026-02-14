@@ -132,6 +132,16 @@
     - Added `tabIndex={0}` to carousel container for better keyboard focus management
   - **Files Modified**: `app/components/ImageCarousel.tsx`
 
+- [x] **STEP-006--FIX-2**: Fix indicator dots visual rendering issue ✅
+  - **Phase**: 3 – Integration & Styling
+  - **Completed**: Code review fix
+  - **Notes**: Fixed indicator dots rendering as 44×44px colored circles instead of small dots. The issue was that `min-h-[44px] min-w-[44px]` was overriding `w-2 h-2`, causing the entire button to render as a large filled circle. Separated the visual dot from the touch target by:
+    - Making the button transparent (`bg-transparent`) to serve as the 44x44px touch target
+    - Adding a child `<span>` element that displays the actual small dot (w-2 h-2) with the appropriate colors
+    - The button provides accessibility and touch target, while the inner span provides the visual indicator
+    - This ensures proper UX with small visual dots while maintaining WCAG AA touch target requirements
+  - **Files Modified**: `app/components/ImageCarousel.tsx`
+
 ### 🔄 In Progress
 
 _(None - Phase 3 completed)_
@@ -219,7 +229,7 @@ _(None currently)_
 **Updated**:
 
 - `app/life/page.tsx` ✅ (integrated ImageCarousel component with lifeImages)
-- `app/components/ImageCarousel.tsx` ✅ (code review fixes - replaced inline styles with CSS custom properties and Tailwind utilities, scoped keyboard navigation, improved performance)
+- `app/components/ImageCarousel.tsx` ✅ (code review fixes - replaced inline styles with CSS custom properties and Tailwind utilities, scoped keyboard navigation, improved performance, fixed indicator dots visual rendering)
 
 **User Action Required**:
 
@@ -243,4 +253,4 @@ _(None currently)_
 
 ---
 
-_Last Updated: Code review fixes applied - replaced inline styles with CSS custom properties and Tailwind utilities, scoped keyboard navigation to prevent conflicts, improved performance with map index, and enhanced indicator dots UX - all critical issues and warnings resolved (14 February 2026)_
+_Last Updated: Fixed indicator dots visual rendering - separated visual dot from touch target to display small dots (w-2 h-2) while maintaining 44x44px touch target - all code review issues resolved (14 February 2026)_

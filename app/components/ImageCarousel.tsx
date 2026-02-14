@@ -162,15 +162,20 @@ export default function ImageCarousel({
                 <button
                   key={`indicator-${i}`}
                   onClick={() => setCurr(i)}
-                  className={`transition-all rounded-full focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center p-2 ${
-                    curr === i
-                      ? 'bg-white dark:bg-gray-100 w-2 h-2'
-                      : 'bg-white/50 dark:bg-gray-100/50 w-2 h-2 hover:bg-white/75 dark:hover:bg-gray-100/75'
-                  }`}
+                  className="transition-all rounded-full focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center p-2 bg-transparent"
                   aria-label={`Go to slide ${i + 1}`}
                   aria-selected={curr === i}
                   role="tab"
-                />
+                >
+                  <span
+                    className={`transition-all rounded-full ${
+                      curr === i
+                        ? 'bg-white dark:bg-gray-100 w-2 h-2'
+                        : 'bg-white/50 dark:bg-gray-100/50 w-2 h-2 hover:bg-white/75 dark:hover:bg-gray-100/75'
+                    }`}
+                    aria-hidden="true"
+                  />
+                </button>
               ))}
             </div>
           </div>
