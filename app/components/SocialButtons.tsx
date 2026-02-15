@@ -1,11 +1,5 @@
 ﻿import Link from 'next/link';
-
-interface SocialButtonsProps {
-  githubUrl: string;
-  cvUrl: string;
-  linkedInUrl: string;
-  email: string;
-}
+import type { SocialButtonsProps } from '@/app/types/social';
 
 export default function SocialButtons({
   githubUrl,
