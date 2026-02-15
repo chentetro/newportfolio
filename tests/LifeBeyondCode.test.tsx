@@ -71,7 +71,7 @@ describe('LifeBeyondCode', () => {
       screen.getByText('Listening to Latin music and discovering new artists')
     ).toBeInTheDocument();
     expect(
-      screen.getByText('Sci-fi novels and personal development books')
+      screen.getByText('Interested in personal development books')
     ).toBeInTheDocument();
   });
 
