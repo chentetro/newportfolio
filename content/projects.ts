@@ -9,9 +9,9 @@ export const projects = [
     slug: 'portfolio-website',
     title: 'Portfolio Website',
     shortDescription:
-      'A modern, responsive portfolio website built with Next.js and TypeScript, featuring dark mode support and accessible design.',
+      'A professional portfolio built with Next.js and TypeScript, developed using the AIDD (AI-Driven Development) methodology. The project integrates AI Agents and custom architectural rules to ensure code consistency, full accessibility, and automated quality assurance',
     description:
-      'This portfolio website showcases my work and skills using modern web technologies. Built with Next.js 16 and TypeScript for type safety, it features a mobile-first responsive design with Tailwind CSS. The site includes dark mode support, semantic HTML for accessibility, and follows best practices for performance and SEO. All components are tested with Vitest and React Testing Library to ensure reliability and accessibility standards.',
+      'This portfolio is a sophisticated software engineering environment, developed using the AI-Driven Development (AIDD) methodology. It represents a paradigm shift in development by integrating AI Agents as a core part of the lifecycle to enforce superior technical standards.\n\nAIDD & Agentic Code Review: The development process is powered by an "Agentic Review" system. Using custom Commands, an AI Agent audits code changes against predefined Rules to ensure architectural integrity before deployment.',
     technologies: [
       'Next.js',
       'TypeScript',
@@ -23,7 +23,7 @@ export const projects = [
     ],
     languages: ['TypeScript'],
     githubUrl: 'https://github.com/chentetro/newportfolio',
-    imageSrc: '/images/portfolio.png',
+    imageSrc: '/images/projects/portfolio.png',
     imageAlt:
       'Screenshot of the portfolio website homepage showing the hero section and navigation',
     liveUrl: 'https://newportfolio-sigma-seven.vercel.app/',
