@@ -153,6 +153,11 @@
   - **Completed**: Phase 5 implementation
   - **Notes**: Created `tests/ProjectDetailPage.test.tsx` with comprehensive test coverage following `.cursor/rules/page-testing.mdc` checklist. Tests cover: core rendering & landmarks, heading hierarchy, semantic structure, accessibility, links & navigation (direct verification of GitHub link attributes), content rendering, error handling with `notFound()` mocking, and styling. Includes helper function `createMockParams()` for async component testing and proper mocking of `next/navigation` module. All tests pass including edge cases for invalid slugs and empty arrays.
 
+- [x] **STEP-007--FIX**: Fix project description test to handle multi-line text with whitespace-pre-line ✅
+  - **Completed**: Precommit test fix
+  - **Phase**: Phase 5 – Styling, Accessibility & Testing
+  - **Notes**: Fixed failing test "renders project description" in `tests/ProjectDetailPage.test.tsx`. The test was using exact text matching (`screen.getByText(project!.description)`) which failed because the description contains newlines (`\n\n`) and is rendered with `whitespace-pre-line` CSS class, causing whitespace normalization issues. Replaced with a function matcher that checks for the description text in a paragraph element, handling normalized whitespace in the DOM. Also removed unused `project` variable to resolve ESLint warning. All 267 tests now pass in precommit validation.
+
 ### 🔄 In Progress
 
 _(None – All phases complete.)_
@@ -247,7 +252,7 @@ _(None.)_
 **Created** (continued):
 
 - `tests/ProjectsPage.test.tsx` ✅ (created - comprehensive test suite for Projects index page following page-testing.mdc checklist with 7 test categories)
-- `tests/ProjectDetailPage.test.tsx` ✅ (created - comprehensive test suite for project detail page with async component testing, notFound() mocking, and full page-testing.mdc checklist coverage; updated - changed "Repository" heading test to "Links", added tests for liveUrl and videoUrl link attributes and conditional rendering)
+- `tests/ProjectDetailPage.test.tsx` ✅ (created - comprehensive test suite for project detail page with async component testing, notFound() mocking, and full page-testing.mdc checklist coverage; updated - changed "Repository" heading test to "Links", added tests for liveUrl and videoUrl link attributes and conditional rendering; updated - fixed "renders project description" test to handle multi-line text with whitespace-pre-line using function matcher, removed unused variable)
 
 **Updated** (continued):
 
@@ -269,4 +274,4 @@ _(Add entries here if you modify unrelated parts of the codebase while working o
 
 ---
 
-_Last Updated: Added optional liveUrl and videoUrl fields to Project interface, displayed them in project detail page with proper accessibility and heading hierarchy, and updated tests to verify new functionality (12 February 2026)_
+_Last Updated: Fixed project description test in ProjectDetailPage.test.tsx to handle multi-line text with whitespace-pre-line using function matcher (precommit validation fix) (12 February 2026)_
