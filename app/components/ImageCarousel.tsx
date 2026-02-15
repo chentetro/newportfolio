@@ -91,7 +91,7 @@ export default function ImageCarousel({
     <section className="py-12 px-4" aria-label={`${title} carousel`}>
       <div className="max-w-7xl mx-auto">
         <header className="mb-6">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">
+          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 text-center">
             {title}
           </h2>
         </header>

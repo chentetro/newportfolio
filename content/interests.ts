@@ -28,7 +28,7 @@ export const interestsData: InterestCard[] = [
   {
     id: 'reading',
     title: 'Reading',
-    description: 'Sci-fi novels and personal development books',
+    description: 'Interested in personal development books',
     icon: FaBook,
   },
 ] satisfies InterestCard[];
