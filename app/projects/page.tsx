@@ -7,10 +7,10 @@ export default function Projects() {
       <section className="py-12 px-4 overflow-x-hidden">
         <div className="max-w-6xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 text-center">
               Projects
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-center">
               A collection of projects showcasing my work in web development,
               featuring modern technologies and best practices.
             </p>
