@@ -1,11 +1,5 @@
 ﻿import Link from 'next/link';
-
-interface SocialButtonsProps {
-  githubUrl: string;
-  cvUrl: string;
-  linkedInUrl: string;
-  email: string;
-}
+import type { SocialButtonsProps } from '@/app/types/social';
 
 export default function SocialButtons({
   githubUrl,
@@ -14,13 +8,13 @@ export default function SocialButtons({
   email,
 }: SocialButtonsProps) {
   return (
-    <div className="flex flex-wrap gap-4 items-center justify-center">
+    <div className="flex flex-wrap gap-4 items-center justify-center w-full max-w-full">
       {/* GitHub Button */}
       <Link
         href={githubUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none"
         aria-label="Visit GitHub profile"
       >
         <svg
@@ -43,7 +37,7 @@ export default function SocialButtons({
         href={linkedInUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none"
         aria-label="Visit LinkedIn profile"
       >
         <svg
@@ -62,7 +56,7 @@ export default function SocialButtons({
         href={cvUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none"
         aria-label="Download CV"
       >
         <span>CV</span>
@@ -71,7 +65,7 @@ export default function SocialButtons({
       {/* Contact Button */}
       <Link
         href={`mailto:${email}`}
-        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium"
+        className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 font-medium min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none"
         aria-label="Contact via email"
       >
         <svg
