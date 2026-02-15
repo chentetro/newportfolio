@@ -108,7 +108,7 @@ describe('Navbar', () => {
     expect(flexContainer).toHaveClass('sm:justify-between');
   });
 
-  it('renders logo/brand section with gray circle and text', () => {
+  it('renders logo/brand section with text', () => {
     const { container } = render(<Navbar />);
 
     const logoLink = screen.getByLabelText(
@@ -117,11 +117,12 @@ describe('Navbar', () => {
     expect(logoLink).toBeInTheDocument();
     expect(logoLink).toHaveTextContent('Chen');
 
-    const logoCircle = container.querySelector('.bg-gray-900');
-    expect(logoCircle).toBeInTheDocument();
-    expect(logoCircle).toHaveClass('rounded-full');
-    expect(logoCircle).toHaveClass('w-3', 'h-3');
-    expect(logoCircle).toHaveClass('bg-gray-900', 'dark:bg-gray-100');
+    // Check for the text span element with proper styling
+    const logoText = container.querySelector('span.font-bold');
+    expect(logoText).toBeInTheDocument();
+    expect(logoText).toHaveTextContent('Chen');
+    expect(logoText).toHaveClass('text-gray-900', 'dark:text-gray-100');
+    expect(logoText).toHaveClass('text-xl', 'uppercase', 'tracking-tight');
   });
 
   // 3. Accessibility Tests
@@ -223,8 +224,10 @@ describe('Navbar', () => {
       'Navigate to home page - Chen portfolio'
     );
 
-    expect(logoLink).toHaveClass('flex', 'items-center', 'gap-2');
+    expect(logoLink).toHaveClass('flex', 'items-center');
+    expect(logoLink).toHaveClass('min-h-[44px]');
     expect(logoLink).toHaveClass('focus:ring-2', 'focus:ring-gray-500');
+    expect(logoLink).toHaveClass('focus:outline-none', 'rounded');
     expect(logoLink).toHaveTextContent('Chen');
   });
 

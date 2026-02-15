@@ -12,11 +12,10 @@ export default function Navbar() {
           {/* Logo/Brand Section */}
           <Link
             href="/"
-            className="flex items-center gap-2 min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none rounded"
+            className="flex items-center min-h-[44px] focus:ring-2 focus:ring-gray-500 focus:outline-none rounded"
             aria-label="Navigate to home page - Chen portfolio"
           >
-            <div className="w-3 h-3 rounded-full bg-gray-900 dark:bg-gray-100"></div>
-            <span className="font-bold text-gray-900 dark:text-gray-100 text-lg">
+            <span className="font-bold text-gray-900 dark:text-gray-100 text-xl uppercase tracking-tight">
               Chen
             </span>
           </Link>
