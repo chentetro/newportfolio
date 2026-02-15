@@ -9,7 +9,7 @@ export default function Home() {
         imageUrl="/images/1756311070767.jpg"
         imageAlt="Profile photo"
         mainHeading="Chen Tetroashvili"
-        subHeading="Full Stack Developer"
+        subHeading="Software Developer"
         paragraphContent="I'm a passionate developer with experience in modern web technologies. I enjoy creating clean, efficient solutions and learning new technologies to solve complex problems."
       />
 
@@ -37,12 +37,8 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <SkillCard
-              title="UI architecture & infrastructure across multiple products"
-              description="Design and implementation of scalable frontend architectures"
-            />
-            <SkillCard
               title="Frontend Development"
-              description="Modern React, Next.js, and TypeScript applications"
+              description="Modern React, Next.js, and TypeScript/JavaScript applications"
             />
             <SkillCard
               title="Backend Systems"
@@ -51,10 +47,6 @@ export default function Home() {
             <SkillCard
               title="Full Stack Integration"
               description="End-to-end application development and deployment"
-            />
-            <SkillCard
-              title="Performance Optimization"
-              description="Code optimization and application performance tuning"
             />
             <SkillCard
               title="Problem Solving"
