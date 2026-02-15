@@ -9,4 +9,3 @@ endDate: Feb 2025
 - Provided administrative support to division employees.
 - Organized social activities for division employees.
 - Liaised with the human resources department for division staff.
-
