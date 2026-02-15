@@ -8,7 +8,7 @@ import type { LifeBeyondCodeProps } from '@/app/types/interests';
  * Features:
  * - Gradient background section with heart icon and main heading
  * - Responsive grid of interest cards
- * - Proper heading hierarchy (H2 → H3 → H4)
+ * - Proper heading hierarchy (H1 → H2 → H3)
  * - Full accessibility compliance (WCAG AA)
  * - Mobile-first responsive design
  *
@@ -41,10 +41,10 @@ export default function LifeBeyondCode({
               aria-hidden="true"
             />
 
-            {/* Main Heading (H2) */}
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">
+            {/* Main Heading (H1) */}
+            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100">
               {mainHeading}
-            </h2>
+            </h1>
 
             {/* Description */}
             <p className="text-base lg:text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
@@ -57,10 +57,10 @@ export default function LifeBeyondCode({
       {/* White Background Section with Interest Cards */}
       <div className="bg-white dark:bg-gray-900 py-12 px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Section Heading (H3) */}
-          <h3 className="text-center text-2xl lg:text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-8">
+          {/* Section Heading (H2) */}
+          <h2 className="text-center text-2xl lg:text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-8">
             {sectionHeading}
-          </h3>
+          </h2>
 
           {/* Interest Cards Grid */}
           {interests.length > 0 ? (
@@ -83,10 +83,10 @@ export default function LifeBeyondCode({
                       </div>
                     </div>
 
-                    {/* Card Title (H4) */}
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 text-center">
+                    {/* Card Title (H3) */}
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 text-center">
                       {interest.title}
-                    </h4>
+                    </h3>
 
                     {/* Card Description */}
                     <p className="text-sm text-gray-600 dark:text-gray-400 text-center leading-relaxed">

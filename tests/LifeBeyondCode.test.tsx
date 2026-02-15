@@ -37,10 +37,10 @@ describe('LifeBeyondCode', () => {
   it('renders with all props', () => {
     render(<LifeBeyondCode {...mockProps} />);
 
-    const mainHeading = screen.getByRole('heading', { level: 2 });
+    const mainHeading = screen.getByRole('heading', { level: 1 });
     expect(mainHeading).toHaveTextContent('Life Beyond Code');
 
-    const sectionHeading = screen.getByRole('heading', { level: 3 });
+    const sectionHeading = screen.getByRole('heading', { level: 2 });
     expect(sectionHeading).toHaveTextContent('What I Love Doing');
 
     const description = screen.getByText(
@@ -71,7 +71,7 @@ describe('LifeBeyondCode', () => {
       screen.getByText('Listening to Latin music and discovering new artists')
     ).toBeInTheDocument();
     expect(
-      screen.getByText('Sci-fi novels and personal development books')
+      screen.getByText('Interested in personal development books')
     ).toBeInTheDocument();
   });
 
@@ -102,22 +102,22 @@ describe('LifeBeyondCode', () => {
     render(<LifeBeyondCode {...mockProps} />);
 
     const headings = screen.getAllByRole('heading');
-    expect(headings.length).toBe(6); // 1 H2 + 1 H3 + 4 H4
+    expect(headings.length).toBe(6); // 1 H1 + 1 H2 + 4 H3
 
     // Test semantic structure
-    expect(headings[0]).toHaveProperty('tagName', 'H2');
-    expect(headings[1]).toHaveProperty('tagName', 'H3');
+    expect(headings[0]).toHaveProperty('tagName', 'H1');
+    expect(headings[1]).toHaveProperty('tagName', 'H2');
 
     // Test specific content
-    const mainHeading = screen.getByRole('heading', { level: 2 });
+    const mainHeading = screen.getByRole('heading', { level: 1 });
     expect(mainHeading).toHaveTextContent('Life Beyond Code');
 
-    const sectionHeading = screen.getByRole('heading', { level: 3 });
+    const sectionHeading = screen.getByRole('heading', { level: 2 });
     expect(sectionHeading).toHaveTextContent('What I Love Doing');
 
-    const cardHeadings = screen.getAllByRole('heading', { level: 4 });
+    const cardHeadings = screen.getAllByRole('heading', { level: 3 });
     expect(cardHeadings.length).toBe(4);
-    expect(cardHeadings[0]).toHaveProperty('tagName', 'H4');
+    expect(cardHeadings[0]).toHaveProperty('tagName', 'H3');
     expect(cardHeadings[0]).toHaveTextContent('Cooking');
   });
 
@@ -144,7 +144,7 @@ describe('LifeBeyondCode', () => {
   it('renders interest cards in correct order', () => {
     render(<LifeBeyondCode {...mockProps} />);
 
-    const cardHeadings = screen.getAllByRole('heading', { level: 4 });
+    const cardHeadings = screen.getAllByRole('heading', { level: 3 });
     expect(cardHeadings[0]).toHaveTextContent('Cooking');
     expect(cardHeadings[1]).toHaveTextContent('Workout');
     expect(cardHeadings[2]).toHaveTextContent('Music');
@@ -229,7 +229,7 @@ describe('LifeBeyondCode', () => {
   it('applies correct styling classes to main heading', () => {
     render(<LifeBeyondCode {...mockProps} />);
 
-    const mainHeading = screen.getByRole('heading', { level: 2 });
+    const mainHeading = screen.getByRole('heading', { level: 1 });
     expect(mainHeading).toHaveClass('text-3xl', 'lg:text-4xl');
     expect(mainHeading).toHaveClass('font-bold');
     expect(mainHeading).toHaveClass('text-gray-900', 'dark:text-gray-100');
@@ -238,7 +238,7 @@ describe('LifeBeyondCode', () => {
   it('applies correct styling classes to section heading', () => {
     render(<LifeBeyondCode {...mockProps} />);
 
-    const sectionHeading = screen.getByRole('heading', { level: 3 });
+    const sectionHeading = screen.getByRole('heading', { level: 2 });
     expect(sectionHeading).toHaveClass('text-2xl', 'lg:text-3xl');
     expect(sectionHeading).toHaveClass('font-semibold');
     expect(sectionHeading).toHaveClass('text-gray-900', 'dark:text-gray-100');
@@ -268,7 +268,7 @@ describe('LifeBeyondCode', () => {
   it('applies correct styling classes to card headings', () => {
     render(<LifeBeyondCode {...mockProps} />);
 
-    const cardHeadings = screen.getAllByRole('heading', { level: 4 });
+    const cardHeadings = screen.getAllByRole('heading', { level: 3 });
     cardHeadings.forEach((heading) => {
       expect(heading).toHaveClass('text-lg', 'font-semibold');
       expect(heading).toHaveClass('text-gray-900', 'dark:text-gray-100');
@@ -345,8 +345,8 @@ describe('LifeBeyondCode', () => {
       const iconCircle = article.querySelector('.rounded-full');
       expect(iconCircle).toBeInTheDocument();
 
-      // Each article should have an h4 heading
-      const heading = article.querySelector('h4');
+      // Each article should have an h3 heading
+      const heading = article.querySelector('h3');
       expect(heading).toBeInTheDocument();
 
       // Each article should have a description paragraph
@@ -451,7 +451,7 @@ describe('LifeBeyondCode', () => {
 
     articles.forEach((article) => {
       expect(article).toHaveAttribute('aria-label');
-      expect(article.querySelector('h4')).toBeInTheDocument();
+      expect(article.querySelector('h3')).toBeInTheDocument();
       expect(article.querySelector('p')).toBeInTheDocument();
     });
   });
@@ -460,16 +460,16 @@ describe('LifeBeyondCode', () => {
     render(<LifeBeyondCode {...mockProps} />);
 
     const headings = screen.getAllByRole('heading');
-    expect(headings.length).toBe(6); // 1 H2 + 1 H3 + 4 H4
+    expect(headings.length).toBe(6); // 1 H1 + 1 H2 + 4 H3
+
+    const h1Headings = screen.getAllByRole('heading', { level: 1 });
+    expect(h1Headings.length).toBe(1);
 
     const h2Headings = screen.getAllByRole('heading', { level: 2 });
     expect(h2Headings.length).toBe(1);
 
     const h3Headings = screen.getAllByRole('heading', { level: 3 });
-    expect(h3Headings.length).toBe(1);
-
-    const h4Headings = screen.getAllByRole('heading', { level: 4 });
-    expect(h4Headings.length).toBe(4);
+    expect(h3Headings.length).toBe(4);
   });
 
   it('handles all icon types correctly', () => {
