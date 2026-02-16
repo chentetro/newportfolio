@@ -171,6 +171,27 @@
   - Completed: Phase 3, STEP-008
   - Notes: Created `app/api/chat/route.ts` with POST handler that handles streaming chat requests. Implemented input validation (messages array existence, type checking, max 10 messages per request). Integrated `buildSystemPrompt()` to load system prompt with all content. Implemented streaming with Claude 3.5 Sonnet via Vercel AI Gateway using `streamText()`. Added comprehensive error handling for authentication errors (401 with helpful messages), validation errors (400), and general errors (500). Messages from `useChat` hook are used directly without conversion as they're already in the correct format. Runtime set to 'nodejs' for proper .env.local reading. TypeScript compilation and linting pass with no errors.
 
+- [x] **STEP-008--FIX**: Code review fixes - Remove console.error and implement rate limiting ✅
+  - Completed: Code review fix
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Fixed code review warnings and implemented suggestions:
+    - Removed `console.error` statement (line 93) to prevent production log clutter
+    - Implemented rate limiting (suggestion 2): Added IP-based rate limiting with 20 requests per minute window. Includes automatic cleanup of expired entries and proper retry-after headers (429 status). Uses in-memory Map store (suitable for serverless; Redis recommended for production scale)
+    - Extracted error response helper function (suggestion 3): Created `createErrorResponse()` helper function to reduce code duplication and ensure consistent error response format across all error cases
+    - Added `getClientIp()` helper function to extract client IP from various headers (x-forwarded-for, x-real-ip) for rate limiting
+    - Added `checkRateLimit()` function with automatic cleanup of expired entries when store size exceeds 1000 entries
+    - All error responses now use the standardized helper function for consistency
+    - Code is cleaner, more maintainable, and follows DRY principles
+
+- [x] **STEP-008--FIX-2**: Security fix - Remove internal infrastructure details from error response ✅
+  - Completed: Code review security fix
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Fixed security issue identified by code review bot:
+    - Replaced technical authentication error message that leaked internal infrastructure details (VERCEL_OIDC_TOKEN, vc dev, vc env pull) with generic user-facing message: "Authentication failed. Please try again later."
+    - Prevents information disclosure to end users
+    - Added comment indicating where detailed error logging could be added server-side for debugging (currently commented out to maintain clean production logs)
+    - Improves security posture by not exposing operational details
+
 ### 🔄 In Progress
 
 _No steps in progress yet._
@@ -975,4 +996,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Phase 3 complete - Chat API Route implemented (STEP-008 completed) (February 2026)_
+_Last Updated: Security fix applied - Removed internal infrastructure details from error response (STEP-008--FIX-2 completed) (February 2026)_
