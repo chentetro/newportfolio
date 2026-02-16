@@ -270,6 +270,11 @@
     - **Testing**: Added tests to verify focus trap behavior and focus restoration. All tests pass.
   - This fix ensures keyboard accessibility per coding guidelines requiring all interactive elements to be keyboard accessible. Modal dialogs must trap focus within the dialog and restore focus to the trigger on close.
 
+- [x] **STEP-012--FIX-4**: Security fix - Remove API key name from client error message ✅
+  - Completed: Code review security fix
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Fixed security vulnerability where API key error message leaked internal configuration details (`GROQ_API_KEY` environment variable name) to the client. Replaced client-facing error message with generic message: "Service temporarily unavailable. Please try again later." Detailed error logging (including environment variable name) remains on server-side via `console.error()` for debugging purposes. Prevents information disclosure while maintaining useful debugging capabilities.
+
 ### 🔄 In Progress
 
 _No steps in progress._
@@ -1075,4 +1080,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Accessibility fix - implemented focus trap and focus restoration for modal dialog (STEP-012--FIX-3) (February 2026)_
+_Last Updated: Security fix - removed API key name from client error message (STEP-012--FIX-4) (February 2026)_

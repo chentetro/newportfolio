@@ -60,6 +60,10 @@ export default function Chat({ inputRef }: ChatProps) {
 
   const remainingChars = MAX_INPUT_LENGTH - inputValue.length;
   const showCounter = remainingChars <= CHAR_COUNTER_THRESHOLD;
+  // Color logic: thresholds are based on remaining characters (not input length)
+  // - Normal color: 70-21 chars remaining
+  // - Warning color: 20-11 chars remaining
+  // - Danger color: 10-0 chars remaining
   const counterColor =
     remainingChars <= CHAR_DANGER_THRESHOLD
       ? 'text-gray-900 dark:text-gray-100'

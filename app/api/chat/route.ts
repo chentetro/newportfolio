@@ -174,9 +174,11 @@ export async function POST(request: Request) {
 
     // Check if API key is available
     if (!process.env.GROQ_API_KEY) {
-      console.error('GROQ_API_KEY is not set');
+      // Log detailed error server-side for debugging
+      console.error('GROQ_API_KEY is not set. Please configure the API key in your environment variables.');
+      // Return generic error message to client to prevent information leakage
       return createErrorResponse(
-        'API key not configured. Please set GROQ_API_KEY in your environment variables.',
+        'Service temporarily unavailable. Please try again later.',
         500
       );
     }
