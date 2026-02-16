@@ -56,11 +56,11 @@ describe('MarkdownRenderer', () => {
   });
 
   // 2. Structural Hierarchy Tests
-  it('uses semantic HTML structure with article role', () => {
+  it('uses semantic HTML structure with article element', () => {
     const { container } = render(
       <MarkdownRenderer content={mockContent.paragraph} />
     );
-    const article = container.querySelector('[role="article"]');
+    const article = container.querySelector('article');
     expect(article).toBeInTheDocument();
     expect(article).toHaveAttribute('aria-label', 'Chat message content');
   });
@@ -70,7 +70,8 @@ describe('MarkdownRenderer', () => {
     const { container } = render(
       <MarkdownRenderer content={mockContent.paragraph} />
     );
-    const article = container.querySelector('[role="article"]');
+    const article = container.querySelector('article');
+    expect(article).toBeInTheDocument();
     expect(article).toHaveAttribute('aria-label', 'Chat message content');
   });
 
@@ -79,7 +80,7 @@ describe('MarkdownRenderer', () => {
     const { container } = render(
       <MarkdownRenderer content={mockContent.paragraph} />
     );
-    const article = container.querySelector('[role="article"]');
+    const article = container.querySelector('article');
     expect(article).toHaveClass('prose', 'prose-sm', 'max-w-none');
   });
 
@@ -90,15 +91,14 @@ describe('MarkdownRenderer', () => {
         className="custom-class"
       />
     );
-    const article = container.querySelector('[role="article"]');
+    const article = container.querySelector('article');
     expect(article).toHaveClass('custom-class');
   });
 
   // 5. Edge Cases and Error Handling
   it('handles empty content gracefully', () => {
-    render(<MarkdownRenderer content="" />);
     const { container } = render(<MarkdownRenderer content="" />);
-    const article = container.querySelector('[role="article"]');
+    const article = container.querySelector('article');
     expect(article).toBeInTheDocument();
   });
 

@@ -12,9 +12,8 @@ export default function MarkdownRenderer({
   className = '',
 }: MarkdownRendererProps) {
   return (
-    <div
+    <article
       className={`prose prose-sm max-w-none dark:prose-invert ${className}`}
-      role="article"
       aria-label="Chat message content"
     >
       <ReactMarkdown
@@ -116,6 +115,6 @@ export default function MarkdownRenderer({
       >
         {content}
       </ReactMarkdown>
-    </div>
+    </article>
   );
 }

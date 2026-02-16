@@ -255,6 +255,21 @@
     - **Input validation enhancement (API route)**: Added server-side validation for message content size (max 1000 characters per message) to prevent oversized payloads bypassing client-side limits.
   - All fixes maintain existing functionality while improving security, accessibility, code quality, and test reliability.
 
+- [x] **STEP-012--FIX-2**: Semantic HTML refactoring - Replace div with article element ✅
+  - Completed: Code review refactoring
+  - Phase: Phase 4 - Chat UI & Widget
+  - Notes: Replaced `<div role="article">` with native `<article>` element in MarkdownRenderer component per coding guidelines. Updated tests to use `querySelector('article')` instead of `querySelector('[role="article"]')`. Follows styling standards requirement to use semantic HTML elements instead of divs with ARIA roles. Maintains `aria-label` for additional screen reader context.
+
+- [x] **STEP-012--FIX-3**: Accessibility fix - Implement focus trap and focus restoration for modal dialog ✅
+  - Completed: Code review accessibility fix
+  - Phase: Phase 4 - Chat UI & Widget
+  - Notes: Implemented proper focus management for ChatWidget modal dialog to meet ARIA modal dialog requirements:
+    - **Focus trap**: Added manual focus trapping that prevents keyboard users from tabbing outside the dialog when it's open. Tab key cycles through focusable elements within the dialog (wraps from last to first element, and vice versa with Shift+Tab).
+    - **Focus restoration**: Added logic to restore focus to the trigger button when the dialog closes, ensuring keyboard navigation continuity.
+    - **Implementation**: Used `useRef` to store references to trigger button and dialog container. Implemented `getFocusableElements()` helper function to find all focusable elements within dialog (buttons, inputs, textareas, links, etc.). Added Tab key handler that prevents default behavior when at boundaries and redirects focus appropriately.
+    - **Testing**: Added tests to verify focus trap behavior and focus restoration. All tests pass.
+  - This fix ensures keyboard accessibility per coding guidelines requiring all interactive elements to be keyboard accessible. Modal dialogs must trap focus within the dialog and restore focus to the trigger on close.
+
 ### 🔄 In Progress
 
 _No steps in progress._
@@ -1060,4 +1075,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Code review fixes complete - security, styling, accessibility, and testing improvements (STEP-012--FIX) (February 2026)_
+_Last Updated: Accessibility fix - implemented focus trap and focus restoration for modal dialog (STEP-012--FIX-3) (February 2026)_

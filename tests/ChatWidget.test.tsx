@@ -181,4 +181,50 @@ describe('ChatWidget', () => {
     const button = screen.getByLabelText('Open chat');
     expect(button).toHaveClass('fixed', 'bottom-6', 'right-6');
   });
+
+  it('traps focus within dialog when open', async () => {
+    const user = userEvent.setup();
+    render(<ChatWidget />);
+
+    // Open dialog
+    const openButton = screen.getByLabelText('Open chat');
+    await user.click(openButton);
+
+    expect(screen.getByLabelText('Chat with assistant')).toBeInTheDocument();
+
+    // Get focusable elements within dialog
+    const input = screen.getByLabelText('Chat message input');
+    const closeButton = screen.getByLabelText('Close chat');
+
+    // Focus should be on input (first focusable element) after dialog opens
+    await waitFor(() => {
+      expect(input).toHaveFocus();
+    });
+  });
+
+  it('restores focus to trigger button when dialog closes', async () => {
+    const user = userEvent.setup();
+    render(<ChatWidget />);
+
+    const openButton = screen.getByLabelText('Open chat');
+    await user.click(openButton);
+
+    expect(screen.getByLabelText('Chat with assistant')).toBeInTheDocument();
+
+    // Close dialog
+    const closeButton = screen.getByLabelText('Close chat');
+    await user.click(closeButton);
+
+    // Wait for dialog to close and focus to restore
+    await waitFor(() => {
+      expect(
+        screen.queryByLabelText('Chat with assistant')
+      ).not.toBeInTheDocument();
+    });
+
+    // Focus should be restored to trigger button
+    await waitFor(() => {
+      expect(openButton).toHaveFocus();
+    });
+  });
 });

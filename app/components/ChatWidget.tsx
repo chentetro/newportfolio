@@ -10,10 +10,37 @@ import Chat from './Chat';
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const triggerButtonRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
 
   // Callback ref to store input reference
   const handleInputRef = (node: HTMLTextAreaElement | null) => {
     inputRef.current = node;
+  };
+
+  // Get all focusable elements within the dialog
+  const getFocusableElements = (): HTMLElement[] => {
+    if (!dialogRef.current) return [];
+
+    const focusableSelectors = [
+      'button:not([disabled])',
+      'textarea:not([disabled])',
+      'input:not([disabled])',
+      'a[href]',
+      'select:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])',
+    ].join(', ');
+
+    return Array.from(
+      dialogRef.current.querySelectorAll<HTMLElement>(focusableSelectors)
+    ).filter((el) => {
+      // Filter out elements that are not visible
+      return (
+        el.offsetWidth > 0 &&
+        el.offsetHeight > 0 &&
+        !el.hasAttribute('aria-hidden')
+      );
+    });
   };
 
   // Focus input when dialog opens
@@ -22,6 +49,54 @@ export default function ChatWidget() {
       // Use requestAnimationFrame to ensure dialog is fully rendered
       requestAnimationFrame(() => {
         inputRef.current?.focus();
+      });
+    }
+  }, [isOpen]);
+
+  // Focus trap: keep focus within dialog
+  useEffect(() => {
+    if (!isOpen || !dialogRef.current) return;
+
+    const handleTabKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+
+      const focusableElements = getFocusableElements();
+      if (focusableElements.length === 0) return;
+
+      // Only trap if active element is within the dialog
+      const activeElement = document.activeElement as HTMLElement;
+      if (!dialogRef.current?.contains(activeElement)) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      // If Shift+Tab on first element, focus last element
+      if (e.shiftKey && activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+        return;
+      }
+
+      // If Tab on last element, focus first element
+      if (!e.shiftKey && activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+        return;
+      }
+    };
+
+    document.addEventListener('keydown', handleTabKey);
+    return () => {
+      document.removeEventListener('keydown', handleTabKey);
+    };
+  }, [isOpen]);
+
+  // Restore focus to trigger button when dialog closes
+  useEffect(() => {
+    if (!isOpen && triggerButtonRef.current) {
+      // Small delay to ensure dialog is fully closed
+      requestAnimationFrame(() => {
+        triggerButtonRef.current?.focus();
       });
     }
   }, [isOpen]);
@@ -52,6 +127,7 @@ export default function ChatWidget() {
     <>
       {/* Floating button */}
       <button
+        ref={triggerButtonRef}
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 w-14 h-14 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-full shadow-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none z-40 flex items-center justify-center"
         aria-label="Open chat"
@@ -96,7 +172,10 @@ export default function ChatWidget() {
               }
             }}
           >
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl h-[80vh] max-h-[700px] flex flex-col border border-gray-200 dark:border-gray-700">
+            <div
+              ref={dialogRef}
+              className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl h-[80vh] max-h-[700px] flex flex-col border border-gray-200 dark:border-gray-700"
+            >
               {/* Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
