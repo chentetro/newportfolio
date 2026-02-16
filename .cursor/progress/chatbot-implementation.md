@@ -6,7 +6,7 @@
 
 **Context**: This portfolio currently displays content across multiple pages (home, about, projects). Adding a chatbot will provide an interactive way for visitors to ask questions about Chen's background, experience, skills, projects, and interests. The system prompt approach provides a fast path to shipping, with RAG (Retrieval-Augmented Generation) planned for a future phase to enable more accurate answers with source citations.
 
-**Status**: 🔄 In Progress | **Phase**: 3 of 4 | **Progress**: 67% (8/12 steps)
+**Status**: ✅ Complete | **Phase**: 4 of 4 | **Progress**: 100% (12/12 steps)
 
 **Success Metrics**:
 
@@ -202,16 +202,53 @@
     - Improves API error semantics: client errors (400) vs server errors (500)
     - Better user experience with appropriate error status codes
 
+- [x] **STEP-008--FIX-4**: Runtime fix - convert UI messages to ModelMessage[] ✅
+  - Completed: Runtime bug fix
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Fixed Gemini runtime error `Invalid prompt: The messages do not match the ModelMessage[] schema.` by converting incoming UI messages with `convertToModelMessages()` before calling `streamText()`. Also updated call to `await convertToModelMessages(messages)` to satisfy TypeScript and SDK typing.
+
+- [x] **STEP-008--FIX-5**: Runtime fix - update Gemini model identifier ✅
+  - Completed: Runtime bug fix
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Fixed Google provider error `models/gemini-1.5-flash is not found for API version v1beta` by updating the model from `google('gemini-1.5-flash')` to `google('gemini-1.5-flash-latest')`, which is supported by the active API version.
+
+- [x] **STEP-008--FIX-6**: Runtime fix - switch to supported free/low-cost Gemini model ✅
+  - Completed: Runtime bug fix
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Updated model to `google('gemini-2.0-flash-lite-001')` after checking supported models for the current API key/version. This avoids unsupported model errors and uses a free/low-cost option appropriate for testing and lightweight chat usage.
+
+- [x] **STEP-008--FIX-7**: Provider migration fix - switch from Google quota-limited model to Groq ✅
+  - Completed: Runtime bug fix
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Switched route provider from Google to Groq after Google returned `free_tier_requests limit: 0`. Updated route import to `@ai-sdk/groq`, changed model to `groq('llama-3.1-8b-instant')`, and replaced env key validation from `GOOGLE_GENERATIVE_AI_API_KEY` to `GROQ_API_KEY` for stable free-tier testing.
+
+- [x] **STEP-009**: Create Chat component ✅
+  - Completed: Phase 4, STEP-009
+  - Notes: Created `app/components/Chat.tsx` as client component with full chat functionality. Implemented `useChat` hook with `DefaultChatTransport` pointing to `/api/chat`. Features include: message list display (user/assistant with proper styling), empty state message, loading indicator with animated dots, error display, input field with character limit (100 chars) and counter (shows at 70 chars remaining), send button with disabled states, auto-scroll to latest message. All styling follows monochrome design system (gray scale only for foregrounds). Full dark mode support. Accessibility: ARIA labels on all interactive elements, `role="log"` with `aria-live="polite"` for messages area, keyboard navigation support. Component imports `ChatProps` from `app/types/chat.ts` following folder-role-separation pattern.
+
+- [x] **STEP-010**: Create MarkdownRenderer component ✅
+  - Completed: Phase 4, STEP-010
+  - Notes: Created `app/components/MarkdownRenderer.tsx` as client component for rendering markdown content from assistant messages. Configured ReactMarkdown with custom components for all markdown elements: headings (h1, h2, h3), paragraphs, lists (ul, ol, li), code (inline and block), links, strong, emphasis, blockquotes, horizontal rules. All links configured with `target="_blank" rel="noopener noreferrer"`. Styling follows monochrome design system: gray-900/gray-100 for text, gray-700/gray-300 for links (NOT emerald per design system), gray-100/gray-800 backgrounds for code blocks. Full dark mode support. Accessibility: `role="article"` with `aria-label="Chat message content"`. Component imports `MarkdownRendererProps` from `app/types/chat.ts` following folder-role-separation pattern.
+
+- [x] **STEP-011**: Create ChatWidget component ✅
+  - Completed: Phase 4, STEP-011
+  - Notes: Created `app/components/ChatWidget.tsx` as client component with floating button and modal dialog. Features include: floating button in bottom-right corner (fixed position, z-40), modal dialog with backdrop, close button in header, Escape key handler to close dialog, focus management (auto-focus input when dialog opens), body scroll lock when dialog is open. Full accessibility: `role="dialog"`, `aria-modal="true"`, `aria-label` on dialog, ARIA labels on all interactive elements (open/close buttons), keyboard navigation (Escape key). Responsive design with mobile-friendly sizing (h-[80vh] max-h-[700px], responsive padding). All styling follows monochrome design system. Full dark mode support.
+
+- [x] **STEP-012**: Integrate ChatWidget into layout and add tests ✅
+  - Completed: Phase 4, STEP-012
+  - Notes: Integrated ChatWidget into `app/layout.tsx` (added after Footer, before closing body tag). Created comprehensive test files following component testing standards:
+    - `tests/MarkdownRenderer.test.tsx`: Tests markdown rendering (headings, lists, links, code blocks), link attributes, semantic structure, styling classes, edge cases
+    - `tests/Chat.test.tsx`: Tests empty state, input field, send button, message display (user/assistant), loading states, error handling, character counter, accessibility requirements. Mocks `useChat` hook from `@ai-sdk/react`
+    - `tests/ChatWidget.test.tsx`: Tests widget button rendering, dialog open/close functionality, close button, Escape key handling, accessibility (ARIA attributes, roles), multiple open/close cycles. Mocks Chat component
+  - All tests follow existing patterns from `tests/Footer.test.tsx` and `tests/SkillCard.test.tsx`, using semantic queries, testing accessibility requirements, and user-observable behavior. ChatWidget now available site-wide on all pages.
+
 ### 🔄 In Progress
 
-_No steps in progress yet._
+_No steps in progress._
 
 ### ⏳ Pending Steps
 
-- [ ] **STEP-009**: Create Chat component
-- [ ] **STEP-010**: Create MarkdownRenderer component
-- [ ] **STEP-011**: Create ChatWidget component
-- [ ] **STEP-012**: Integrate ChatWidget into layout and add tests
+_All steps completed!_
 
 ## 📝 Detailed Steps
 
@@ -921,42 +958,46 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 67% (8/12 steps completed)
+**Overall Progress**: 100% (12/12 steps completed)
 
 **Phase Breakdown**:
 
 - **Phase 1**: Project Setup & Dependencies - 100% (1/1 steps) ✅
 - **Phase 2**: System Prompt Builder - 100% (6/6 steps) ✅
 - **Phase 3**: Chat API Route - 100% (1/1 steps) ✅
-- **Phase 4**: Chat UI & Widget - 0% (0/4 steps)
+- **Phase 4**: Chat UI & Widget - 100% (4/4 steps) ✅
 
-**Next Steps**: Start with STEP-009 (Create Chat component)
+**Status**: All phases complete! Chatbot feature is fully implemented and ready for use.
 
 ## 🔗 Related Files
 
-**Components** (to be created):
+**Types**:
 
-- `app/components/Chat.tsx`
-- `app/components/ChatWidget.tsx`
-- `app/components/MarkdownRenderer.tsx`
+- `app/types/chat.ts` ✅ (created - ChatProps and MarkdownRendererProps interfaces)
+
+**Components**:
+
+- `app/components/Chat.tsx` ✅ (created - Phase 4, STEP-009)
+- `app/components/ChatWidget.tsx` ✅ (created - Phase 4, STEP-011)
+- `app/components/MarkdownRenderer.tsx` ✅ (created - Phase 4, STEP-010)
 
 **API Routes**:
 
-- `app/api/chat/route.ts` ✅ (created - Phase 3 complete)
+- `app/api/chat/route.ts` ✅ (created - Phase 3, STEP-008)
 
 **Lib Functions**:
 
-- `app/lib/system-prompt.ts` ✅ (created - Phase 2 complete)
+- `app/lib/system-prompt.ts` ✅ (created - Phase 2, STEP-002)
 
-**Tests** (to be created):
+**Tests**:
 
-- `tests/Chat.test.tsx`
-- `tests/ChatWidget.test.tsx`
-- `tests/MarkdownRenderer.test.tsx`
+- `tests/Chat.test.tsx` ✅ (created - Phase 4, STEP-012)
+- `tests/ChatWidget.test.tsx` ✅ (created - Phase 4, STEP-012)
+- `tests/MarkdownRenderer.test.tsx` ✅ (created - Phase 4, STEP-012)
 
-**Layout** (to be modified):
+**Layout**:
 
-- `app/layout.tsx`
+- `app/layout.tsx` ✅ (modified - ChatWidget integrated, Phase 4, STEP-012)
 
 **Content Files** (existing, will be read):
 
@@ -1006,4 +1047,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Error handling fix applied - Proper JSON parsing error handling (STEP-008--FIX-3 completed) (February 2026)_
+_Last Updated: Runtime fixes complete - fixed schema conversion and migrated provider to Groq for free-tier availability (STEP-008--FIX-4, STEP-008--FIX-5, STEP-008--FIX-6, STEP-008--FIX-7) (February 2026)_

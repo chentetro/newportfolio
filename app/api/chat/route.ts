@@ -1,4 +1,5 @@
-import { streamText } from 'ai';
+import { groq } from '@ai-sdk/groq';
+import { convertToModelMessages, streamText } from 'ai';
 import { buildSystemPrompt } from '@/app/lib/system-prompt';
 
 // Set runtime to nodejs for proper .env.local reading
@@ -95,7 +96,7 @@ function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: number } {
 
 /**
  * POST handler for chat API route.
- * Handles streaming chat requests with Claude 3.5 Sonnet via Vercel AI Gateway.
+ * Handles streaming chat requests with Groq (free tier) via Groq provider API.
  *
  * @param request - The incoming request with messages array
  * @returns Streaming response with assistant messages
@@ -119,13 +120,16 @@ export async function POST(request: Request) {
       body = await request.json();
     } catch (parseError) {
       // Handle JSON parsing errors (malformed JSON body)
-      if (parseError instanceof SyntaxError || parseError instanceof TypeError) {
+      if (
+        parseError instanceof SyntaxError ||
+        parseError instanceof TypeError
+      ) {
         return createErrorResponse('Invalid JSON in request body', 400);
       }
       // Re-throw if it's not a parsing error
       throw parseError;
     }
-    
+
     const { messages } = body;
 
     // Validate messages array exists and is an array
@@ -148,16 +152,36 @@ export async function POST(request: Request) {
     // Load system prompt
     const systemPrompt = buildSystemPrompt();
 
-    // Stream response using Claude 3.5 Sonnet via Vercel AI Gateway
+    // Stream response using Groq (free tier) via Groq provider API
     // Messages from useChat hook are already in the correct format
-    const result = await streamText({
-      model: 'anthropic/claude-3.5-sonnet',
-      system: systemPrompt,
-      messages: messages,
-    });
 
-    // Return streaming response compatible with DefaultChatTransport
-    return result.toUIMessageStreamResponse();
+    // Check if API key is available
+    if (!process.env.GROQ_API_KEY) {
+      console.error('GROQ_API_KEY is not set');
+      return createErrorResponse(
+        'API key not configured. Please set GROQ_API_KEY in your environment variables.',
+        500
+      );
+    }
+
+    try {
+      const result = await streamText({
+        model: groq('llama-3.1-8b-instant'), // Free-tier friendly model on Groq
+        system: systemPrompt,
+        messages: await convertToModelMessages(messages),
+      });
+
+      // Return streaming response compatible with DefaultChatTransport
+      return result.toUIMessageStreamResponse();
+    } catch (streamError) {
+      console.error('Error in streamText:', streamError);
+      // Log the full error for debugging
+      if (streamError instanceof Error) {
+        console.error('Error message:', streamError.message);
+        console.error('Error stack:', streamError.stack);
+      }
+      throw streamError; // Re-throw to be caught by outer catch
+    }
   } catch (error) {
     // Handle authentication errors specifically
     if (
@@ -171,7 +195,7 @@ export async function POST(request: Request) {
       // Log detailed error server-side for debugging (not exposed to users)
       // In production, consider using a proper logging service
       // console.error('Authentication error details:', error.message);
-      
+
       return createErrorResponse(
         'Authentication failed. Please try again later.',
         401
