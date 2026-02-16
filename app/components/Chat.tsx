@@ -8,9 +8,9 @@ import type { ChatProps } from '@/app/types/chat';
 
 // Constants for input validation
 const MAX_INPUT_LENGTH = 100;
-const CHAR_COUNTER_THRESHOLD = 70;
-const CHAR_WARNING_THRESHOLD = 80;
-const CHAR_DANGER_THRESHOLD = 90;
+const CHAR_COUNTER_THRESHOLD = 70; // Show counter when <= 70 chars remaining
+const CHAR_WARNING_THRESHOLD = 20; // Warning color when <= 20 chars remaining
+const CHAR_DANGER_THRESHOLD = 10; // Danger color when <= 10 chars remaining
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' });
 
@@ -141,18 +141,15 @@ export default function Chat({ inputRef }: ChatProps) {
             <div className="bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-3">
               <div className="flex gap-1">
                 <span
-                  className="w-2 h-2 bg-gray-600 dark:bg-gray-400 rounded-full animate-bounce"
-                  style={{ animationDelay: '0ms' }}
+                  className="w-2 h-2 bg-gray-600 dark:bg-gray-400 rounded-full animate-bounce animate-bounce-delay-0"
                   aria-hidden="true"
                 />
                 <span
-                  className="w-2 h-2 bg-gray-600 dark:bg-gray-400 rounded-full animate-bounce"
-                  style={{ animationDelay: '150ms' }}
+                  className="w-2 h-2 bg-gray-600 dark:bg-gray-400 rounded-full animate-bounce animate-bounce-delay-150"
                   aria-hidden="true"
                 />
                 <span
-                  className="w-2 h-2 bg-gray-600 dark:bg-gray-400 rounded-full animate-bounce"
-                  style={{ animationDelay: '300ms' }}
+                  className="w-2 h-2 bg-gray-600 dark:bg-gray-400 rounded-full animate-bounce animate-bounce-delay-300"
                   aria-hidden="true"
                 />
               </div>
@@ -185,6 +182,7 @@ export default function Chat({ inputRef }: ChatProps) {
           {showCounter && (
             <div className="flex justify-end">
               <span
+                id="char-counter"
                 className={`text-xs ${counterColor}`}
                 aria-live="polite"
                 aria-atomic="true"

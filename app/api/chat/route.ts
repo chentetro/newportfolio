@@ -149,6 +149,23 @@ export async function POST(request: Request) {
       );
     }
 
+    // Validate message content size (prevent oversized payloads)
+    const MAX_MESSAGE_LENGTH = 1000; // Maximum characters per message
+    for (const message of messages) {
+      if (message.text && message.text.length > MAX_MESSAGE_LENGTH) {
+        return createErrorResponse(
+          `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters per message.`,
+          400
+        );
+      }
+      if (message.content && message.content.length > MAX_MESSAGE_LENGTH) {
+        return createErrorResponse(
+          `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters per message.`,
+          400
+        );
+      }
+    }
+
     // Load system prompt
     const systemPrompt = buildSystemPrompt();
 
@@ -202,11 +219,16 @@ export async function POST(request: Request) {
       );
     }
 
-    // Handle other errors
+    // Handle other errors - return generic message to prevent information leakage
+    // Log detailed error server-side for debugging
+    console.error('Chat API error:', error);
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
+
     return createErrorResponse(
-      error instanceof Error
-        ? error.message
-        : 'An unexpected error occurred while processing your request.',
+      'An unexpected error occurred while processing your request. Please try again later.',
       500
     );
   }

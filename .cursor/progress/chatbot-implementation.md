@@ -242,6 +242,19 @@
     - `tests/ChatWidget.test.tsx`: Tests widget button rendering, dialog open/close functionality, close button, Escape key handling, accessibility (ARIA attributes, roles), multiple open/close cycles. Mocks Chat component
   - All tests follow existing patterns from `tests/Footer.test.tsx` and `tests/SkillCard.test.tsx`, using semantic queries, testing accessibility requirements, and user-observable behavior. ChatWidget now available site-wide on all pages.
 
+- [x] **STEP-012--FIX**: Code review fixes - Security, styling, accessibility, and testing improvements ✅
+  - Completed: Code review fix
+  - Phase: Phase 4 - Chat UI & Widget
+  - Notes: Fixed all critical issues and warnings from code review:
+    - **Security fix (API route)**: Replaced error message leakage in 500 responses with generic user-facing message. Added server-side logging for debugging. Prevents internal error details from being exposed to clients.
+    - **Styling fix (Chat component)**: Removed inline styles for animation delays, replaced with Tailwind utility classes (`animate-bounce-delay-0`, `animate-bounce-delay-150`, `animate-bounce-delay-300`) defined in `globals.css`. Maintains monochrome design system compliance.
+    - **Accessibility fix (Chat component)**: Added missing `id="char-counter"` to character counter span to properly support `aria-describedby` relationship with textarea input.
+    - **Logic fix (Chat component)**: Fixed character counter color thresholds - changed from backwards logic (danger at 90, warning at 80) to correct logic (warning at 20 chars remaining, danger at 10 chars remaining). Now properly shows warning colors as user approaches limit.
+    - **Focus management fix (ChatWidget)**: Improved focus management by using `useEffect` with `requestAnimationFrame` instead of `setTimeout`. More reliable and follows React best practices for focus management.
+    - **Test robustness fix (ChatWidget test)**: Replaced fragile class-based selector (`.fixed.inset-0.bg-black`) with stable `data-testid="chat-backdrop"` for backdrop element. Prevents test failures from styling changes.
+    - **Input validation enhancement (API route)**: Added server-side validation for message content size (max 1000 characters per message) to prevent oversized payloads bypassing client-side limits.
+  - All fixes maintain existing functionality while improving security, accessibility, code quality, and test reliability.
+
 ### 🔄 In Progress
 
 _No steps in progress._
@@ -1047,4 +1060,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Runtime fixes complete - fixed schema conversion and migrated provider to Groq for free-tier availability (STEP-008--FIX-4, STEP-008--FIX-5, STEP-008--FIX-6, STEP-008--FIX-7) (February 2026)_
+_Last Updated: Code review fixes complete - security, styling, accessibility, and testing improvements (STEP-012--FIX) (February 2026)_

@@ -11,13 +11,18 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
+  // Callback ref to store input reference
+  const handleInputRef = (node: HTMLTextAreaElement | null) => {
+    inputRef.current = node;
+  };
+
   // Focus input when dialog opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      // Small delay to ensure dialog is fully rendered
-      setTimeout(() => {
+      // Use requestAnimationFrame to ensure dialog is fully rendered
+      requestAnimationFrame(() => {
         inputRef.current?.focus();
-      }, 100);
+      });
     }
   }, [isOpen]);
 
@@ -72,6 +77,7 @@ export default function ChatWidget() {
         <>
           {/* Backdrop */}
           <div
+            data-testid="chat-backdrop"
             className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 z-50"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
@@ -120,7 +126,7 @@ export default function ChatWidget() {
 
               {/* Chat component */}
               <div className="flex-1 overflow-hidden">
-                <Chat inputRef={(node) => (inputRef.current = node)} />
+                <Chat inputRef={handleInputRef} />
               </div>
             </div>
           </div>

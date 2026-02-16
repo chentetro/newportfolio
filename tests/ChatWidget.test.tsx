@@ -144,17 +144,15 @@ describe('ChatWidget', () => {
 
     expect(screen.getByLabelText('Chat with assistant')).toBeInTheDocument();
 
-    // Click backdrop (the fixed div with bg-black)
-    const backdrop = container.querySelector('.fixed.inset-0.bg-black');
-    if (backdrop) {
-      await user.click(backdrop);
-      // Dialog should close
-      await waitFor(() => {
-        expect(
-          screen.queryByLabelText('Chat with assistant')
-        ).not.toBeInTheDocument();
-      });
-    }
+    // Click backdrop using stable test id
+    const backdrop = screen.getByTestId('chat-backdrop');
+    await user.click(backdrop);
+    // Dialog should close
+    await waitFor(() => {
+      expect(
+        screen.queryByLabelText('Chat with assistant')
+      ).not.toBeInTheDocument();
+    });
   });
 
   // 5. Edge Cases and Error Handling
