@@ -13,6 +13,8 @@
     "validate": "npm run lint && npm run format && npm run type-check && npm run test"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.29",
+    "@ai-sdk/groq": "^3.0.24",
     "@ai-sdk/react": "^3.0.88",
     "ai": "^6.0.86",
     "gray-matter": "^4.0.3",
