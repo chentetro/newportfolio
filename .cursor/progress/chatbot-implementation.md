@@ -6,7 +6,7 @@
 
 **Context**: This portfolio currently displays content across multiple pages (home, about, projects). Adding a chatbot will provide an interactive way for visitors to ask questions about Chen's background, experience, skills, projects, and interests. The system prompt approach provides a fast path to shipping, with RAG (Retrieval-Augmented Generation) planned for a future phase to enable more accurate answers with source citations.
 
-**Status**: 🔄 Not Started | **Phase**: 0 of 4 | **Progress**: 0% (0/12 steps)
+**Status**: 🔄 In Progress | **Phase**: 1 of 4 | **Progress**: 8% (1/12 steps)
 
 **Success Metrics**:
 
@@ -121,7 +121,9 @@
 
 ### ✅ Completed Steps
 
-_No steps completed yet._
+- [x] **STEP-001**: Install required dependencies ✅
+  - Completed: Phase 1, STEP-001
+  - Notes: Installed ai (^6.0.86), @ai-sdk/react (^3.0.88), and react-markdown (^10.1.0) packages. All packages exceed minimum version requirements. TypeScript compilation passes with no errors.
 
 ### 🔄 In Progress
 
@@ -129,7 +131,6 @@ _No steps in progress yet._
 
 ### ⏳ Pending Steps
 
-- [ ] **STEP-001**: Install required dependencies
 - [ ] **STEP-002**: Create system prompt builder structure
 - [ ] **STEP-003**: Read and format home content
 - [ ] **STEP-004**: Read and format about content
@@ -850,16 +851,16 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 0% (0/12 steps completed)
+**Overall Progress**: 8% (1/12 steps completed)
 
 **Phase Breakdown**:
 
-- **Phase 1**: Project Setup & Dependencies - 0% (0/1 steps)
+- **Phase 1**: Project Setup & Dependencies - 100% (1/1 steps) ✅
 - **Phase 2**: System Prompt Builder - 0% (0/6 steps)
 - **Phase 3**: Chat API Route - 0% (0/1 steps)
 - **Phase 4**: Chat UI & Widget - 0% (0/4 steps)
 
-**Next Steps**: Start with STEP-001 (Install required dependencies)
+**Next Steps**: Start with STEP-002 (Create system prompt builder structure)
 
 ## 🔗 Related Files
 
@@ -897,9 +898,9 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 - `content/social.ts`
 - `content/experience/*.md` (via `app/lib/experience.ts`)
 
-**Package Files** (to be modified):
+**Package Files** (modified):
 
-- `package.json`
+- `package.json` ✅ (modified - dependencies installed)
 
 ## 📝 Notes
 
@@ -935,4 +936,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: [Date will be updated as progress is made]_
+_Last Updated: Phase 1 complete - STEP-001 dependencies installed (February 2026)_
