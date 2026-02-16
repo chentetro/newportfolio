@@ -149,6 +149,24 @@
   - Completed: Phase 2, STEP-007
   - Notes: Added instructions section at the beginning with role description, answer guidelines, citation instructions, and markdown formatting note. Added "Personal Interests" section with all interests formatted as bullet points. Added "Links" section with social links (labels cleaned of "Visit " and "Contact via " prefixes). Life images section skipped as it only contains placeholder data. All sections properly formatted and joined with double newlines.
 
+- [x] **STEP-007--FIX**: Code review fixes - Error handling and defensive programming ✅
+  - Completed: Code review fix
+  - Phase: Phase 2 - System Prompt Builder
+  - Notes: Fixed all critical issues, warnings, and suggestions from code review:
+    - Added error handling with try-catch around `getAllExperienceEntries()` call to prevent runtime errors from file system operations
+    - Added optional chaining and null checks for all nested property access (homeContent, aboutContent, projects, interestsData, socialLinks)
+    - Added fallback logic for responsibilities extraction (falls back to full content if no bullet points found)
+    - Added null check for `link.label` before string operations to prevent runtime errors
+    - Refactored code into separate helper functions for better maintainability and testability:
+      - `buildAboutChenSection()`, `buildSkillsSection()`, `buildCurrentStatusSection()`, `buildAboutSection()`, `buildProfessionalExperienceSection()`, `buildProjectsSection()`, `buildPersonalInterestsSection()`, `buildLinksSection()`
+    - Extracted `extractResponsibilities()` helper function with fallback logic
+    - Extracted `cleanSocialLinkLabel()` helper function with null safety
+    - Moved instructions to `ASSISTANT_INSTRUCTIONS` constant for better maintainability
+    - Added comprehensive JSDoc comments with examples to all helper functions
+    - Added JSDoc example to main `buildSystemPrompt()` function showing expected output format
+    - All functions now use defensive programming with fallback values ("N/A" for missing data)
+    - Improved code organization and readability while maintaining same functionality
+
 ### 🔄 In Progress
 
 _No steps in progress yet._
@@ -954,4 +972,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Phase 2 complete - System Prompt Builder implemented (STEP-002 through STEP-007 completed) (February 2026)_
+_Last Updated: Phase 2 complete - System Prompt Builder implemented and code review fixes applied (STEP-002 through STEP-007 completed, STEP-007--FIX: Error handling and defensive programming) (February 2026)_
