@@ -2,24 +2,26 @@ import ExperienceTimeline from '../components/ExperienceTimeline';
 import Skills from '../components/Skills';
 import FirstHome from '../components/FirstHome';
 import { getAllExperienceEntries } from '../lib/experience';
+import { aboutContent } from '@/content/about';
 
 export default function About() {
   const experiences = getAllExperienceEntries();
+  const { profile, experience, skills } = aboutContent;
 
   return (
     <main>
       <FirstHome
-        imageUrl="/images/1756311070767.jpg"
-        imageAlt="Profile photo"
-        mainHeading="About Me"
-        subHeading="Software Developer"
-        paragraphContent="I'm a passionate developer with experience in modern web technologies. I enjoy creating clean, efficient solutions and learning new technologies to solve complex problems. This page showcases my professional experience and technical skills."
+        imageUrl={profile.imageUrl}
+        imageAlt={profile.imageAlt}
+        mainHeading={profile.mainHeading}
+        subHeading={profile.subHeading}
+        paragraphContent={profile.paragraphContent}
         noBackground={true}
       />
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-center text-3xl lg:text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-            Experience
+            {experience.heading}
           </h2>
         </div>
       </section>
@@ -31,7 +33,7 @@ export default function About() {
       <section className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-center text-3xl lg:text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-            Skills
+            {skills.heading}
           </h2>
         </div>
       </section>
