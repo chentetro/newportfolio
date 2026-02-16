@@ -6,7 +6,7 @@
 
 **Context**: This portfolio currently displays content across multiple pages (home, about, projects). Adding a chatbot will provide an interactive way for visitors to ask questions about Chen's background, experience, skills, projects, and interests. The system prompt approach provides a fast path to shipping, with RAG (Retrieval-Augmented Generation) planned for a future phase to enable more accurate answers with source citations.
 
-**Status**: 🔄 In Progress | **Phase**: 2 of 4 | **Progress**: 58% (7/12 steps)
+**Status**: 🔄 In Progress | **Phase**: 3 of 4 | **Progress**: 67% (8/12 steps)
 
 **Success Metrics**:
 
@@ -167,13 +167,16 @@
     - All functions now use defensive programming with fallback values ("N/A" for missing data)
     - Improved code organization and readability while maintaining same functionality
 
+- [x] **STEP-008**: Create Chat API route ✅
+  - Completed: Phase 3, STEP-008
+  - Notes: Created `app/api/chat/route.ts` with POST handler that handles streaming chat requests. Implemented input validation (messages array existence, type checking, max 10 messages per request). Integrated `buildSystemPrompt()` to load system prompt with all content. Implemented streaming with Claude 3.5 Sonnet via Vercel AI Gateway using `streamText()`. Added comprehensive error handling for authentication errors (401 with helpful messages), validation errors (400), and general errors (500). Messages from `useChat` hook are used directly without conversion as they're already in the correct format. Runtime set to 'nodejs' for proper .env.local reading. TypeScript compilation and linting pass with no errors.
+
 ### 🔄 In Progress
 
 _No steps in progress yet._
 
 ### ⏳ Pending Steps
 
-- [ ] **STEP-008**: Create Chat API route
 - [ ] **STEP-009**: Create Chat component
 - [ ] **STEP-010**: Create MarkdownRenderer component
 - [ ] **STEP-011**: Create ChatWidget component
@@ -887,16 +890,16 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 58% (7/12 steps completed)
+**Overall Progress**: 67% (8/12 steps completed)
 
 **Phase Breakdown**:
 
 - **Phase 1**: Project Setup & Dependencies - 100% (1/1 steps) ✅
 - **Phase 2**: System Prompt Builder - 100% (6/6 steps) ✅
-- **Phase 3**: Chat API Route - 0% (0/1 steps)
+- **Phase 3**: Chat API Route - 100% (1/1 steps) ✅
 - **Phase 4**: Chat UI & Widget - 0% (0/4 steps)
 
-**Next Steps**: Start with STEP-008 (Create Chat API route)
+**Next Steps**: Start with STEP-009 (Create Chat component)
 
 ## 🔗 Related Files
 
@@ -906,9 +909,9 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 - `app/components/ChatWidget.tsx`
 - `app/components/MarkdownRenderer.tsx`
 
-**API Routes** (to be created):
+**API Routes**:
 
-- `app/api/chat/route.ts`
+- `app/api/chat/route.ts` ✅ (created - Phase 3 complete)
 
 **Lib Functions**:
 
@@ -972,4 +975,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Phase 2 complete - System Prompt Builder implemented and code review fixes applied (STEP-002 through STEP-007 completed, STEP-007--FIX: Error handling and defensive programming) (February 2026)_
+_Last Updated: Phase 3 complete - Chat API Route implemented (STEP-008 completed) (February 2026)_
