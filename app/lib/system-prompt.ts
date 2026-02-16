@@ -198,7 +198,10 @@ function buildPersonalInterestsSection(): string {
   }
 
   const interestsList = interestsData
-    .map((interest) => `- **${interest.title || 'N/A'}**: ${interest.description || ''}`)
+    .map(
+      (interest) =>
+        `- **${interest.title || 'N/A'}**: ${interest.description || ''}`
+    )
     .join('\n');
 
   return `## Personal Interests
