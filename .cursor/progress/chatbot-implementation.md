@@ -6,7 +6,7 @@
 
 **Context**: This portfolio currently displays content across multiple pages (home, about, projects). Adding a chatbot will provide an interactive way for visitors to ask questions about Chen's background, experience, skills, projects, and interests. The system prompt approach provides a fast path to shipping, with RAG (Retrieval-Augmented Generation) planned for a future phase to enable more accurate answers with source citations.
 
-**Status**: 🔄 In Progress | **Phase**: 1 of 4 | **Progress**: 8% (1/12 steps)
+**Status**: 🔄 In Progress | **Phase**: 2 of 4 | **Progress**: 58% (7/12 steps)
 
 **Success Metrics**:
 
@@ -125,18 +125,36 @@
   - Completed: Phase 1, STEP-001
   - Notes: Installed ai (^6.0.86), @ai-sdk/react (^3.0.88), and react-markdown (^10.1.0) packages. All packages exceed minimum version requirements. TypeScript compilation passes with no errors.
 
+- [x] **STEP-002**: Create system prompt builder structure ✅
+  - Completed: Phase 2, STEP-002
+  - Notes: Created `app/lib/system-prompt.ts` file with all required content imports (homeContent, aboutContent, projects, interestsData, socialLinks) and experience utility (getAllExperienceEntries). Function structure with array-based approach implemented.
+
+- [x] **STEP-003**: Read and format home content ✅
+  - Completed: Phase 2, STEP-003
+  - Notes: Added "About Chen" section with name, title, and bio. Added "Skills & Expertise" section with all skill items formatted as bullet points. Added "Current Status" section with "Now" content. All home content properly formatted and included.
+
+- [x] **STEP-004**: Read and format about content ✅
+  - Completed: Phase 2, STEP-004
+  - Notes: Added "About" section with about page profile information. Included note that experience and skills are covered in separate sections to avoid duplication. Content formatted consistently with home section.
+
+- [x] **STEP-005**: Read and format projects content ✅
+  - Completed: Phase 2, STEP-005
+  - Notes: Added "Projects" section with all project details including title, short description, technologies, languages, GitHub URL, and live URL. Projects formatted with clear boundaries and readable structure.
+
+- [x] **STEP-006**: Read and format experience content ✅
+  - Completed: Phase 2, STEP-006
+  - Notes: Added "Professional Experience" section using `getAllExperienceEntries()`. Each entry includes role, company, date range (with "Present" handling), and responsibilities from markdown content. Entries formatted chronologically (most recent first).
+
+- [x] **STEP-007**: Read and format interests and life content ✅
+  - Completed: Phase 2, STEP-007
+  - Notes: Added instructions section at the beginning with role description, answer guidelines, citation instructions, and markdown formatting note. Added "Personal Interests" section with all interests formatted as bullet points. Added "Links" section with social links (labels cleaned of "Visit " and "Contact via " prefixes). Life images section skipped as it only contains placeholder data. All sections properly formatted and joined with double newlines.
+
 ### 🔄 In Progress
 
 _No steps in progress yet._
 
 ### ⏳ Pending Steps
 
-- [ ] **STEP-002**: Create system prompt builder structure
-- [ ] **STEP-003**: Read and format home content
-- [ ] **STEP-004**: Read and format about content
-- [ ] **STEP-005**: Read and format projects content
-- [ ] **STEP-006**: Read and format experience content
-- [ ] **STEP-007**: Read and format interests and life content
 - [ ] **STEP-008**: Create Chat API route
 - [ ] **STEP-009**: Create Chat component
 - [ ] **STEP-010**: Create MarkdownRenderer component
@@ -851,16 +869,16 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 8% (1/12 steps completed)
+**Overall Progress**: 58% (7/12 steps completed)
 
 **Phase Breakdown**:
 
 - **Phase 1**: Project Setup & Dependencies - 100% (1/1 steps) ✅
-- **Phase 2**: System Prompt Builder - 0% (0/6 steps)
+- **Phase 2**: System Prompt Builder - 100% (6/6 steps) ✅
 - **Phase 3**: Chat API Route - 0% (0/1 steps)
 - **Phase 4**: Chat UI & Widget - 0% (0/4 steps)
 
-**Next Steps**: Start with STEP-002 (Create system prompt builder structure)
+**Next Steps**: Start with STEP-008 (Create Chat API route)
 
 ## 🔗 Related Files
 
@@ -874,9 +892,9 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 - `app/api/chat/route.ts`
 
-**Lib Functions** (to be created):
+**Lib Functions**:
 
-- `app/lib/system-prompt.ts`
+- `app/lib/system-prompt.ts` ✅ (created - Phase 2 complete)
 
 **Tests** (to be created):
 
@@ -936,4 +954,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Phase 1 complete - STEP-001 dependencies installed (February 2026)_
+_Last Updated: Phase 2 complete - System Prompt Builder implemented (STEP-002 through STEP-007 completed) (February 2026)_
