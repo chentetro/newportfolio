@@ -1,32 +1,5 @@
 import Link from 'next/link';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { MdEmail } from 'react-icons/md';
-import type { SocialLink } from '@/app/types/social';
-
-// Social media links configuration
-const LINKEDIN_PROFILE_URL =
-  'https://www.linkedin.com/in/chen-tetroashvili-%D7%97%D7%9F-%D7%98%D7%98%D7%A8%D7%95%D7%90%D7%A9%D7%91%D7%99%D7%9C%D7%99-5-%D7%97%D7%95%D7%9E-%D7%97-%D7%99-junior-computer-science/';
-
-const socialLinks: SocialLink[] = [
-  {
-    href: 'https://github.com/chentetro',
-    icon: FaGithub,
-    label: 'Visit GitHub profile',
-    external: true,
-  },
-  {
-    href: LINKEDIN_PROFILE_URL,
-    icon: FaLinkedin,
-    label: 'Visit LinkedIn profile',
-    external: true,
-  },
-  {
-    href: 'mailto:chentetroo@gmail.com',
-    icon: MdEmail,
-    label: 'Contact via email',
-    external: false,
-  },
-];
+import { socialLinks } from '@/content/social';
 
 // Shared link styles for consistency
 const linkClassName =
