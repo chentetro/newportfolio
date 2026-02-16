@@ -192,6 +192,16 @@
     - Added comment indicating where detailed error logging could be added server-side for debugging (currently commented out to maintain clean production logs)
     - Improves security posture by not exposing operational details
 
+- [x] **STEP-008--FIX-3**: Error handling fix - Proper JSON parsing error handling ✅
+  - Completed: Code review fix
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Fixed error handling issue identified by code review bot:
+    - Added proper error handling for JSON parsing errors (malformed JSON body)
+    - Wrapped `request.json()` in try-catch to catch `SyntaxError` and `TypeError`
+    - Returns 400 (Bad Request) status code for JSON parsing errors instead of 500 (Internal Server Error)
+    - Improves API error semantics: client errors (400) vs server errors (500)
+    - Better user experience with appropriate error status codes
+
 ### 🔄 In Progress
 
 _No steps in progress yet._
@@ -996,4 +1006,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Security fix applied - Removed internal infrastructure details from error response (STEP-008--FIX-2 completed) (February 2026)_
+_Last Updated: Error handling fix applied - Proper JSON parsing error handling (STEP-008--FIX-3 completed) (February 2026)_

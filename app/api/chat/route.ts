@@ -114,7 +114,18 @@ export async function POST(request: Request) {
     }
 
     // Parse request body
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      // Handle JSON parsing errors (malformed JSON body)
+      if (parseError instanceof SyntaxError || parseError instanceof TypeError) {
+        return createErrorResponse('Invalid JSON in request body', 400);
+      }
+      // Re-throw if it's not a parsing error
+      throw parseError;
+    }
+    
     const { messages } = body;
 
     // Validate messages array exists and is an array
