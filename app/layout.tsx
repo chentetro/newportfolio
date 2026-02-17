@@ -20,11 +20,14 @@ export const metadata: Metadata = {
   description: 'Chen Tetroashvili - Full Stack Developer Portfolio',
   icons: {
     icon: [
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '16x16', type: 'image/png' },
+      {
+        url: '/android-chrome-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
     ],
-    shortcut: '/favicon-32x32.png',
-    apple: '/favicon-32x32.png',
+    shortcut: '/android-chrome-192x192.png',
+    apple: '/android-chrome-192x192.png',
   },
 };
 

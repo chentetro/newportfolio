@@ -2,7 +2,7 @@
 
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import MarkdownRenderer from './MarkdownRenderer';
 import type { ChatProps } from '@/app/types/chat';
 
@@ -48,7 +48,10 @@ export default function Chat({ inputRef }: ChatProps) {
     transport: chatTransport,
   });
 
-  const messagesList = (messages as unknown as RenderMessage[]) || [];
+  const messagesList = useMemo(
+    () => (messages as unknown as RenderMessage[]) || [],
+    [messages]
+  );
   const isLoading = status === 'submitted' || status === 'streaming';
 
   // Auto-scroll to latest message
