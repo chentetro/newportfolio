@@ -1,12 +1,13 @@
 import { groq } from '@ai-sdk/groq';
 import { convertToModelMessages, streamText } from 'ai';
 import { buildSystemPrompt } from '@/app/lib/system-prompt';
+import {
+  RequestSchema,
+  formatZodError,
+} from '@/app/lib/chat-validation';
 
 // Set runtime to nodejs for proper .env.local reading
 export const runtime = 'nodejs';
-
-// Maximum number of messages per request to prevent abuse
-const MAX_MESSAGES_PER_REQUEST = 10;
 
 // Rate limiting configuration
 const RATE_LIMIT_REQUESTS = 20; // Maximum requests per window
@@ -130,41 +131,16 @@ export async function POST(request: Request) {
       throw parseError;
     }
 
-    const { messages } = body;
+    // Validate request body with Zod
+    const validationResult = RequestSchema.safeParse(body);
 
-    // Validate messages array exists and is an array
-    if (!messages) {
-      return createErrorResponse('Messages array is required', 400);
+    if (!validationResult.success) {
+      // Format Zod errors into user-friendly message
+      const errorMessage = formatZodError(validationResult.error);
+      return createErrorResponse(errorMessage, 400);
     }
 
-    if (!Array.isArray(messages)) {
-      return createErrorResponse('Messages must be an array', 400);
-    }
-
-    // Validate message count doesn't exceed limit
-    if (messages.length > MAX_MESSAGES_PER_REQUEST) {
-      return createErrorResponse(
-        `Too many messages. Maximum ${MAX_MESSAGES_PER_REQUEST} messages per request.`,
-        400
-      );
-    }
-
-    // Validate message content size (prevent oversized payloads)
-    const MAX_MESSAGE_LENGTH = 1000; // Maximum characters per message
-    for (const message of messages) {
-      if (message.text && message.text.length > MAX_MESSAGE_LENGTH) {
-        return createErrorResponse(
-          `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters per message.`,
-          400
-        );
-      }
-      if (message.content && message.content.length > MAX_MESSAGE_LENGTH) {
-        return createErrorResponse(
-          `Message too long. Maximum ${MAX_MESSAGE_LENGTH} characters per message.`,
-          400
-        );
-      }
-    }
+    const { messages } = validationResult.data;
 
     // Load system prompt
     const systemPrompt = buildSystemPrompt();
@@ -186,10 +162,17 @@ export async function POST(request: Request) {
     }
 
     try {
+      // convertToModelMessages accepts flexible UI message formats
+      // Messages are validated by Zod schema to ensure they match expected structure
+      // Type assertion is safe because Zod validation guarantees the message format
+      const modelMessages = await convertToModelMessages(
+        messages as Parameters<typeof convertToModelMessages>[0]
+      );
+
       const result = await streamText({
         model: groq('llama-3.1-8b-instant'), // Free-tier friendly model on Groq
         system: systemPrompt,
-        messages: await convertToModelMessages(messages),
+        messages: modelMessages,
       });
 
       // Return streaming response compatible with DefaultChatTransport
