@@ -227,6 +227,11 @@
   - Phase: Phase 3 - Chat API Route
   - Notes: Replaced manual validation with Zod schemas for type-safe request validation. Created `MessageSchema` and `RequestSchema` to validate message structure, role types, content length, and message count. Schema supports both `text`/`content` fields and `parts` array for UI message format compatibility. Provides better error messages and type safety. All validation now handled through Zod's `safeParse()` method. This improves code maintainability and follows best practices for API validation.
 
+- [x] **STEP-008--FIX-9**: Code review fixes - Refactor validation and improve error handling ✅
+  - Completed: Code review improvements
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Addressed code review warnings and suggestions: (1) Extracted Zod schemas to `app/lib/chat-validation.ts` for reusability with comprehensive JSDoc comments, (2) Replaced `@ts-expect-error` with type assertion using `Parameters<typeof convertToModelMessages>[0]` for better type safety, (3) Improved error message formatting with `formatZodError()` function that provides user-friendly messages for common validation errors (too many messages, message too long, invalid role, etc.), (4) Made `parts` array validation more specific with `MessagePartSchema` instead of `z.unknown()`. All changes improve code maintainability, type safety, and developer experience.
+
 - [x] **STEP-009**: Create Chat component ✅
   - Completed: Phase 4, STEP-009
   - Notes: Created `app/components/Chat.tsx` as client component with full chat functionality. Implemented `useChat` hook with `DefaultChatTransport` pointing to `/api/chat`. Features include: message list display (user/assistant with proper styling), empty state message, loading indicator with animated dots, error display, input field with character limit (100 chars) and counter (shows at 70 chars remaining), send button with disabled states, auto-scroll to latest message. All styling follows monochrome design system (gray scale only for foregrounds). Full dark mode support. Accessibility: ARIA labels on all interactive elements, `role="log"` with `aria-live="polite"` for messages area, keyboard navigation support. Component imports `ChatProps` from `app/types/chat.ts` following folder-role-separation pattern.
@@ -1026,6 +1031,7 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 **Lib Functions**:
 
 - `app/lib/system-prompt.ts` ✅ (created - Phase 2, STEP-002)
+- `app/lib/chat-validation.ts` ✅ (created - Phase 3, STEP-008--FIX-9 - Zod schemas and error formatting)
 
 **Tests**:
 
@@ -1085,4 +1091,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Added Zod validation to API route (STEP-008--FIX-8) (February 2026)_
+_Last Updated: Code review fixes - refactored validation and improved error handling (STEP-008--FIX-9) (February 2026)_
