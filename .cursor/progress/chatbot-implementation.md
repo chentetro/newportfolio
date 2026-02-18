@@ -222,6 +222,11 @@
   - Phase: Phase 3 - Chat API Route
   - Notes: Switched route provider from Google to Groq after Google returned `free_tier_requests limit: 0`. Updated route import to `@ai-sdk/groq`, changed model to `groq('llama-3.1-8b-instant')`, and replaced env key validation from `GOOGLE_GENERATIVE_AI_API_KEY` to `GROQ_API_KEY` for stable free-tier testing.
 
+- [x] **STEP-008--FIX-8**: Code enhancement - Add Zod validation to API route ✅
+  - Completed: Code enhancement
+  - Phase: Phase 3 - Chat API Route
+  - Notes: Replaced manual validation with Zod schemas for type-safe request validation. Created `MessageSchema` and `RequestSchema` to validate message structure, role types, content length, and message count. Schema supports both `text`/`content` fields and `parts` array for UI message format compatibility. Provides better error messages and type safety. All validation now handled through Zod's `safeParse()` method. This improves code maintainability and follows best practices for API validation.
+
 - [x] **STEP-009**: Create Chat component ✅
   - Completed: Phase 4, STEP-009
   - Notes: Created `app/components/Chat.tsx` as client component with full chat functionality. Implemented `useChat` hook with `DefaultChatTransport` pointing to `/api/chat`. Features include: message list display (user/assistant with proper styling), empty state message, loading indicator with animated dots, error display, input field with character limit (100 chars) and counter (shows at 70 chars remaining), send button with disabled states, auto-scroll to latest message. All styling follows monochrome design system (gray scale only for foregrounds). Full dark mode support. Accessibility: ARIA labels on all interactive elements, `role="log"` with `aria-live="polite"` for messages area, keyboard navigation support. Component imports `ChatProps` from `app/types/chat.ts` following folder-role-separation pattern.
@@ -1080,4 +1085,4 @@ feat: integrate ChatWidget into layout and add comprehensive tests
 
 ---
 
-_Last Updated: Security fix - removed API key name from client error message (STEP-012--FIX-4) (February 2026)_
+_Last Updated: Added Zod validation to API route (STEP-008--FIX-8) (February 2026)_
