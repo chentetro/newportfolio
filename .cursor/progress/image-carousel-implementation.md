@@ -197,6 +197,57 @@
     - `tests/ImageCarousel.test.tsx` ✅ (fixed test failures and timeouts)
     - `tests/Navbar.test.tsx` ✅ (fixed timeout issue)
 
+- [x] **STEP-008**: Add video support to carousel ✅
+  - **Phase**: 2 – Carousel Component Development (extends STEP-001, STEP-002, STEP-003, STEP-005)
+  - **Completed**: Video support implementation
+  - **Notes**: Extended carousel to support both images and videos:
+    - **Type Definition Updates**: Updated `app/types/carousel.ts` to use discriminated union pattern with `ImageCarouselItem` and `VideoCarouselItem` interfaces, combined into `CarouselItem` type. This allows TypeScript to properly distinguish between image and video items at compile time.
+    - **Component Updates**: Updated `app/components/ImageCarousel.tsx` to conditionally render `<Image>` components for images and `<video>` elements for videos. Videos include `controls` attribute and proper `aria-label` for accessibility. Updated navigation button aria-labels from "Previous/Next image" to "Previous/Next item" to be more generic.
+    - **Content Updates**: Updated `content/life.ts` to:
+      - Add `type: 'image'` to all existing image entries (required for discriminated union)
+      - Remove images that were deleted from `public/images/life/` folder
+      - Add video entry with `type: 'video'`, `videoUrl`, and `videoAlt` fields
+      - Updated comment from "Life images" to "Life media" to reflect mixed content
+    - **Related Steps**: This enhancement extends:
+      - **STEP-001**: Type definition now supports both images and videos
+      - **STEP-002**: Content file now includes video entries
+      - **STEP-003**: Component structure now handles video rendering
+      - **STEP-005**: Media rendering logic now supports both image and video elements
+  - **Files Modified**:
+    - `app/types/carousel.ts` ✅ (added ImageCarouselItem, VideoCarouselItem interfaces and CarouselItem discriminated union type)
+    - `app/components/ImageCarousel.tsx` ✅ (added conditional rendering for images/videos, updated aria-labels)
+    - `content/life.ts` ✅ (added type fields, removed deleted images, added video entry)
+
+- [x] **STEP-008--FIX**: Fix carousel component size - reduce oversized dimensions ✅
+  - **Phase**: 3 – Integration & Styling (fixes STEP-004, STEP-005)
+  - **Completed**: Component sizing fix
+  - **Notes**: Fixed carousel component being too large on the page:
+    - **Reduced container width**: Changed `max-w-7xl` (1280px) to `max-w-4xl` (896px) for more reasonable width
+    - **Reduced minimum heights**: Changed from fixed `min-h-[450px]` to responsive heights:
+      - Mobile: `min-h-[250px]` (reduced from 450px)
+      - Medium screens: `md:min-h-[350px]`
+      - Large screens: `lg:min-h-[400px]` (reduced from 450px)
+    - **Added maximum height constraint**: Added `max-h-[600px]` to prevent excessive vertical expansion
+    - **Added background color**: Added `bg-gray-100 dark:bg-gray-800` to carousel container for better visual definition
+    - **Video element sizing**: Ensured video element respects container constraints with `max-h-full`
+    - **Related Steps**: This fix addresses sizing issues from:
+      - **STEP-004**: Single-slide carousel sizing
+      - **STEP-005**: Media rendering dimensions
+  - **Files Modified**:
+    - `app/components/ImageCarousel.tsx` ✅ (reduced container width, adjusted responsive heights, added max-height constraint, added background color)
+
+- [x] **STEP-008--FIX-2**: Fix video not displaying - video element positioning issue ✅
+  - **Phase**: 2 – Carousel Component Development (fixes STEP-008)
+  - **Completed**: Video display fix
+  - **Notes**: Fixed video element not being visible in carousel:
+    - **Root cause**: Video element was using `w-full h-full` but parent container only had `min-height` and `max-height`, causing the video to have zero or incorrect height
+    - **Solution**: Changed video element positioning from `w-full h-full object-contain max-h-full` to `absolute inset-0 w-full h-full object-contain` to match the Image component's `fill` behavior
+    - **Result**: Video now properly fills the container and is visible, matching the Image component's positioning strategy
+    - **Related Steps**: This fix addresses video rendering issue from:
+      - **STEP-008**: Video support implementation
+  - **Files Modified**:
+    - `app/components/ImageCarousel.tsx` ✅ (fixed video element positioning to use absolute inset-0 for proper container filling)
+
 ### 🔄 In Progress
 
 _(None - All phases completed)_
@@ -244,7 +295,7 @@ _(None currently)_
 
 ## 📊 Progress Summary
 
-**Overall Progress**: 100% (7/7 steps completed)
+**Overall Progress**: 100% (10/10 steps completed)
 
 **Phase Breakdown**:
 
@@ -277,8 +328,9 @@ _(None currently)_
 **Updated**:
 
 - `app/life/page.tsx` ✅ (integrated ImageCarousel component with lifeImages)
-- `app/components/ImageCarousel.tsx` ✅ (code review fixes - replaced inline styles with CSS custom properties and Tailwind utilities, scoped keyboard navigation, improved performance, fixed indicator dots visual rendering; refactored to import ImageCarouselProps from types folder; added JSDoc comments and inline style explanation comment)
-- `app/types/carousel.ts` ✅ (added ImageCarouselProps interface following project's type organization pattern)
+- `app/components/ImageCarousel.tsx` ✅ (code review fixes - replaced inline styles with CSS custom properties and Tailwind utilities, scoped keyboard navigation, improved performance, fixed indicator dots visual rendering; refactored to import ImageCarouselProps from types folder; added JSDoc comments and inline style explanation comment; added video support with conditional rendering; fixed oversized component dimensions - reduced container width and responsive heights; fixed video display issue - changed positioning to absolute inset-0)
+- `app/types/carousel.ts` ✅ (added ImageCarouselProps interface following project's type organization pattern; added ImageCarouselItem, VideoCarouselItem interfaces and CarouselItem discriminated union type for video support)
+- `content/life.ts` ✅ (updated to include type fields for discriminated union, removed deleted images, added video entry)
 - `tests/ImageCarousel.test.tsx` ✅ (replaced fireEvent with user-event for better user interaction simulation, added mobile responsiveness test; fixed test failures and timeouts by removing global fake timers, configuring userEvent properly, and replacing forEach loops)
 - `tests/Navbar.test.tsx` ✅ (fixed timeout issue by replacing forEach loop with individual queries)
 - `package.json` ✅ (added @testing-library/user-event dependency)
@@ -305,4 +357,4 @@ _(None currently)_
 
 ---
 
-_Last Updated: Test fixes complete - Fixed 12 failing ImageCarousel tests and 2 timeout issues by removing global fake timers, configuring userEvent properly, and replacing forEach loops with individual queries. All 233 tests now passing. Precommit validation successful (14 February 2026)_
+_Last Updated: Video display fix - Fixed video element not being visible by changing positioning from relative sizing to absolute inset-0 to properly fill container, matching Image component behavior. Related steps: STEP-008 (20 February 2026)_

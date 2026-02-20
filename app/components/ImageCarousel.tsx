@@ -89,14 +89,14 @@ export default function ImageCarousel({
 
   return (
     <section className="py-12 px-4" aria-label={`${title} carousel`}>
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <header className="mb-6">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 text-center">
             {title}
           </h2>
         </header>
 
-        <div className="relative overflow-hidden rounded-lg">
+        <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
           {/* Carousel Container */}
           {/* Dynamic transform for carousel positioning - inline style required
               as Tailwind utilities cannot handle dynamic percentage-based transforms */}
@@ -116,16 +116,25 @@ export default function ImageCarousel({
             {items.map((item, index) => (
               <div
                 key={item.id}
-                className="relative w-full flex-shrink-0 min-h-[450px]"
+                className="relative w-full flex-shrink-0 min-h-[250px] md:min-h-[350px] lg:min-h-[400px] max-h-[600px]"
               >
-                <Image
-                  src={item.imageUrl}
-                  alt={item.imageAlt}
-                  fill
-                  className="object-contain"
-                  sizes="100vw"
-                  priority={index === 0}
-                />
+                {item.type === 'image' ? (
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.imageAlt}
+                    fill
+                    className="object-contain"
+                    sizes="100vw"
+                    priority={index === 0}
+                  />
+                ) : (
+                  <video
+                    src={item.videoUrl}
+                    className="absolute inset-0 w-full h-full object-contain"
+                    controls
+                    aria-label={item.videoAlt}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -135,7 +144,7 @@ export default function ImageCarousel({
             <button
               onClick={prev}
               className="p-3 rounded-full shadow-lg bg-gray-900/80 dark:bg-gray-100/80 text-white dark:text-gray-900 hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center pointer-events-auto"
-              aria-label="Previous image"
+              aria-label="Previous item"
             >
               <svg
                 className="w-6 h-6"
@@ -155,7 +164,7 @@ export default function ImageCarousel({
             <button
               onClick={next}
               className="p-3 rounded-full shadow-lg bg-gray-900/80 dark:bg-gray-100/80 text-white dark:text-gray-900 hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-gray-500 focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center pointer-events-auto"
-              aria-label="Next image"
+              aria-label="Next item"
             >
               <svg
                 className="w-6 h-6"
