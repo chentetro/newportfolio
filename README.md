@@ -28,3 +28,9 @@ Folder-Role-Separation: A strict architectural pattern used to decouple Types, C
 
 💡 Why AIDD?
 "In a world of rapidly evolving AI, the role of a software developer is shifting from 'coder' to 'architect.' By leveraging tools like Cursor, this project proves that with the right Rules and Agentic workflows, we can build more accessible, stable, and high-quality software in half the time."
+
+## 🔗 Project Links
+
+### [🔗 Click here to view the Live Site](https://newportfolio-sigma-seven.vercel.app/)
+
+### [🎥 Watch the Project Video](https://www.youtube.com/watch?v=Ti4bBHfuUgE)
