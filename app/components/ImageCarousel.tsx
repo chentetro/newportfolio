@@ -4,6 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import type { ImageCarouselProps } from '@/app/types/carousel';
 
+// Responsive height classes for carousel item containers
+const RESPONSIVE_HEIGHTS =
+  'min-h-[250px] md:min-h-[350px] lg:min-h-[400px] max-h-[600px]';
+
 /**
  * ImageCarousel component displays a scrollable carousel of images with navigation controls.
  *
@@ -116,7 +120,7 @@ export default function ImageCarousel({
             {items.map((item, index) => (
               <div
                 key={item.id}
-                className="relative w-full flex-shrink-0 min-h-[250px] md:min-h-[350px] lg:min-h-[400px] max-h-[600px]"
+                className={`relative w-full flex-shrink-0 ${RESPONSIVE_HEIGHTS}`}
               >
                 {item.type === 'image' ? (
                   <Image
@@ -133,6 +137,7 @@ export default function ImageCarousel({
                     className="absolute inset-0 w-full h-full object-contain"
                     controls
                     aria-label={item.videoAlt}
+                    role="img"
                   />
                 )}
               </div>

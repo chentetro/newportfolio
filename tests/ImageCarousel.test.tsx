@@ -36,16 +36,19 @@ vi.mock('next/image', () => ({
 describe('ImageCarousel', () => {
   const mockItems: CarouselItem[] = [
     {
+      type: 'image',
       id: 'item-1',
       imageUrl: '/images/life/image-1.jpg',
       imageAlt: 'First life moment',
     },
     {
+      type: 'image',
       id: 'item-2',
       imageUrl: '/images/life/image-2.jpg',
       imageAlt: 'Second life moment',
     },
     {
+      type: 'image',
       id: 'item-3',
       imageUrl: '/images/life/image-3.jpg',
       imageAlt: 'Third life moment',
@@ -54,9 +57,40 @@ describe('ImageCarousel', () => {
 
   const singleItem: CarouselItem[] = [
     {
+      type: 'image',
       id: 'single-item',
       imageUrl: '/images/life/single.jpg',
       imageAlt: 'Single image',
+    },
+  ];
+
+  const videoItems: CarouselItem[] = [
+    {
+      type: 'video',
+      id: 'video-1',
+      videoUrl: '/videos/life-video.mp4',
+      videoAlt: 'Life moment video',
+    },
+  ];
+
+  const mixedItems: CarouselItem[] = [
+    {
+      type: 'image',
+      id: 'img-1',
+      imageUrl: '/images/life/image-1.jpg',
+      imageAlt: 'First image',
+    },
+    {
+      type: 'video',
+      id: 'video-1',
+      videoUrl: '/videos/life-video.mp4',
+      videoAlt: 'Life moment video',
+    },
+    {
+      type: 'image',
+      id: 'img-2',
+      imageUrl: '/images/life/image-2.jpg',
+      imageAlt: 'Second image',
     },
   ];
 
@@ -83,8 +117,8 @@ describe('ImageCarousel', () => {
   it('renders navigation buttons with correct aria-labels', () => {
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
-    const prevButton = screen.getByLabelText('Previous image');
-    const nextButton = screen.getByLabelText('Next image');
+    const prevButton = screen.getByLabelText('Previous item');
+    const nextButton = screen.getByLabelText('Next item');
 
     expect(prevButton).toBeInTheDocument();
     expect(nextButton).toBeInTheDocument();
@@ -138,8 +172,11 @@ describe('ImageCarousel', () => {
     expect(images).toHaveLength(3);
 
     images.forEach((image, index) => {
-      expect(image).toHaveAttribute('src', mockItems[index].imageUrl);
-      expect(image).toHaveAttribute('alt', mockItems[index].imageAlt);
+      const item = mockItems[index];
+      if (item.type === 'image') {
+        expect(image).toHaveAttribute('src', item.imageUrl);
+        expect(image).toHaveAttribute('alt', item.imageAlt);
+      }
       expect(image).toHaveAttribute('data-fill', 'true');
       expect(image).toHaveAttribute('data-sizes', '100vw');
     });
@@ -196,7 +233,7 @@ describe('ImageCarousel', () => {
     const section = container.querySelector('section');
     expect(section).toHaveClass('py-12', 'px-4');
 
-    const maxWidthContainer = container.querySelector('.max-w-7xl.mx-auto');
+    const maxWidthContainer = container.querySelector('.max-w-4xl.mx-auto');
     expect(maxWidthContainer).toBeInTheDocument();
   });
 
@@ -222,8 +259,8 @@ describe('ImageCarousel', () => {
   it('provides adequate touch targets for all interactive elements', () => {
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
-    const prevButton = screen.getByLabelText('Previous image');
-    const nextButton = screen.getByLabelText('Next image');
+    const prevButton = screen.getByLabelText('Previous item');
+    const nextButton = screen.getByLabelText('Next item');
 
     expect(prevButton).toHaveClass('min-h-[44px]');
     expect(prevButton).toHaveClass('min-w-[44px]');
@@ -294,8 +331,8 @@ describe('ImageCarousel', () => {
   it('applies correct monochrome styling to navigation buttons', () => {
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
-    const prevButton = screen.getByLabelText('Previous image');
-    const nextButton = screen.getByLabelText('Next image');
+    const prevButton = screen.getByLabelText('Previous item');
+    const nextButton = screen.getByLabelText('Next item');
 
     expect(prevButton).toHaveClass('bg-gray-900/80');
     expect(prevButton).toHaveClass('dark:bg-gray-100/80');
@@ -334,7 +371,8 @@ describe('ImageCarousel', () => {
     expect(imageContainers).toHaveLength(3);
 
     imageContainers.forEach((container) => {
-      expect(container).toHaveClass('min-h-[450px]');
+      expect(container).toHaveClass('min-h-[250px]');
+      expect(container).toHaveClass('max-h-[600px]');
     });
   });
 
@@ -353,9 +391,9 @@ describe('ImageCarousel', () => {
       <ImageCarousel title="Life Moments" items={mockItems} />
     );
 
-    const maxWidthContainer = container.querySelector('.max-w-7xl.mx-auto');
+    const maxWidthContainer = container.querySelector('.max-w-4xl.mx-auto');
     expect(maxWidthContainer).toBeInTheDocument();
-    expect(maxWidthContainer).toHaveClass('max-w-7xl');
+    expect(maxWidthContainer).toHaveClass('max-w-4xl');
     expect(maxWidthContainer).toHaveClass('mx-auto');
   });
 
@@ -381,7 +419,7 @@ describe('ImageCarousel', () => {
     expect(section).toHaveClass('px-4'); // Mobile padding
 
     // Verify container constraints prevent horizontal overflow
-    const maxWidthContainer = container.querySelector('.max-w-7xl.mx-auto');
+    const maxWidthContainer = container.querySelector('.max-w-4xl.mx-auto');
     expect(maxWidthContainer).toBeInTheDocument();
 
     // Verify carousel container has overflow hidden
@@ -400,7 +438,7 @@ describe('ImageCarousel', () => {
     const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
-    const nextButton = screen.getByLabelText('Next image');
+    const nextButton = screen.getByLabelText('Next item');
     const indicators = screen.getAllByRole('tab');
 
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
@@ -417,7 +455,7 @@ describe('ImageCarousel', () => {
     const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
-    const prevButton = screen.getByLabelText('Previous image');
+    const prevButton = screen.getByLabelText('Previous item');
     const indicators = screen.getAllByRole('tab');
 
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
@@ -563,7 +601,7 @@ describe('ImageCarousel', () => {
     const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
-    const nextButton = screen.getByLabelText('Next image');
+    const nextButton = screen.getByLabelText('Next item');
 
     // Navigate to last slide
     await user.click(nextButton);
@@ -585,7 +623,7 @@ describe('ImageCarousel', () => {
     const user = userEvent.setup({ delay: null });
     render(<ImageCarousel title="Life Moments" items={mockItems} />);
 
-    const prevButton = screen.getByLabelText('Previous image');
+    const prevButton = screen.getByLabelText('Previous item');
     const indicators = screen.getAllByRole('tab');
 
     expect(indicators[0]).toHaveAttribute('aria-selected', 'true');
@@ -605,7 +643,7 @@ describe('ImageCarousel', () => {
     );
 
     const carouselRegion = container.querySelector('[role="region"]');
-    const nextButton = screen.getByLabelText('Next image');
+    const nextButton = screen.getByLabelText('Next item');
 
     expect(carouselRegion).toHaveAttribute(
       'aria-label',
@@ -643,6 +681,7 @@ describe('ImageCarousel', () => {
 
   it('handles many images correctly', () => {
     const manyItems: CarouselItem[] = Array.from({ length: 10 }, (_, i) => ({
+      type: 'image' as const,
       id: `item-${i + 1}`,
       imageUrl: `/images/life/image-${i + 1}.jpg`,
       imageAlt: `Life moment ${i + 1}`,
@@ -661,5 +700,75 @@ describe('ImageCarousel', () => {
     expect(() =>
       render(<ImageCarousel title="Life Moments" items={mockItems} />)
     ).not.toThrow();
+  });
+
+  // 7. Video Support Tests
+  it('renders video items correctly', () => {
+    render(<ImageCarousel title="Life Moments" items={videoItems} />);
+
+    const video = screen.getByLabelText('Life moment video');
+    expect(video).toBeInTheDocument();
+    expect(video.tagName).toBe('VIDEO');
+    expect(video).toHaveAttribute('src', '/videos/life-video.mp4');
+    expect(video).toHaveAttribute('controls');
+    expect(video).toHaveAttribute('role', 'img');
+  });
+
+  it('renders mixed image and video items', () => {
+    render(<ImageCarousel title="Life Moments" items={mixedItems} />);
+
+    const image = screen.getByAltText('First image');
+    const video = screen.getByLabelText('Life moment video');
+    const secondImage = screen.getByAltText('Second image');
+
+    expect(image).toBeInTheDocument();
+    expect(video).toBeInTheDocument();
+    expect(secondImage).toBeInTheDocument();
+
+    expect(video.tagName).toBe('VIDEO');
+    expect(video).toHaveAttribute('src', '/videos/life-video.mp4');
+    expect(video).toHaveAttribute('role', 'img');
+  });
+
+  it('navigates between images and videos correctly', async () => {
+    const user = userEvent.setup({ delay: null });
+    render(<ImageCarousel title="Life Moments" items={mixedItems} />);
+
+    // Start with first image
+    const image = screen.getByAltText('First image');
+    expect(image).toBeInTheDocument();
+
+    // Navigate to video
+    const nextButton = screen.getByLabelText('Next item');
+    await user.click(nextButton);
+
+    const video = screen.getByLabelText('Life moment video');
+    expect(video).toBeInTheDocument();
+    expect(video.tagName).toBe('VIDEO');
+
+    // Navigate to second image
+    await user.click(nextButton);
+
+    const secondImage = screen.getByAltText('Second image');
+    expect(secondImage).toBeInTheDocument();
+  });
+
+  it('applies correct styling classes to video elements', () => {
+    const { container } = render(
+      <ImageCarousel title="Life Moments" items={videoItems} />
+    );
+
+    const video = container.querySelector('video');
+    expect(video).toBeInTheDocument();
+    expect(video).toHaveClass('absolute', 'inset-0', 'w-full', 'h-full', 'object-contain');
+  });
+
+  it('renders video with proper accessibility attributes', () => {
+    render(<ImageCarousel title="Life Moments" items={videoItems} />);
+
+    const video = screen.getByLabelText('Life moment video');
+    expect(video).toHaveAttribute('aria-label', 'Life moment video');
+    expect(video).toHaveAttribute('role', 'img');
+    expect(video).toHaveAttribute('controls');
   });
 });

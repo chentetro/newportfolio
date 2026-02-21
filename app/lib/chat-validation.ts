@@ -23,23 +23,23 @@ const MessagePartSchema = z.object({
 
 /**
  * Validates a single chat message.
- * 
+ *
  * Supports multiple message formats for compatibility with different UI libraries:
  * - `text` field (string, max 1000 chars) - Simple text messages
  * - `content` field (string, max 1000 chars) - Alternative text field name
  * - `parts` array - UI message format with typed parts (e.g., text parts)
- * 
+ *
  * At least one of `text`, `content`, or `parts` must be present.
  * The `role` field must be one of: 'user', 'assistant', or 'system'.
- * 
+ *
  * @example
  * ```ts
  * // Valid message with text field
  * { role: 'user', text: 'Hello' }
- * 
+ *
  * // Valid message with content field
  * { role: 'user', content: 'Hello' }
- * 
+ *
  * // Valid message with parts array
  * { role: 'user', parts: [{ type: 'text', text: 'Hello' }] }
  * ```
@@ -61,11 +61,11 @@ export const MessageSchema = z
 
 /**
  * Validates the entire chat API request body.
- * 
+ *
  * Requires:
  * - `messages` array with at least 1 message and at most MAX_MESSAGES_PER_REQUEST messages
  * - Each message must conform to MessageSchema
- * 
+ *
  * @example
  * ```ts
  * // Valid request
@@ -83,13 +83,13 @@ export const RequestSchema = z.object({
 
 /**
  * Formats Zod validation errors into user-friendly error messages.
- * 
+ *
  * Handles common validation errors with specific, actionable messages:
  * - Too many messages: Provides the limit
  * - Message too long: Provides the character limit
  * - Missing required fields: Clear field name
  * - Invalid role: Lists valid roles
- * 
+ *
  * @param error - The Zod error object from validation
  * @returns User-friendly error message string
  */
@@ -149,4 +149,3 @@ export function formatZodError(error: z.ZodError): string {
 
   return firstError.message;
 }
-

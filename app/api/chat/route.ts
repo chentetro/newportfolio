@@ -1,10 +1,7 @@
 import { groq } from '@ai-sdk/groq';
 import { convertToModelMessages, streamText } from 'ai';
 import { buildSystemPrompt } from '@/app/lib/system-prompt';
-import {
-  RequestSchema,
-  formatZodError,
-} from '@/app/lib/chat-validation';
+import { RequestSchema, formatZodError } from '@/app/lib/chat-validation';
 
 // Set runtime to nodejs for proper .env.local reading
 export const runtime = 'nodejs';
