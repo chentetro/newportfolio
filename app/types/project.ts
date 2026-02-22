@@ -8,12 +8,16 @@
  */
 export type Technology =
   | 'React'
+  | 'Vite'
   | 'Next.js'
   | 'TypeScript'
   | 'JavaScript'
+  | 'Material UI (MUI)'
+  | 'Axios'
   | 'Tailwind CSS'
   | 'Node.js'
   | 'MongoDB'
+  | 'Mongoose'
   | 'MySQL'
   | 'PostgreSQL'
   | 'Git'

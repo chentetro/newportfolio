@@ -9,36 +9,51 @@ describe('Skills', () => {
   it('renders all skill categories correctly', () => {
     render(<Skills />);
 
-    expect(screen.getByText('Programming Languages')).toBeInTheDocument();
-    expect(screen.getByText('Web Development')).toBeInTheDocument();
-    expect(screen.getByText('Databases')).toBeInTheDocument();
-    expect(screen.getByText('Tools & Environment')).toBeInTheDocument();
+    expect(screen.getByText('Languages')).toBeInTheDocument();
+    expect(screen.getByText('Frontend Development')).toBeInTheDocument();
+    expect(screen.getByText('Backend & Database')).toBeInTheDocument();
+    expect(screen.getByText('Tools & Testing')).toBeInTheDocument();
+    expect(screen.getByText('Other')).toBeInTheDocument();
   });
 
   it('displays all skills with correct names', () => {
     render(<Skills />);
 
-    // Programming Languages
+    // Languages
     expect(screen.getByLabelText('C skill')).toBeInTheDocument();
     expect(screen.getByLabelText('C++ skill')).toBeInTheDocument();
     expect(screen.getByLabelText('C# skill')).toBeInTheDocument();
     expect(screen.getByLabelText('Java skill')).toBeInTheDocument();
     expect(screen.getByLabelText('Python skill')).toBeInTheDocument();
-
-    // Web Development
-    expect(screen.getByLabelText('HTML skill')).toBeInTheDocument();
-    expect(screen.getByLabelText('CSS skill')).toBeInTheDocument();
     expect(screen.getByLabelText('JavaScript skill')).toBeInTheDocument();
     expect(screen.getByLabelText('TypeScript skill')).toBeInTheDocument();
 
-    // Databases
+    // Frontend Development
+    expect(screen.getByLabelText('Next.js skill')).toBeInTheDocument();
+    expect(screen.getByLabelText('React skill')).toBeInTheDocument();
+    expect(screen.getByLabelText('HTML5 skill')).toBeInTheDocument();
+    expect(screen.getByLabelText('CSS3 skill')).toBeInTheDocument();
+    expect(screen.getByLabelText('Tailwind CSS skill')).toBeInTheDocument();
+
+    // Backend & Database
+    expect(screen.getByLabelText('Node.js skill')).toBeInTheDocument();
+    expect(screen.getByLabelText('Express skill')).toBeInTheDocument();
     expect(screen.getByLabelText('MySQL skill')).toBeInTheDocument();
     expect(screen.getByLabelText('MongoDB skill')).toBeInTheDocument();
 
-    // Tools & Environment
+    // Tools & Testing
     expect(screen.getByLabelText('Git skill')).toBeInTheDocument();
     expect(screen.getByLabelText('GitHub skill')).toBeInTheDocument();
+    expect(screen.getByLabelText('Vitest skill')).toBeInTheDocument();
     expect(screen.getByLabelText('Postman skill')).toBeInTheDocument();
+    expect(screen.getByLabelText('Cursor skill')).toBeInTheDocument();
+
+    // Other
+    expect(
+      screen.getByLabelText(
+        'Microsoft Office (Word, Excel, PowerPoint, Outlook) skill'
+      )
+    ).toBeInTheDocument();
   });
 
   it('renders icons for all skills', () => {
@@ -89,10 +104,11 @@ describe('Skills', () => {
     render(<Skills />);
 
     const categoryHeadings = screen.getAllByRole('heading', { level: 3 });
-    expect(categoryHeadings[0]).toHaveTextContent('Programming Languages');
-    expect(categoryHeadings[1]).toHaveTextContent('Web Development');
-    expect(categoryHeadings[2]).toHaveTextContent('Databases');
-    expect(categoryHeadings[3]).toHaveTextContent('Tools & Environment');
+    expect(categoryHeadings[0]).toHaveTextContent('Languages');
+    expect(categoryHeadings[1]).toHaveTextContent('Frontend Development');
+    expect(categoryHeadings[2]).toHaveTextContent('Backend & Database');
+    expect(categoryHeadings[3]).toHaveTextContent('Tools & Testing');
+    expect(categoryHeadings[4]).toHaveTextContent('Other');
   });
 
   // 3. Accessibility Tests
@@ -225,20 +241,22 @@ describe('Skills', () => {
   it('renders skills in correct categories', () => {
     render(<Skills />);
 
-    // Programming Languages category
-    const progLangHeading = screen.getByText('Programming Languages');
+    // Languages category
+    const progLangHeading = screen.getByText('Languages');
     const progLangSection = progLangHeading.closest('div');
     expect(progLangSection).toContainElement(screen.getByLabelText('C skill'));
     expect(progLangSection).toContainElement(
       screen.getByLabelText('Python skill')
     );
 
-    // Web Development category
-    const webDevHeading = screen.getByText('Web Development');
+    // Frontend Development category
+    const webDevHeading = screen.getByText('Frontend Development');
     const webDevSection = webDevHeading.closest('div');
-    expect(webDevSection).toContainElement(screen.getByLabelText('HTML skill'));
     expect(webDevSection).toContainElement(
-      screen.getByLabelText('TypeScript skill')
+      screen.getByLabelText('Next.js skill')
+    );
+    expect(webDevSection).toContainElement(
+      screen.getByLabelText('Tailwind CSS skill')
     );
   });
 

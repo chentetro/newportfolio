@@ -5,10 +5,11 @@ import type { IconType } from 'react-icons';
  * Union type ensures type safety and prevents invalid category values.
  */
 export type SkillCategory =
-  | 'Programming Languages'
-  | 'Web Development'
-  | 'Databases'
-  | 'Tools & Environment';
+  | 'Languages'
+  | 'Frontend Development'
+  | 'Backend & Database'
+  | 'Tools & Testing'
+  | 'Other';
 
 /**
  * Represents a single technical skill with its icon.
