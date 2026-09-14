@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import SkillCard from '@/app/components/SkillCard';
 
 describe('SkillCard', () => {
@@ -9,263 +9,94 @@ describe('SkillCard', () => {
     className: 'custom-test-class',
   };
 
-  const minimalProps = {
-    title: 'React',
-    // No description or className
+  const longText = {
+    title:
+      'Very Long Skill Title That Should Still Render Cleanly Without Breaking Layout Or Accessibility',
+    description:
+      'Very long description that contains multiple sentences and is intentionally verbose to verify the component handles extended content safely and still exposes the expected semantic structure.',
   };
 
-  const emptyMockProps = {
-    title: '',
-    description: '',
-    className: '',
-  };
+  describe('Core Rendering & Props', () => {
+    it('renders the title and description content when provided', () => {
+      render(<SkillCard {...mockProps} />);
 
-  // 1. Core Functionality Tests
-  it('renders all content elements correctly', () => {
-    render(<SkillCard {...mockProps} />);
+      expect(screen.getByRole('heading', { level: 3, name: mockProps.title })).toBeInTheDocument();
+      expect(screen.getByText(mockProps.description)).toBeInTheDocument();
+    });
 
-    expect(screen.getByText(mockProps.title)).toBeInTheDocument();
-    expect(screen.getByText(mockProps.description)).toBeInTheDocument();
+    it('omits the description from the DOM when it is not provided', () => {
+      render(<SkillCard title="React" />);
+
+      expect(screen.getByRole('heading', { level: 3, name: 'React' })).toBeInTheDocument();
+      expect(screen.queryByText(mockProps.description)).not.toBeInTheDocument();
+    });
+
+    it('applies a custom className to the article root element', () => {
+      const { container } = render(<SkillCard {...mockProps} />);
+      const article = container.querySelector('article');
+
+      expect(article).toHaveClass(mockProps.className);
+    });
   });
 
-  it('renders title without description when description is not provided', () => {
-    render(<SkillCard {...minimalProps} />);
+  describe('Semantic Structure & Accessibility', () => {
+    it('uses semantic article markup with heading hierarchy, aria-label, and keyboard focusability', () => {
+      render(<SkillCard {...mockProps} />);
 
-    expect(screen.getByText(minimalProps.title)).toBeInTheDocument();
-    expect(screen.queryByText('Modern ES6+')).not.toBeInTheDocument();
+      const article = screen.getByLabelText(`Skill: ${mockProps.title}`);
+      const heading = screen.getByRole('heading', { level: 3, name: mockProps.title });
+
+      expect(article.tagName).toBe('ARTICLE');
+      expect(article).toHaveAttribute('role', 'article');
+      expect(article).toHaveAttribute('tabIndex', '0');
+      expect(article).toHaveAttribute('aria-label', `Skill: ${mockProps.title}`);
+      expect(article).toHaveClass('min-h-[44px]');
+
+      expect(heading.tagName).toBe('H3');
+      expect(screen.getAllByRole('heading')).toHaveLength(1);
+
+      article.focus();
+      expect(article).toHaveFocus();
+    });
   });
 
-  it('applies custom className correctly', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
+  describe('Styling & States', () => {
+    it('applies the expected monochrome, dark-mode, and interactive styling classes', () => {
+      const { container } = render(<SkillCard {...mockProps} />);
+      const article = container.querySelector('article');
 
-    const article = container.querySelector('article');
-    expect(article).toHaveClass(mockProps.className);
+      expect(article).toHaveClass(
+        'bg-white',
+        'dark:bg-gray-900',
+        'border-gray-200',
+        'dark:border-gray-700',
+        'hover:shadow-md',
+        'focus:ring-2',
+        'focus:ring-gray-500',
+        'focus:outline-none',
+      );
+    });
   });
 
-  // 2. Structural Hierarchy Tests
-  it('maintains proper heading hierarchy with H3 for card title', () => {
-    render(<SkillCard {...mockProps} />);
-
-    // Test that title uses H3 (appropriate for card components)
-    const heading = screen.getByRole('heading', { level: 3 });
-    expect(heading).toBeInTheDocument();
-    expect(heading).toHaveProperty('tagName', 'H3');
-    expect(heading).toHaveTextContent(mockProps.title);
-
-    // Ensure no other heading levels are used inappropriately
-    const allHeadings = screen.getAllByRole('heading');
-    expect(allHeadings).toHaveLength(1);
-    expect(allHeadings[0]).toHaveProperty('tagName', 'H3');
-  });
-
-  it('uses semantic HTML structure with stable selectors', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
-
-    // Use stable selectors for semantic elements
-    const articleElement = container.querySelector('article');
-    expect(articleElement).toBeInTheDocument();
-    expect(articleElement).toHaveAttribute('role', 'article');
-
-    const headingElement = container.querySelector('h3');
-    expect(headingElement).toBeInTheDocument();
-
-    const paragraphElement = container.querySelector('p');
-    expect(paragraphElement).toBeInTheDocument();
-  });
-
-  // 3. Accessibility Tests
-  it('meets comprehensive accessibility requirements', () => {
-    render(<SkillCard {...mockProps} />);
-
-    // Test article accessibility
-    const article = screen.getByLabelText(`Skill: ${mockProps.title}`);
-    expect(article).toBeInTheDocument();
-    expect(article).toHaveAttribute('role', 'article');
-    expect(article).toHaveAttribute('aria-label', `Skill: ${mockProps.title}`);
-
-    // Test interactive accessibility
-    expect(article).toHaveAttribute('tabIndex', '0');
-    expect(article).toHaveClass('cursor-pointer');
-
-    // Test heading accessibility
-    const heading = screen.getByRole('heading', { level: 3 });
-    expect(heading).toBeInTheDocument();
-    expect(heading.textContent).toBeTruthy();
-    expect(heading.textContent).not.toBe('');
-  });
-
-  it('provides adequate touch targets for mobile accessibility', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
-
-    const article = container.querySelector('article');
-    expect(article).toHaveClass('min-h-[44px]');
-
-    // Verify the element is focusable and has proper interactive styling
-    expect(article).toHaveClass('cursor-pointer');
-    expect(article).toHaveClass('focus:ring-2');
-    expect(article).toHaveClass('focus:ring-gray-500');
-    expect(article).toHaveClass('focus:outline-none');
-  });
-
-  it('supports keyboard navigation properly', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
-
-    const article = container.querySelector('article');
-    expect(article).toHaveAttribute('tabIndex', '0');
-
-    // Test that focus can be applied
-    article?.focus();
-    expect(article).toHaveFocus();
-  });
-
-  // 4. Styling and Layout Tests
-  it('applies correct monochrome styling classes', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
-
-    const article = container.querySelector('article');
-    // Test background colors (monochrome compliance)
-    expect(article).toHaveClass('bg-white');
-    expect(article).toHaveClass('dark:bg-gray-900');
-
-    // Test border colors (monochrome compliance)
-    expect(article).toHaveClass('border-gray-200');
-    expect(article).toHaveClass('dark:border-gray-700');
-
-    // Test text colors (monochrome compliance)
-    const heading = container.querySelector('h3');
-    expect(heading).toHaveClass('text-gray-900');
-    expect(heading).toHaveClass('dark:text-gray-100');
-
-    const paragraph = container.querySelector('p');
-    if (paragraph) {
-      expect(paragraph).toHaveClass('text-gray-600');
-      expect(paragraph).toHaveClass('dark:text-gray-400');
-    }
-  });
-
-  it('applies correct layout and spacing classes', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
-
-    const article = container.querySelector('article');
-    expect(article).toHaveClass('rounded-lg');
-    expect(article).toHaveClass('p-6');
-    expect(article).toHaveClass('shadow-sm');
-
-    const paragraph = container.querySelector('p');
-    if (paragraph) {
-      expect(paragraph).toHaveClass('mt-2');
-      expect(paragraph).toHaveClass('text-sm');
-      expect(paragraph).toHaveClass('leading-relaxed');
-    }
-
-    const heading = container.querySelector('h3');
-    expect(heading).toHaveClass('text-lg');
-    expect(heading).toHaveClass('font-semibold');
-    expect(heading).toHaveClass('leading-relaxed');
-  });
-
-  it('applies correct hover and transition effects', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
-
-    const article = container.querySelector('article');
-    expect(article).toHaveClass('hover:shadow-md');
-    expect(article).toHaveClass('transition-shadow');
-    expect(article).toHaveClass('duration-200');
-  });
-
-  // 5. Interactive Behavior Tests
-  it('handles user interactions correctly', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
-
-    const article = container.querySelector('article');
-    expect(article).toBeInTheDocument();
-
-    // Test click interaction (should not throw errors)
-    fireEvent.click(article!);
-    expect(article).toBeInTheDocument();
-
-    // Test that element is focusable
-    expect(article).toHaveAttribute('tabIndex', '0');
-  });
-
-  it('maintains focus state properly', () => {
-    const { container } = render(<SkillCard {...mockProps} />);
-
-    const article = container.querySelector('article');
-
-    // Test that element has proper focus attributes
-    expect(article).toHaveAttribute('tabIndex', '0');
-    expect(article).toHaveClass('focus:ring-2');
-    expect(article).toHaveClass('focus:ring-gray-500');
-    expect(article).toHaveClass('focus:outline-none');
-
-    // Test programmatic focus
-    article?.focus();
-    expect(article).toHaveFocus();
-  });
-
-  // 6. Edge Cases and Error Handling
-  it('handles empty or missing content gracefully', () => {
-    expect(() => render(<SkillCard {...emptyMockProps} />)).not.toThrow();
-
-    // Component should still render basic structure even with empty content
-    const { container } = render(<SkillCard {...emptyMockProps} />);
-    const article = container.querySelector('article');
-    expect(article).toBeInTheDocument();
-  });
-
-  it('handles missing optional props gracefully', () => {
-    expect(() => render(<SkillCard title="Unique Test Title" />)).not.toThrow();
-
-    const { container } = render(<SkillCard title="Unique Test Title" />);
-
-    // Should render title using container query to avoid multiple elements
-    const heading = container.querySelector('h3');
-    expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent('Unique Test Title');
-
-    // Should not render description paragraph when not provided
-    const paragraph = container.querySelector('p');
-    expect(paragraph).not.toBeInTheDocument();
-  });
-
-  it('handles invalid or edge case data without breaking', () => {
-    const edgeCaseProps = {
-      title: '   ', // Whitespace only
-      description: '\n\n', // Newlines only
-      className: '!!!invalid-class-name',
-    };
-
-    expect(() => render(<SkillCard {...edgeCaseProps} />)).not.toThrow();
-  });
-
-  it('maintains accessibility with minimal content', () => {
-    const { container } = render(<SkillCard title="T" />);
-
-    // Should still maintain proper structure
-    const article = container.querySelector('article');
-    expect(article).toHaveAttribute('aria-label', 'Skill: T');
-    expect(article).toHaveAttribute('role', 'article');
-    expect(article).toHaveAttribute('tabIndex', '0');
-
-    const heading = screen.getByRole('heading', { level: 3 });
-    expect(heading).toBeInTheDocument();
-  });
-
-  it('renders without component-breaking prop combinations', () => {
-    // Test various combinations that shouldn't break the component
-    const testCases = [
-      { title: 'A' }, // Minimal
-      { title: 'Test', description: undefined }, // Explicitly undefined description
-      { title: 'Test', className: '' }, // Empty className
+  describe('Edge Cases & Error Handling', () => {
+    it.each([
       {
-        title: 'Very Long Title That Might Cause Layout Issues In Some Cases',
-        description:
-          'Very long description that contains multiple sentences and might test how the component handles extensive text content without breaking the layout or functionality.',
+        label: 'whitespace-only strings',
+        props: { title: '   ', description: '\n\n', className: '!!!invalid-class-name' },
       },
-    ];
-
-    testCases.forEach((props) => {
+      {
+        label: 'extremely long content',
+        props: longText,
+      },
+      {
+        label: 'minimal props',
+        props: { title: 'React' },
+      },
+      {
+        label: 'empty props',
+        props: { title: '', description: '', className: '' },
+      },
+    ])('handles $label without throwing', ({ props }) => {
       expect(() => render(<SkillCard {...props} />)).not.toThrow();
     });
   });
